@@ -28,7 +28,6 @@ import org.jetbrains.annotations.NotNull;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class GameController {
 
@@ -44,7 +43,7 @@ public class GameController {
      *
      * @param space the space to which the current player should move
      */
-    public void moveCurrentPlayerToSpace(@NotNull Space space)  {
+    public void moveCurrentPlayerToSpace(@NotNull Space space) {
         // TODO Assignment V1: method should be implemented by the students:
         //   - the current player should be moved to the given space
         //     (if it is free()
@@ -197,6 +196,32 @@ public class GameController {
 
     // TODO Assignment V2
     public void moveForward(@NotNull Player player) {
+        System.out.println("Cords of player"+player.getSpace().x+" "+player.getSpace().y);
+        try {
+            switch (player.getHeading()) {
+
+                case SOUTH:
+                    if(player.getSpace().y<board.height-1)
+                    player.setSpace(board.getSpace(player.getSpace().x, player.getSpace().y+1));
+                    break;
+                case NORTH:
+                    if(player.getSpace().y>0)
+                        player.setSpace(board.getSpace(player.getSpace().x, player.getSpace().y-1));
+                    break;
+                case WEST:
+                    if(player.getSpace().x>0)
+                        player.setSpace(board.getSpace(player.getSpace().x-1, player.getSpace().y));
+                    break;
+                case EAST:
+                    if(player.getSpace().x<board.width-1)
+                        player.setSpace(board.getSpace(player.getSpace().x+1 , player.getSpace().y));
+                    break;
+
+            }
+        } catch (NullPointerException e) {
+            throw new NullPointerException("Going out of the board!");
+        }
+
 
     }
 
@@ -207,11 +232,13 @@ public class GameController {
 
     // TODO Assignment V2
     public void turnRight(@NotNull Player player) {
+        player.setHeading(player.getHeading().next());
 
     }
 
     // TODO Assignment V2
     public void turnLeft(@NotNull Player player) {
+        player.setHeading(player.getHeading().prev());
 
     }
 
