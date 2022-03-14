@@ -44,6 +44,23 @@ public class GameController {
      * @param space the space to which the current player should move
      */
     public void moveCurrentPlayerToSpace(@NotNull Space space) {
+        if (space.getPlayer() == null) {
+            board.getCurrentPlayer().setSpace(space);
+            board.setCounter(board.getCounter() + 1);
+            for (int i = 0; i < board.getPlayers().size(); i++) {
+                if (i == board.getPlayers().size() - 1) {
+                    board.setCurrentPlayer(board.getPlayers().get(0));
+                    break;
+                }
+                if (board.getCurrentPlayer().equals(board.getPlayers().get(i))) {
+                    board.setCurrentPlayer(board.getPlayers().get(i + 1));
+                    break;
+                }
+
+
+            }
+        }
+
         // TODO Assignment V1: method should be implemented by the students:
         //   - the current player should be moved to the given space
         //     (if it is free()
@@ -196,25 +213,29 @@ public class GameController {
 
     // TODO Assignment V2
     public void moveForward(@NotNull Player player) {
-        System.out.println("Cords of player"+player.getSpace().x+" "+player.getSpace().y);
+        System.out.println("Cords of player" + player.getSpace().x + " " + player.getSpace().y);
         try {
             switch (player.getHeading()) {
 
                 case SOUTH:
-                    if(player.getSpace().y<board.height-1)
-                    player.setSpace(board.getSpace(player.getSpace().x, player.getSpace().y+1));
+                    if (player.getSpace().y < board.height - 1)
+                        if (board.getSpace(player.getSpace().x, player.getSpace().y + 1).getPlayer() == null)
+                            player.setSpace(board.getSpace(player.getSpace().x, player.getSpace().y + 1));
                     break;
                 case NORTH:
-                    if(player.getSpace().y>0)
-                        player.setSpace(board.getSpace(player.getSpace().x, player.getSpace().y-1));
+                    if (player.getSpace().y > 0)
+                        if (board.getSpace(player.getSpace().x, player.getSpace().y - 1).getPlayer() == null)
+                            player.setSpace(board.getSpace(player.getSpace().x, player.getSpace().y - 1));
                     break;
                 case WEST:
-                    if(player.getSpace().x>0)
-                        player.setSpace(board.getSpace(player.getSpace().x-1, player.getSpace().y));
+                    if (player.getSpace().x > 0)
+                        if (board.getSpace(player.getSpace().x - 1, player.getSpace().y).getPlayer() == null)
+                            player.setSpace(board.getSpace(player.getSpace().x - 1, player.getSpace().y));
                     break;
                 case EAST:
-                    if(player.getSpace().x<board.width-1)
-                        player.setSpace(board.getSpace(player.getSpace().x+1 , player.getSpace().y));
+                    if (player.getSpace().x < board.width - 1)
+                        if (board.getSpace(player.getSpace().x + 1, player.getSpace().y).getPlayer() == null)
+                            player.setSpace(board.getSpace(player.getSpace().x + 1, player.getSpace().y));
                     break;
 
             }
@@ -227,6 +248,35 @@ public class GameController {
 
     // TODO Assignment V2
     public void fastForward(@NotNull Player player) {
+        System.out.println("Cords of player" + player.getSpace().x + " " + player.getSpace().y);
+        try {
+            switch (player.getHeading()) {
+
+                case SOUTH:
+                    if (player.getSpace().y < board.height - 2)
+                        if (board.getSpace(player.getSpace().x, player.getSpace().y + 2).getPlayer() == null)
+                            player.setSpace(board.getSpace(player.getSpace().x, player.getSpace().y + 2));
+                    break;
+                case NORTH:
+                    if (player.getSpace().y > 1)
+                        if (board.getSpace(player.getSpace().x, player.getSpace().y - 2).getPlayer() == null)
+                            player.setSpace(board.getSpace(player.getSpace().x, player.getSpace().y - 2));
+                    break;
+                case WEST:
+                    if (player.getSpace().x > 1)
+                        if (board.getSpace(player.getSpace().x - 2, player.getSpace().y).getPlayer() == null)
+                            player.setSpace(board.getSpace(player.getSpace().x - 2, player.getSpace().y));
+                    break;
+                case EAST:
+                    if (player.getSpace().x < board.width - 2)
+                        if (board.getSpace(player.getSpace().x + 2, player.getSpace().y).getPlayer() == null)
+                            player.setSpace(board.getSpace(player.getSpace().x + 2, player.getSpace().y));
+                    break;
+
+            }
+        } catch (NullPointerException e) {
+            throw new NullPointerException("Going out of the board!");
+        }
 
     }
 

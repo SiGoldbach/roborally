@@ -210,6 +210,17 @@ public class Board extends Subject {
                 ", Player = " + getCurrentPlayer().getName() +
                 ", Step: " + getStep();
     }
+    public int counter;
+    public int getCounter() {
+        return counter;
+    }
+
+    public void setCounter(int counter) {
+        this.counter = counter;
+    }
+    public List<Player> getPlayers() {
+        return players;
+    }
 
 
 }
