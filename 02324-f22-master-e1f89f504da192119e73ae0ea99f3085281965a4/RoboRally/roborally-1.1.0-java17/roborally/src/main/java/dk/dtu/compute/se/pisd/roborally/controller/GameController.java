@@ -214,69 +214,19 @@ public class GameController {
     // TODO Assignment V2
     public void moveForward(@NotNull Player player) {
         System.out.println("Cords of player" + player.getSpace().x + " " + player.getSpace().y);
-        try {
-            switch (player.getHeading()) {
+        if (board.doesSpaceExist(player)==null)
+            return;
+        player.setSpace(board.doesSpaceExist(player));
 
-                case SOUTH:
-                    if (player.getSpace().y < board.height - 1)
-                        if (board.getSpace(player.getSpace().x, player.getSpace().y + 1).getPlayer() == null)
-                            player.setSpace(board.getSpace(player.getSpace().x, player.getSpace().y + 1));
-                    break;
-                case NORTH:
-                    if (player.getSpace().y > 0)
-                        if (board.getSpace(player.getSpace().x, player.getSpace().y - 1).getPlayer() == null)
-                            player.setSpace(board.getSpace(player.getSpace().x, player.getSpace().y - 1));
-                    break;
-                case WEST:
-                    if (player.getSpace().x > 0)
-                        if (board.getSpace(player.getSpace().x - 1, player.getSpace().y).getPlayer() == null)
-                            player.setSpace(board.getSpace(player.getSpace().x - 1, player.getSpace().y));
-                    break;
-                case EAST:
-                    if (player.getSpace().x < board.width - 1)
-                        if (board.getSpace(player.getSpace().x + 1, player.getSpace().y).getPlayer() == null)
-                            player.setSpace(board.getSpace(player.getSpace().x + 1, player.getSpace().y));
-                    break;
-
-            }
-        } catch (NullPointerException e) {
-            throw new NullPointerException("Going out of the board!");
-        }
 
 
     }
 
     // TODO Assignment V2
     public void fastForward(@NotNull Player player) {
+        moveForward(player);
+        moveForward(player);
         System.out.println("Cords of player" + player.getSpace().x + " " + player.getSpace().y);
-        try {
-            switch (player.getHeading()) {
-
-                case SOUTH:
-                    if (player.getSpace().y < board.height - 2)
-                        if (board.getSpace(player.getSpace().x, player.getSpace().y + 2).getPlayer() == null)
-                            player.setSpace(board.getSpace(player.getSpace().x, player.getSpace().y + 2));
-                    break;
-                case NORTH:
-                    if (player.getSpace().y > 1)
-                        if (board.getSpace(player.getSpace().x, player.getSpace().y - 2).getPlayer() == null)
-                            player.setSpace(board.getSpace(player.getSpace().x, player.getSpace().y - 2));
-                    break;
-                case WEST:
-                    if (player.getSpace().x > 1)
-                        if (board.getSpace(player.getSpace().x - 2, player.getSpace().y).getPlayer() == null)
-                            player.setSpace(board.getSpace(player.getSpace().x - 2, player.getSpace().y));
-                    break;
-                case EAST:
-                    if (player.getSpace().x < board.width - 2)
-                        if (board.getSpace(player.getSpace().x + 2, player.getSpace().y).getPlayer() == null)
-                            player.setSpace(board.getSpace(player.getSpace().x + 2, player.getSpace().y));
-                    break;
-
-            }
-        } catch (NullPointerException e) {
-            throw new NullPointerException("Going out of the board!");
-        }
 
     }
 

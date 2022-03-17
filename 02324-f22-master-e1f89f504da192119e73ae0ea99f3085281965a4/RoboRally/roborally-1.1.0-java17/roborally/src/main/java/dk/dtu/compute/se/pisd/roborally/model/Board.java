@@ -222,5 +222,23 @@ public class Board extends Subject {
         return players;
     }
 
+    public Space doesSpaceExist(Player player){
+        int x=player.getSpace().x;
+        int y=player.getSpace().y;
+        switch (player.getHeading()){
+            case NORTH -> y=y-1;
+            case EAST -> x=x+1;
+            case SOUTH -> y=y+1;
+            case WEST -> x=x-1;
+        }
+        return getSpace(x,y);
+
+
+
+
+
+
+    }
+
 
 }
