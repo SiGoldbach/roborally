@@ -1,0 +1,80 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+Object Game{
+GamePhase
+}
+Object Board
+Object Field
+Object LaserField
+Object ConveyerBeltField{
+MovementPower
+}
+Object WallField{
+Edges
+}
+Object CheckpointField{
+CheckpointNumber
+}
+Object StartField
+Object PushField
+Object Player
+Object Robot {
+Space
+Direction
+}
+Object ProgrammingCard{
+Effects
+}
+Object SpecialProgrammingCard{
+Effects
+}
+Object DamageCard{
+Effects
+}
+Object UpgradeCard{
+Effects
+}
+Object CheckpointToken
+Object EnergyToken
+Object PriorityAntenna
+Object RebootToken
+Object UpgradeShop
+Object PlayerMat
+Object EnergyBank
+
+
+
+
+Field"1.." --l "1"Board:Contains
+PriorityAntenna"1"--r"1"Board:Contains
+EnergyBank"1"--u"1"Board:Contains
+UpgradeShop"1"--u"1"Board:Contains
+SpecialProgrammingCard"0.."--r"1"Board:Contains
+
+Robot"1"-r"1"Player:Controls
+PlayerMat"1" --d* "1"Player:Has
+EnergyToken"0.." --d "1"Player:Has
+RebootToken"0.."--d"1"Player:Has
+CheckpointToken"0.."--d"1"Player:Has
+Game"1"--"1"Board:Contains
+
+
+DamageCard"0.."--r"1"Robot:Has
+
+ProgrammingCard"0.."--"1"PlayerMat:Contains
+
+
+
+Player"2..6"--d>"1"Board:Uses
+
+StartField--d|>Field
+WallField--d|>Field
+CheckpointField--d|>Field
+LaserField--u|>Field
+ConveyerBeltField--l|>Field
+PushField--u|>Field
+
+UpgradeCard"1.."-l*"1"UpgradeShop:Contains
+
+
+@enduml
