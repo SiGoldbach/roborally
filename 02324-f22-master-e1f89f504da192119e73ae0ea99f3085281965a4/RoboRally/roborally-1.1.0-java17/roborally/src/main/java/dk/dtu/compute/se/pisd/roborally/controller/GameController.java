@@ -205,6 +205,8 @@ public class GameController {
                 case FAST_FORWARD:
                     this.fastForward(player);
                     break;
+                case OPTION_LEFT_RIGHT:
+                    this.leftOrRight(player);
                 default:
                     // DO NOTHING (for now)
             }
@@ -214,10 +216,9 @@ public class GameController {
     // TODO Assignment V2
     public void moveForward(@NotNull Player player) {
         System.out.println("Cords of player" + player.getSpace().x + " " + player.getSpace().y);
-        if (board.doesSpaceExist(player)==null)
+        if (board.doesSpaceExist(player) == null)
             return;
         player.setSpace(board.doesSpaceExist(player));
-
 
 
     }
@@ -239,6 +240,44 @@ public class GameController {
     // TODO Assignment V2
     public void turnLeft(@NotNull Player player) {
         player.setHeading(player.getHeading().prev());
+
+    }
+
+    /**
+     * New method in V3 for turning either left or right
+     */
+    public void leftOrRight(@NotNull Player player) {
+        board.setPhase(Phase.PLAYER_INTERACTION);
+
+
+    }
+
+    /**
+     * Method getting called from gameController
+     * There are some issues because of the way execute next step is made it changes to next player before you choose
+     * direction and therefore the previous player gets chosen.
+     * As said this should be fixed later
+     * @param choice
+     */
+    public void executeCommandOptionAndContinue(String choice) {
+        Player tempPlayer=null;
+        for (int i = 0; i < board.getPlayers().size(); i++) {
+            if (board.getPlayers().get(i).equals(board.getCurrentPlayer())){
+                if (i==0)
+                    tempPlayer=board.getPlayers().get(board.getPlayersNumber()-1);
+                else
+                    tempPlayer=board.getPlayers().get(i-1);
+            }
+
+        }
+
+        board.setPhase(Phase.ACTIVATION);
+        if (choice.equals("Left"))
+            turnLeft(tempPlayer);
+        else
+            turnRight(tempPlayer);
+
+        this.continuePrograms();
 
     }
 
