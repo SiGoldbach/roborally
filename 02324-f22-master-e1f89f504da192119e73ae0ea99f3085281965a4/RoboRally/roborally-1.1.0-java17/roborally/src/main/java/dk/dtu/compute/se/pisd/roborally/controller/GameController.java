@@ -257,16 +257,17 @@ public class GameController {
      * There are some issues because of the way execute next step is made it changes to next player before you choose
      * direction and therefore the previous player gets chosen.
      * As said this should be fixed later
+     *
      * @param choice
      */
     public void executeCommandOptionAndContinue(String choice) {
-        Player tempPlayer=null;
+        Player tempPlayer = null;
         for (int i = 0; i < board.getPlayers().size(); i++) {
-            if (board.getPlayers().get(i).equals(board.getCurrentPlayer())){
-                if (i==0)
-                    tempPlayer=board.getPlayers().get(board.getPlayersNumber()-1);
+            if (board.getPlayers().get(i).equals(board.getCurrentPlayer())) {
+                if (i == 0)
+                    tempPlayer = board.getPlayers().get(board.getPlayersNumber() - 1);
                 else
-                    tempPlayer=board.getPlayers().get(i-1);
+                    tempPlayer = board.getPlayers().get(i - 1);
             }
 
         }
@@ -276,6 +277,18 @@ public class GameController {
             turnLeft(tempPlayer);
         else
             turnRight(tempPlayer);
+
+        this.continuePrograms();
+
+    }
+
+    public void executeCommandOptionAndContinue(String choice, Player player) {
+
+        board.setPhase(Phase.ACTIVATION);
+        if (choice.equals("Left"))
+            turnLeft(player);
+        else
+            turnRight(player);
 
         this.continuePrograms();
 
