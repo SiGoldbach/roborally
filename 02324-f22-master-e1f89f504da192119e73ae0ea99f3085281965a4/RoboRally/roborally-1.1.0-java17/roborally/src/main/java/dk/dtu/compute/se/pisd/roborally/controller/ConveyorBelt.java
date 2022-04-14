@@ -29,7 +29,6 @@ import org.jetbrains.annotations.NotNull;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class ConveyorBelt extends FieldAction {
 
@@ -43,8 +42,22 @@ public class ConveyorBelt extends FieldAction {
         this.heading = heading;
     }
 
+
+    /**
+     * This method moves a player on space in one direction according to
+     * the fields heading
+     *
+     * @param gameController the gameController of the respective game
+     * @param space          the space this action should be executed for
+     * @return
+     */
     @Override
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
+        try {
+            gameController.moveToSpace(space.getPlayer(), space, heading);
+        } catch (GameController.ImpossibleMoveException e) {
+
+        }
         // TODO needs to be implemented
         return false;
     }
