@@ -79,6 +79,13 @@ public class Board extends Subject {
         return gameId;
     }
 
+    public void setWallsTest(){
+        spaces[5][5].addWall(Heading.SOUTH);
+        spaces[4][4].addWall(Heading.EAST);
+        spaces[3][3].addWall(Heading.NORTH);
+        spaces[2][2].addWall(Heading.WEST);
+    }
+
     public void setGameId(int gameId) {
         if (this.gameId == null) {
             this.gameId = gameId;
