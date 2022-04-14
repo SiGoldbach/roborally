@@ -3,11 +3,9 @@
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
-        <option value="$PROJECT_DIR$/02324-f22-master-e1f89f504da192119e73ae0ea99f3085281965a4/Lecture06/W6-Solution/pom.xml" />
-        <option value="$PROJECT_DIR$/02324-f22-master-e1f89f504da192119e73ae0ea99f3085281965a4/RoboRally/roborally-1.0.0-java17/roborally-initial/pom.xml" />
         <option value="$PROJECT_DIR$/02324-f22-master-e1f89f504da192119e73ae0ea99f3085281965a4/RoboRally/roborally-1.1.0-java17/roborally/pom.xml" />
       </list>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="openjdk-17" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_13" default="true" project-jdk-name="17.0.1" project-jdk-type="JavaSDK" />
 </project>
