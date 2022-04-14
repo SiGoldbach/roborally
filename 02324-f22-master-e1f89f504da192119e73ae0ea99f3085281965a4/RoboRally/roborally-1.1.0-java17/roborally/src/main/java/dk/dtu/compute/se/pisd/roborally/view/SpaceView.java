@@ -102,17 +102,25 @@ public class SpaceView extends StackPane implements ViewObserver {
                 this.getChildren().add(pane);
                 break;
             case NORTH:
-                Line Nline = new Line(0, 2, 4, 5);
+                Line Nline = new Line(2, 2, SPACE_WIDTH-2, 2);
                 Nline.setStroke(Color.RED);
                 Nline.setStrokeWidth(5);
                 pane.getChildren().add(Nline);
                 this.getChildren().add(pane);
                 break;
             case WEST:
-
+                Line Wline = new Line(2, 2, 2, SPACE_HEIGHT-2);
+                Wline.setStroke(Color.RED);
+                Wline.setStrokeWidth(5);
+                pane.getChildren().add(Wline);
+                this.getChildren().add(pane);
                 break;
             case EAST:
-
+                Line Eline = new Line(SPACE_WIDTH-2, 2, SPACE_WIDTH-2, SPACE_HEIGHT-2);
+                Eline.setStroke(Color.RED);
+                Eline.setStrokeWidth(5);
+                pane.getChildren().add(Eline);
+                this.getChildren().add(pane);
                 break;
             default:
                 break;
