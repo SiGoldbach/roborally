@@ -37,6 +37,7 @@ import javafx.scene.shape.StrokeLineCap;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -51,7 +52,6 @@ public class SpaceView extends StackPane implements ViewObserver {
     final public static int SPACE_WIDTH = 60;  // 60; // 75;
 
     public final Space space;
-
 
     public SpaceView(@NotNull Space space) {
         this.space = space;
@@ -72,15 +72,19 @@ public class SpaceView extends StackPane implements ViewObserver {
         }
 
         // updatePlayer();
-        List<Heading> myWalls = space.getWalls();
-
-        while(myWalls.listIterator().hasNext()){
-            drawWall(myWalls.listIterator().next());
-        }
 
         // This space view should listen to changes of the space
         space.attach(this);
         update(space);
+    }
+
+    public void checkWalls(){
+        List<Heading> myWalls = space.getWalls();
+
+        for(Iterator<Heading> i = myWalls.iterator(); i.hasNext(); ) {
+            Heading myHeading = i.next();
+            drawWall(myHeading);
+        }
     }
 
     private void drawWall(Heading wallHeading){
@@ -118,6 +122,7 @@ public class SpaceView extends StackPane implements ViewObserver {
 
     private void updatePlayer() {
         this.getChildren().clear();
+        checkWalls();
 
         Player player = space.getPlayer();
         if (player != null) {
@@ -139,13 +144,6 @@ public class SpaceView extends StackPane implements ViewObserver {
     public void updateView(Subject subject) {
         if (subject == this.space) {
             updatePlayer();
-        }
-
-        List<Heading> myWalls = new ArrayList<>();
-        myWalls = space.getWalls();
-
-        while(myWalls.listIterator().hasNext()){
-            drawWall(myWalls.listIterator().next());
         }
     }
 }

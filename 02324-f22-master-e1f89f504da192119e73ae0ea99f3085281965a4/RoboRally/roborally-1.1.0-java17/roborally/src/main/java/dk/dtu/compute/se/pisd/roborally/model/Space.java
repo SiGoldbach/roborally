@@ -25,6 +25,7 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -36,7 +37,7 @@ import java.util.List;
 public class Space extends Subject {
 
     public final Board board;
-    private List<Heading> walls = new ArrayList<>();
+    private List<Heading> walls2;
     private List<FieldAction> actions = new ArrayList<>();
 
     public final int x;
@@ -49,6 +50,8 @@ public class Space extends Subject {
         this.x = x;
         this.y = y;
         player = null;
+
+        walls2 = new LinkedList();
     }
 
     public Player getPlayer() {
@@ -78,11 +81,11 @@ public class Space extends Subject {
         notifyChange();
     }
     public List<Heading> getWalls() {
-        return walls;
+        return walls2;
     }
 
     public void addWall(Heading myHeading){
-        walls.add(myHeading);
+        walls2.add(myHeading);
     }
 
     public List<FieldAction> getActions() {

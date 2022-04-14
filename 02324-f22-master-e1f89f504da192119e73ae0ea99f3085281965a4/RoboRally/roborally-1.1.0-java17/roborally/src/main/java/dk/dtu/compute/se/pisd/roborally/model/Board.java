@@ -67,10 +67,11 @@ public class Board extends Subject {
         spaces = new Space[width][height];
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                Space space = new Space(this, x, y);
-                spaces[x][y] = space;
+                spaces[x][y] = new Space(this, x, y);;
             }
         }
+        setWallsTest();
+
         this.stepMode = false;
     }
 
