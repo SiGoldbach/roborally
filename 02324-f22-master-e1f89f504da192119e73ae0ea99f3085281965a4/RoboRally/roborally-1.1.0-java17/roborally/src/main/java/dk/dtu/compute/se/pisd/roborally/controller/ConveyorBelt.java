@@ -53,13 +53,15 @@ public class ConveyorBelt extends FieldAction {
      */
     @Override
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
+        if (space.getPlayer()==null)
+            return false;
         try {
             gameController.moveToSpace(space.getPlayer(), space, heading);
         } catch (GameController.ImpossibleMoveException e) {
 
         }
         // TODO needs to be implemented
-        return false;
+        return true;
     }
 
 }

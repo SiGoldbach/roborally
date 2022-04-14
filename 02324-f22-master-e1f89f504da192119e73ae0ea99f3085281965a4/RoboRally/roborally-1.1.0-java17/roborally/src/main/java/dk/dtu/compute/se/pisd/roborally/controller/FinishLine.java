@@ -11,9 +11,11 @@ public class FinishLine extends FieldAction{
      * @return
      */
     public  boolean doAction(GameController gameController, Space space){
+        if(space.getPlayer()==null)
+            return false;
         if(gameController.board.getCheckpointAmount()==space.getPlayer().getCheckpointNumber());
 
-        return false;
+        return true;
     }
 
 
