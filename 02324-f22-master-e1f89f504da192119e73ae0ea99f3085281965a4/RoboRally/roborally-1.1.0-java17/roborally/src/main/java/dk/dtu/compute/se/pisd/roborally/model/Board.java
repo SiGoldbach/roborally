@@ -33,9 +33,11 @@ import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class Board extends Subject {
+
+
+    private final int checkpointAmount;
 
     public final int width;
 
@@ -58,12 +60,13 @@ public class Board extends Subject {
     private boolean stepMode;
 
     public Board(int width, int height, @NotNull String boardName) {
+        this.checkpointAmount = 2;
         this.boardName = boardName;
         this.width = width;
         this.height = height;
         spaces = new Space[width][height];
         for (int x = 0; x < width; x++) {
-            for(int y = 0; y < height; y++) {
+            for (int y = 0; y < height; y++) {
                 Space space = new Space(this, x, y);
                 spaces[x][y] = space;
             }
@@ -73,6 +76,10 @@ public class Board extends Subject {
 
     public Board(int width, int height) {
         this(width, height, "defaultboard");
+    }
+
+    public int getCheckpointAmount() {
+        return checkpointAmount;
     }
 
     public Integer getGameId() {
@@ -182,7 +189,7 @@ public class Board extends Subject {
      * (no walls or obstacles in either of the involved spaces); otherwise,
      * null will be returned.
      *
-     * @param space the space for which the neighbour should be computed
+     * @param space   the space for which the neighbour should be computed
      * @param heading the heading of the neighbour
      * @return the space in the given direction; null if there is no (reachable) neighbour
      */
@@ -217,7 +224,9 @@ public class Board extends Subject {
                 ", Player = " + getCurrentPlayer().getName() +
                 ", Step: " + getStep();
     }
+
     public int counter;
+
     public int getCounter() {
         return counter;
     }
@@ -225,24 +234,21 @@ public class Board extends Subject {
     public void setCounter(int counter) {
         this.counter = counter;
     }
+
     public List<Player> getPlayers() {
         return players;
     }
 
-    public Space doesSpaceExist(Player player){
-        int x=player.getSpace().x;
-        int y=player.getSpace().y;
-        switch (player.getHeading()){
-            case NORTH -> y=y-1;
-            case EAST -> x=x+1;
-            case SOUTH -> y=y+1;
-            case WEST -> x=x-1;
+    public Space doesSpaceExist(Player player) {
+        int x = player.getSpace().x;
+        int y = player.getSpace().y;
+        switch (player.getHeading()) {
+            case NORTH -> y = y - 1;
+            case EAST -> x = x + 1;
+            case SOUTH -> y = y + 1;
+            case WEST -> x = x - 1;
         }
-        return getSpace(x,y);
-
-
-
-
+        return getSpace(x, y);
 
 
     }
