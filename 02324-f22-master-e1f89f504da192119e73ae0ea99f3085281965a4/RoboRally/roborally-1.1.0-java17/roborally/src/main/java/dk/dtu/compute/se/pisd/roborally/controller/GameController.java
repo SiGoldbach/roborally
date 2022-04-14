@@ -207,6 +207,16 @@ public class GameController {
                     break;
                 case OPTION_LEFT_RIGHT:
                     this.leftOrRight(player);
+                    break;
+                case UTURN:
+                    this.uturn(player);
+                    break;
+                case moveThree:
+                    this.moveThree(player);
+                    break;
+                case moveBack:
+                    this.moveBack(player);
+                    break;
                 default:
                     // DO NOTHING (for now)
             }
@@ -268,6 +278,32 @@ public class GameController {
         board.setPhase(Phase.PLAYER_INTERACTION);
 
 
+    }
+    /**
+     * New method for making an u-turn / facing the opposite direction.
+     */
+    public void uturn(@NotNull Player player){
+        turnRight(player);
+        turnRight(player);
+
+    }
+    /**
+     * New method for moving three blocks forward.
+     */
+    public void moveThree(@NotNull Player player){
+        moveForward(player);
+        moveForward(player);
+        moveForward(player);
+
+    }
+
+    /**
+     * New method for moving backwards facing same direction.
+     */
+    public void moveBack(@NotNull Player player){
+        uturn(player);
+        moveForward(player);
+        uturn(player);
     }
 
     /**
