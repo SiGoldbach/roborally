@@ -232,6 +232,7 @@ public class GameController {
 
 
     }
+
     public void moveForward(@NotNull Player player) {
         if (player.board == board) {
             Space space = player.getSpace();
@@ -279,18 +280,20 @@ public class GameController {
 
 
     }
+
     /**
      * New method for making an u-turn / facing the opposite direction.
      */
-    public void uturn(@NotNull Player player){
+    public void uturn(@NotNull Player player) {
         turnRight(player);
         turnRight(player);
 
     }
+
     /**
      * New method for moving three blocks forward.
      */
-    public void moveThree(@NotNull Player player){
+    public void moveThree(@NotNull Player player) {
         moveForward(player);
         moveForward(player);
         moveForward(player);
@@ -300,7 +303,7 @@ public class GameController {
     /**
      * New method for moving backwards facing same direction.
      */
-    public void moveBack(@NotNull Player player){
+    public void moveBack(@NotNull Player player) {
         uturn(player);
         moveForward(player);
         uturn(player);
@@ -368,6 +371,7 @@ public class GameController {
         // XXX just for now to indicate that the actual method is not yet implemented
         assert false;
     }
+
     class ImpossibleMoveException extends Exception {
 
         private Player player;
@@ -381,10 +385,11 @@ public class GameController {
             this.heading = heading;
         }
     }
+
     void moveToSpace(@NotNull Player player, @NotNull Space space, @NotNull Heading heading) throws ImpossibleMoveException {
         assert board.getNeighbour(player.getSpace(), heading) == space; // make sure the move to here is possible in principle
         Player other = space.getPlayer();
-        if (other != null){
+        if (other != null) {
             Space target = board.getNeighbour(space, heading);
             if (target != null) {
                 // XXX Note that there might be additional problems with
@@ -403,5 +408,18 @@ public class GameController {
         player.setSpace(space);
     }
 
+    private void activateEOTActions() {
+        for (int i = 0; i < board.width; i++) {
+            for (int j = 0; j < board.height; j++) {
+                board.getSpace(i,j).doActions(this);
+
+            }
+
+        }
+
+    }
 
 }
+
+
+
