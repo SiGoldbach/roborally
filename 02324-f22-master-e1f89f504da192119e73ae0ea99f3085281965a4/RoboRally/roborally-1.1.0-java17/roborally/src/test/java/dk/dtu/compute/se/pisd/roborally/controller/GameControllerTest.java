@@ -59,4 +59,34 @@ class GameControllerTest {
         Assertions.assertNull(board.getSpace(0, 0).getPlayer(), "Space (0,0) should be empty!");
     }
 
+    /**
+     * Here is an acceptance test for uturn method this test simply tries to see wether the method works as intended.
+     */
+    @Test
+    void U_turn(){
+        Board board = gameController.board;
+        Player current = board.getCurrentPlayer();
+        current.setHeading(Heading.NORTH);
+        gameController.uturn(current);
+        Assertions.assertEquals(Heading.SOUTH,current.getHeading());
+    }
+    @Test
+    void turn_left(){
+        Board board = gameController.board;
+        Player current = board.getCurrentPlayer();
+        current.setHeading(Heading.NORTH);
+        gameController.turnRight(current);
+        Assertions.assertEquals(Heading.EAST,current.getHeading());
+
+    }
+    @Test
+    void turn_right(){
+        Board board = gameController.board;
+        Player current = board.getCurrentPlayer();
+        current.setHeading(Heading.NORTH);
+        gameController.turnLeft(current);
+        Assertions.assertEquals(Heading.WEST,current.getHeading());
+
+    }
+
 }
