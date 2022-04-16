@@ -39,7 +39,7 @@ public class Space extends Subject {
 
     public final Board board;
     private List<Heading> walls2;
-    private List<FieldAction> actions = new ArrayList<>();
+    private List<FieldAction> actions = new LinkedList<>();
 
     public final int x;
     public final int y;

@@ -22,6 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.FinishLine;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -87,12 +88,17 @@ public class Board extends Subject {
         return gameId;
     }
 
+    /**
+     * Method for testing our implementation of the walls both visually and logiaclly
+     */
     public void setWallsTest(){
         spaces[5][5].addWall(Heading.SOUTH);
         spaces[4][4].addWall(Heading.EAST);
         spaces[3][3].addWall(Heading.NORTH);
         spaces[2][2].addWall(Heading.WEST);
     }
+
+
 
     public void setGameId(int gameId) {
         if (this.gameId == null) {
