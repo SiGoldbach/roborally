@@ -190,11 +190,18 @@ public class Board extends Subject {
      * (no walls or obstacles in either of the involved spaces); otherwise,
      * null will be returned.
      *
+     * We have here changed this method so that walls are now accounted for,
+     * so that robots will not go through walls.
+     *
      * @param space   the space for which the neighbour should be computed
      * @param heading the heading of the neighbour
      * @return the space in the given direction; null if there is no (reachable) neighbour
      */
     public Space getNeighbour(@NotNull Space space, @NotNull Heading heading) {
+        for (int i = 0; i < space.getWalls().size(); i++) {
+            if(space.getWalls().get(i)==heading)
+                return null;
+        }
         int x = space.x;
         int y = space.y;
         switch (heading) {
@@ -210,6 +217,11 @@ public class Board extends Subject {
             case EAST:
                 x = (x + 1) % width;
                 break;
+        }
+        for (int i = 0; i < getSpace(x,y).getWalls().size(); i++) {
+            if(getSpace(x,y).getWalls().get(i).opposite()==heading)
+                return null;
+
         }
 
         return getSpace(x, y);
