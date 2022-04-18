@@ -22,6 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.Checkpoint;
 import dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt;
 import dk.dtu.compute.se.pisd.roborally.controller.FinishLine;
 import org.jetbrains.annotations.NotNull;
@@ -39,7 +40,7 @@ import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
 public class Board extends Subject {
 
 
-    private final int checkpointAmount=0;
+    private int checkpointAmount=0;
 
     public final int width;
 
@@ -115,6 +116,13 @@ public class Board extends Subject {
         ConveyorBelt CB2 = new ConveyorBelt();
         CB2.setHeading(Heading.NORTH);
         spaces[3][4].addActions(CB2);
+        addCP(7,7);
+        addCP(6,6);
+    }
+    public void addCP(int x,int y){
+        spaces[x][y].addActions(new Checkpoint(checkpointAmount));
+        checkpointAmount++;
+
     }
 
     public void setGameId(int gameId) {
