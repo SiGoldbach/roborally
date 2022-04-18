@@ -39,7 +39,7 @@ import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
 public class Board extends Subject {
 
 
-    private final int checkpointAmount;
+    private final int checkpointAmount=0;
 
     public final int width;
 
@@ -71,7 +71,6 @@ public class Board extends Subject {
     private boolean stepMode;
 
     public Board(int width, int height, @NotNull String boardName) {
-        this.checkpointAmount = 0;
         this.boardName = boardName;
         this.width = width;
         this.height = height;
@@ -106,6 +105,7 @@ public class Board extends Subject {
         spaces[4][4].addWall(Heading.EAST);
         spaces[3][3].addWall(Heading.NORTH);
         spaces[2][2].addWall(Heading.WEST);
+        spaces[0][0].getActions().add(new FinishLine());
 
 
         ConveyorBelt CB = new ConveyorBelt();
@@ -115,9 +115,6 @@ public class Board extends Subject {
         ConveyorBelt CB2 = new ConveyorBelt();
         CB2.setHeading(Heading.NORTH);
         spaces[3][4].addActions(CB2);
-
-        FinishLine FL = new FinishLine();
-        spaces[0][0].addActions(FL);
     }
 
     public void setGameId(int gameId) {
