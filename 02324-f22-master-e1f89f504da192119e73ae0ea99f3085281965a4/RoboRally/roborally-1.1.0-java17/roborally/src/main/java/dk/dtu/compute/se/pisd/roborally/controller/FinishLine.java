@@ -15,6 +15,7 @@ public class FinishLine extends FieldAction {
         if (space.getPlayer() == null)
             return false;
         if (gameController.board.getCheckpointAmount() == space.getPlayer().getCheckpointNumber()) {
+            System.out.println("Doing some winning");
             gameController.winnerField(space.getPlayer());
         }
         return true;
