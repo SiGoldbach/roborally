@@ -172,6 +172,7 @@ public class GameController {
                         board.setStep(step);
                         board.setCurrentPlayer(board.getPlayer(0));
                     } else {
+                        activateEOTActions();
                         startProgrammingPhase();
                     }
                 }
@@ -237,6 +238,28 @@ public class GameController {
         if (player.board == board) {
             Space space = player.getSpace();
             Heading heading = player.getHeading();
+
+            Space target = board.getNeighbour(space, heading);
+            if (target != null) {
+                try {
+                    moveToSpace(player, target, heading);
+                } catch (ImpossibleMoveException e) {
+                    // we don't do anything here  for now; we just catch the
+                    // exception so that we do no pass it on to the caller
+                    // (which would be very bad style).
+                }
+            }
+        }
+    }
+
+    /**
+     * Method overloading for conveyorBelts that need to move in a specific direction instead of the players heading.
+     * @param player
+     * @param heading
+     */
+    public void moveForward(@NotNull Player player, Heading heading) {
+        if (player.board == board) {
+            Space space = player.getSpace();
 
             Space target = board.getNeighbour(space, heading);
             if (target != null) {
@@ -408,10 +431,14 @@ public class GameController {
         player.setSpace(space);
     }
 
+    /**
+     * Doing all the fields actions
+     */
     private void activateEOTActions() {
+        System.out.println("Activating EOT actions");
         for (int i = 0; i < board.width; i++) {
             for (int j = 0; j < board.height; j++) {
-                board.getSpace(i,j).doActions(this);
+                board.getSpace(i, j).doActions(this);
 
             }
 

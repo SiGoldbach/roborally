@@ -42,6 +42,10 @@ public class ConveyorBelt extends FieldAction {
         this.heading = heading;
     }
 
+    public ConveyorBelt(Heading heading) {
+        this.heading = heading;
+    }
+
 
     /**
      * This method moves a player on space in one direction according to
@@ -53,13 +57,12 @@ public class ConveyorBelt extends FieldAction {
      */
     @Override
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
-        if (space.getPlayer()==null)
+        System.out.println(space.x + " " + space.y);
+        System.out.println(space.getPlayer());
+        System.out.println("Doing converyerbelt action");
+        if (space.getPlayer() == null)
             return false;
-        try {
-            gameController.moveToSpace(space.getPlayer(), space, heading);
-        } catch (GameController.ImpossibleMoveException e) {
-
-        }
+            gameController.moveForward(space.getPlayer(), heading);
         // TODO needs to be implemented
         return true;
     }
