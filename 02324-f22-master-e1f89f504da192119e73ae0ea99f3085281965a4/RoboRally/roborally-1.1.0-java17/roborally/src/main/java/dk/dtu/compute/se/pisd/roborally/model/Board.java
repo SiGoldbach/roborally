@@ -55,6 +55,15 @@ public class Board extends Subject {
 
     private Player current;
 
+    private Player winner;
+
+    public Player getWinner() {
+        return winner;
+    }
+    public void setWinner(Player player){
+        this.winner = player;
+    }
+
     private Phase phase = INITIALISATION;
 
     private int step = 0;
