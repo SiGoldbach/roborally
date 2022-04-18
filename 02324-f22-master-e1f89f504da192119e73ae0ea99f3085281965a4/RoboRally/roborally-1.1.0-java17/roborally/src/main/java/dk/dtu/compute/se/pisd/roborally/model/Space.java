@@ -93,6 +93,10 @@ public class Space extends Subject {
         return actions;
     }
 
+    public void addActions(FieldAction myAction) {
+        actions.add(myAction);
+    }
+
     public void doActions(GameController gameController){
         for (int i = 0; i < this.getActions().size(); i++) {
             this.getActions().get(i).doAction(gameController,this);

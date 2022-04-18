@@ -82,7 +82,6 @@ public class Board extends Subject {
             }
         }
         setWallsTest();
-        conveyorBeltTest();
 
         this.stepMode = false;
     }
@@ -107,13 +106,16 @@ public class Board extends Subject {
         spaces[4][4].addWall(Heading.EAST);
         spaces[3][3].addWall(Heading.NORTH);
         spaces[2][2].addWall(Heading.WEST);
+
+
+        ConveyorBelt CB = new ConveyorBelt();
+        CB.setHeading(Heading.SOUTH);
+        spaces[3][5].addActions(CB);
+
+        ConveyorBelt CB2 = new ConveyorBelt();
+        CB2.setHeading(Heading.NORTH);
+        spaces[3][4].addActions(CB2);
     }
-    public void conveyorBeltTest(){
-        spaces[1][1].getActions().add(new ConveyorBelt(Heading.EAST));
-
-    }
-
-
 
     public void setGameId(int gameId) {
         if (this.gameId == null) {

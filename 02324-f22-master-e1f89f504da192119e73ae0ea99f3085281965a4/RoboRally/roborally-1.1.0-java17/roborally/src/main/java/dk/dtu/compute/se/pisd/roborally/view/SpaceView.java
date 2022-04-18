@@ -22,6 +22,8 @@
 package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt;
+import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
@@ -47,6 +49,12 @@ import java.util.List;
  *
  */
 public class    SpaceView extends StackPane implements ViewObserver {
+
+    final private static String[] conveyeurIMGs = {
+            "https://cdn.discordapp.com/attachments/903301180006989835/965644068598194267/New_Project_4.png",
+            "https://cdn.discordapp.com/attachments/903301180006989835/965644068195561502/New_Project_6.png",
+            "https://cdn.discordapp.com/attachments/903301180006989835/965640914569670716/unknown.png",
+            "https://cdn.discordapp.com/attachments/903301180006989835/965644068413661194/New_Project_5.png"};
 
     final public static int SPACE_HEIGHT = 60; // 60; // 75;
     final public static int SPACE_WIDTH = 60;  // 60; // 75;
@@ -84,6 +92,41 @@ public class    SpaceView extends StackPane implements ViewObserver {
         for(Iterator<Heading> i = myWalls.iterator(); i.hasNext(); ) {
             Heading myHeading = i.next();
             drawWall(myHeading);
+        }
+    }
+
+    public void checkActions(){
+        List<FieldAction> myActions = space.getActions();
+
+        for(Iterator<FieldAction> i = myActions.iterator(); i.hasNext(); ) {
+            FieldAction myAction = i.next();
+            String myURL = "";
+            if(myAction.getClass() == ConveyorBelt.class){
+                ConveyorBelt myBelt = (ConveyorBelt) myAction;
+                Heading myBeltHeading = myBelt.getHeading();
+
+                switch(myBeltHeading) {
+                    case SOUTH:
+                        myURL = conveyeurIMGs[0];
+                        break;
+                    case NORTH:
+                        myURL = conveyeurIMGs[1];
+                        break;
+                    case WEST:
+                        myURL = conveyeurIMGs[2];
+                        break;
+                    case EAST:
+                        myURL = conveyeurIMGs[3];
+                        break;
+                    default:
+                        break;
+                }
+
+                this.setStyle("-fx-background-image: url('" + myURL + "'); \n" +
+                        "-fx-background-repeat: no-repeat; \n" +
+                        "-fx-background-size: 64 64; \n" +
+                        "-fx-background-position: center center;");
+            }
         }
     }
 
@@ -131,6 +174,7 @@ public class    SpaceView extends StackPane implements ViewObserver {
     private void updatePlayer() {
         this.getChildren().clear();
         checkWalls();
+        checkActions();
 
         Player player = space.getPlayer();
         if (player != null) {
