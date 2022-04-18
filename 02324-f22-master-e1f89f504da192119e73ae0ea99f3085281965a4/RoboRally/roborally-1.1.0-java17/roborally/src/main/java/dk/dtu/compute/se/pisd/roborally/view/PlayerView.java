@@ -52,10 +52,13 @@ public class PlayerView extends Tab implements ViewObserver {
     private CardFieldView[] cardViews;
 
     private VBox buttonPanel;
+    private VBox buttonPanel2;
 
     private Button finishButton;
     private Button executeButton;
     private Button stepButton;
+    private Button winningButton;
+
 
     private VBox playerInteractionPanel;
 
@@ -98,10 +101,17 @@ public class PlayerView extends Tab implements ViewObserver {
         stepButton = new Button("Execute Current Register");
         stepButton.setOnAction(e -> gameController.executeStep());
 
+        winningButton = new Button("Finish");
+        winningButton.setOnAction(e -> gameController.executeCommandOptionAndContinue("You've finished the game!"));
+
         buttonPanel = new VBox(finishButton, executeButton, stepButton);
         buttonPanel.setAlignment(Pos.CENTER_LEFT);
         buttonPanel.setSpacing(3.0);
         // programPane.add(buttonPanel, Player.NO_REGISTERS, 0); done in update now
+
+        buttonPanel2 = new VBox(winningButton);
+        buttonPanel2.setAlignment(Pos.CENTER_RIGHT);
+        buttonPanel2.setSpacing(3.0);
 
         playerInteractionPanel = new VBox();
         playerInteractionPanel.setAlignment(Pos.CENTER_LEFT);
@@ -215,13 +225,18 @@ public class PlayerView extends Tab implements ViewObserver {
             }
         }
         if (player.board.getWinner() != null) {
-            Button winningButton = new Button("Finish");
-            programPane.add(playerInteractionPanel, Player.NO_REGISTERS, 0);
-            winningButton.setOnAction(e -> gameController.executeCommandOptionAndContinue("You've finished the game!"));
+            if (!playerInteractionPanel.getChildren().contains(buttonPanel2)) {
+                programPane.getChildren().remove(playerInteractionPanel);
+                programPane.getChildren().remove(buttonPanel);
+                playerInteractionPanel.getChildren().clear();
+                playerInteractionPanel.getChildren().add(buttonPanel2);
+            }
+            if (!programPane.getChildren().contains(playerInteractionPanel)) {
+                programPane.getChildren().remove(buttonPanel);
+                programPane.add(playerInteractionPanel, Player.NO_REGISTERS, 0);
+            }
+
             winningButton.setDisable(false);
-            playerInteractionPanel.getChildren().add(winningButton);
         }
-
     }
-
 }

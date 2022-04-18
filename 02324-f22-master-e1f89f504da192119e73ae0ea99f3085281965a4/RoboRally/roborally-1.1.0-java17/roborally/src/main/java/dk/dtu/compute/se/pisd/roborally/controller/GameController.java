@@ -333,6 +333,7 @@ public class GameController {
     }
 
     public void winnerField(@NotNull Player player) {
+        board.setWinner(player);
         board.setPhase(Phase.PLAYER_INTERACTION);
     }
 
@@ -360,7 +361,7 @@ public class GameController {
         board.setPhase(Phase.ACTIVATION);
         if (choice.equals("Left"))
             turnLeft(tempPlayer);
-        else
+        else if(choice.equals("Right"))
             turnRight(tempPlayer);
 
         this.continuePrograms();
