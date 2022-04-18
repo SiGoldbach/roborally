@@ -216,6 +216,7 @@ public class PlayerView extends Tab implements ViewObserver {
         }
         if (player.board.getWinner() != null) {
             Button winningButton = new Button("Finish");
+            programPane.add(playerInteractionPanel, Player.NO_REGISTERS, 0);
             winningButton.setOnAction(e -> gameController.executeCommandOptionAndContinue("You've finished the game!"));
             winningButton.setDisable(false);
             playerInteractionPanel.getChildren().add(winningButton);
