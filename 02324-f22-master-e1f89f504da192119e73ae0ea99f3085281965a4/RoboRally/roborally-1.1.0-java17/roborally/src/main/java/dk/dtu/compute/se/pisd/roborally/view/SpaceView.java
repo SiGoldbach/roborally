@@ -22,6 +22,8 @@
 package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt;
+import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
@@ -84,6 +86,19 @@ public class    SpaceView extends StackPane implements ViewObserver {
         for(Iterator<Heading> i = myWalls.iterator(); i.hasNext(); ) {
             Heading myHeading = i.next();
             drawWall(myHeading);
+        }
+    }
+
+    public void checkActions(){
+        List<FieldAction> myActions = space.getActions();
+
+        for(Iterator<FieldAction> i = myActions.iterator(); i.hasNext(); ) {
+            FieldAction myAction = i.next();
+            if(myAction.getClass() == ConveyorBelt.class){
+                ConveyorBelt myBelt = (ConveyorBelt) myAction;
+                Heading myBeltHeading = myBelt.getHeading();
+                this.setStyle("-fx-background-image: url(\"ConveyeurIMG.png\");");
+            }
         }
     }
 

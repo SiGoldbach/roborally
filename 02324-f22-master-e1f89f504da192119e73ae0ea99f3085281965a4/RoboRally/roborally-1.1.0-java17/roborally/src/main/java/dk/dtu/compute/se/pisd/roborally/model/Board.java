@@ -98,8 +98,6 @@ public class Board extends Subject {
         spaces[2][2].addWall(Heading.WEST);
     }
 
-
-
     public void setGameId(int gameId) {
         if (this.gameId == null) {
             this.gameId = gameId;
