@@ -22,6 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt;
 import dk.dtu.compute.se.pisd.roborally.controller.FinishLine;
 import org.jetbrains.annotations.NotNull;
 
@@ -96,6 +97,15 @@ public class Board extends Subject {
         spaces[4][4].addWall(Heading.EAST);
         spaces[3][3].addWall(Heading.NORTH);
         spaces[2][2].addWall(Heading.WEST);
+
+
+        ConveyorBelt CB = new ConveyorBelt();
+        CB.setHeading(Heading.SOUTH);
+        spaces[3][5].addActions(CB);
+
+        ConveyorBelt CB2 = new ConveyorBelt();
+        CB2.setHeading(Heading.NORTH);
+        spaces[3][4].addActions(CB2);
     }
 
     public void setGameId(int gameId) {
