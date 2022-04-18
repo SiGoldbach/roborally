@@ -416,7 +416,7 @@ public class GameController {
     private void activateEOTActions() {
         for (int i = 0; i < board.width; i++) {
             for (int j = 0; j < board.height; j++) {
-                board.getSpace(i,j).doActions(this);
+                board.getSpace(i, j).doActions(this);
 
             }
 
