@@ -22,6 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt;
 import dk.dtu.compute.se.pisd.roborally.controller.FinishLine;
 import org.jetbrains.annotations.NotNull;
 
@@ -59,8 +60,7 @@ public class Board extends Subject {
     public Player getWinner() {
         return winner;
     }
-
-    public void setWinner(Player player) {
+    public void setWinner(Player player){
         this.winner = player;
     }
 
@@ -78,8 +78,7 @@ public class Board extends Subject {
         spaces = new Space[width][height];
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                spaces[x][y] = new Space(this, x, y);
-                ;
+                spaces[x][y] = new Space(this, x, y);;
             }
         }
         setWallsTest();
@@ -102,13 +101,21 @@ public class Board extends Subject {
     /**
      * Method for testing our implementation of the walls both visually and logiaclly
      */
-    public void setWallsTest() {
+    public void setWallsTest(){
         spaces[5][5].addWall(Heading.SOUTH);
         spaces[4][4].addWall(Heading.EAST);
         spaces[3][3].addWall(Heading.NORTH);
         spaces[2][2].addWall(Heading.WEST);
-    }
 
+
+        ConveyorBelt CB = new ConveyorBelt();
+        CB.setHeading(Heading.SOUTH);
+        spaces[3][5].addActions(CB);
+
+        ConveyorBelt CB2 = new ConveyorBelt();
+        CB2.setHeading(Heading.NORTH);
+        spaces[3][4].addActions(CB2);
+    }
 
     public void setGameId(int gameId) {
         if (this.gameId == null) {
@@ -205,7 +212,7 @@ public class Board extends Subject {
      * The neighbour is returned only, if it can be reached from the given space
      * (no walls or obstacles in either of the involved spaces); otherwise,
      * null will be returned.
-     * <p>
+     *
      * We have here changed this method so that walls are now accounted for,
      * so that robots will not go through walls.
      *
@@ -215,7 +222,7 @@ public class Board extends Subject {
      */
     public Space getNeighbour(@NotNull Space space, @NotNull Heading heading) {
         for (int i = 0; i < space.getWalls().size(); i++) {
-            if (space.getWalls().get(i) == heading)
+            if(space.getWalls().get(i)==heading)
                 return null;
         }
         int x = space.x;
@@ -234,8 +241,8 @@ public class Board extends Subject {
                 x = (x + 1) % width;
                 break;
         }
-        for (int i = 0; i < getSpace(x, y).getWalls().size(); i++) {
-            if (getSpace(x, y).getWalls().get(i).opposite() == heading)
+        for (int i = 0; i < getSpace(x,y).getWalls().size(); i++) {
+            if(getSpace(x,y).getWalls().get(i).opposite()==heading)
                 return null;
 
         }
