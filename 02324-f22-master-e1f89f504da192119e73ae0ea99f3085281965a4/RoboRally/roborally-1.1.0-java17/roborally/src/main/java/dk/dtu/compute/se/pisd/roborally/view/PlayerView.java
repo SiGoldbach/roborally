@@ -215,6 +215,13 @@ public class PlayerView extends Tab implements ViewObserver {
                 }
             }
         }
+        if(player.board.getWinner() != null) {
+            Button optionButton = new Button("Finish");
+            optionButton.setOnAction(e->gameController.executeCommandOptionAndContinue("You've finished the game!"));
+            optionButton.setDisable(false);
+            playerInteractionPanel.getChildren().add(optionButton);
+        }
+
     }
 
 }
