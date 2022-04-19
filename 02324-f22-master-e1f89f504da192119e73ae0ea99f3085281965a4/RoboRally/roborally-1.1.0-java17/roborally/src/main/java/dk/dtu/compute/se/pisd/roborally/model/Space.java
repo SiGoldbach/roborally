@@ -22,7 +22,9 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.Checkpoint;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
+import dk.dtu.compute.se.pisd.roborally.controller.FinishLine;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 
 import java.util.ArrayList;
@@ -102,6 +104,14 @@ public class Space extends Subject {
             this.getActions().get(i).doAction(gameController,this);
 
         }
+    }
+    public void doCPActions(GameController gameController){
+        for (int i = 0; i < this.getActions().size(); i++) {
+            if(this.getActions().get(i).getClass().equals(Checkpoint.class)|| this.getActions().get(i).getClass().equals(FinishLine.class))
+            this.getActions().get(i).doAction(gameController,this);
+
+        }
+
     }
 
 }

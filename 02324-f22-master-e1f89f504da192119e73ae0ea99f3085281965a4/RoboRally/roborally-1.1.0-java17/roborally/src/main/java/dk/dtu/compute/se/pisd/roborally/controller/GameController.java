@@ -452,6 +452,18 @@ public class GameController {
         }
 
     }
+    private void activateEOTCPActions(){
+        System.out.println("Activating EOT actions");
+        for (int i = 0; i < board.width; i++) {
+            for (int j = 0; j < board.height; j++) {
+                board.getSpace(i, j).doCPActions(this);
+
+            }
+
+        }
+
+
+    }
     public void wonGame(){
 
     }
