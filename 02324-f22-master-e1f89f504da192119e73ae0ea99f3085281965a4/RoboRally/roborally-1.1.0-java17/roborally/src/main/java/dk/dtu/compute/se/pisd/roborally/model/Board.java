@@ -58,6 +58,18 @@ public class Board extends Subject {
 
     private Player winner;
 
+
+
+    private Phase phase = INITIALISATION;
+
+    private int step = 0;
+
+    private boolean stepMode;
+
+
+
+    private String[] buttonOptions= {"Turn left","Turn right"};
+
     public Player getWinner() {
         return winner;
     }
@@ -65,11 +77,13 @@ public class Board extends Subject {
         this.winner = player;
     }
 
-    private Phase phase = INITIALISATION;
+    public String[] getButtonOptions() {
+        return buttonOptions;
+    }
 
-    private int step = 0;
-
-    private boolean stepMode;
+    public void setButtonOptions(String[] buttonOptions) {
+        this.buttonOptions = buttonOptions;
+    }
 
     public Board(int width, int height, @NotNull String boardName) {
         this.boardName = boardName;
