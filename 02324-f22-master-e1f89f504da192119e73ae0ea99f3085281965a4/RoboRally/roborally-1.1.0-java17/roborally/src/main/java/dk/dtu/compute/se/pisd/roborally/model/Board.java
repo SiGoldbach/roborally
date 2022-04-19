@@ -131,6 +131,7 @@ public class Board extends Subject {
         ConveyorBelt CB2 = new ConveyorBelt();
         CB2.setHeading(Heading.NORTH);
         spaces[3][4].addActions(CB2);
+        addCP(6,6);
     }
     public void addCP(int x,int y){
         spaces[x][y].addActions(new Checkpoint(checkpointAmount));
