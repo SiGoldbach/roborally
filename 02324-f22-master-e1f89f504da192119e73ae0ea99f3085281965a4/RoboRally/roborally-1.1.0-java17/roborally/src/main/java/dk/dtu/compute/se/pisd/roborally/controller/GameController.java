@@ -166,12 +166,12 @@ public class GameController {
                 if (nextPlayerNumber < board.getPlayersNumber()) {
                     board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
                 } else {
+                    activateEOTActions();
                     step++;
                     if (step < Player.NO_REGISTERS) {
                         makeProgramFieldsVisible(step);
                         board.setStep(step);
                         board.setCurrentPlayer(board.getPlayer(0));
-                        activateEOTActions();
                     } else {
                         startProgrammingPhase();
                     }
@@ -299,6 +299,7 @@ public class GameController {
      * New method in V3 for turning either left or right
      */
     public void leftOrRight(@NotNull Player player) {
+
         board.setPhase(Phase.PLAYER_INTERACTION);
 
 
