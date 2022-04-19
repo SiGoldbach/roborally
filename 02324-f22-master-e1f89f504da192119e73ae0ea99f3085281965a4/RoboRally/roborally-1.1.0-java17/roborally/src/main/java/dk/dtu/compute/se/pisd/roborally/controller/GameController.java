@@ -167,7 +167,6 @@ public class GameController {
                     board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
                 } else {
                     activateEOTActions();
-                    activateEOTCPActions();
                     step++;
                     if (step < Player.NO_REGISTERS) {
                         makeProgramFieldsVisible(step);
@@ -443,14 +442,22 @@ public class GameController {
      * Doing all the fields actions
      */
     private void activateEOTActions() {
-        System.out.println("Activating EOT actions");
-        for (int i = 0; i < board.width; i++) {
-            for (int j = 0; j < board.height; j++) {
-                board.getSpace(i, j).doActions(this);
+        for (int i = 0; i < board.getPlayers().size(); i++) {
+            for (int j = 0; j < board.getPlayers().get(i).getSpace().getActions().size(); j++) {
+                board.getPlayers().get(i).getSpace().getActions().get(j).doAction(this,board.getPlayers().get(i).getSpace());
 
             }
 
         }
+
+        //System.out.println("Activating EOT actions");
+        //for (int i = 0; i < board.width; i++) {
+          //  for (int j = 0; j < board.height; j++) {
+            //    board.getSpace(i, j).doActions(this);
+
+           // }
+
+       // }
 
     }
     private void activateEOTCPActions(){

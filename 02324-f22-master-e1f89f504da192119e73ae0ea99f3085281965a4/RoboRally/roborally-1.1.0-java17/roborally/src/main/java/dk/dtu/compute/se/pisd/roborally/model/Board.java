@@ -122,6 +122,7 @@ public class Board extends Subject {
         spaces[2][2].addWall(Heading.WEST);
         spaces[0][0].getActions().add(new FinishLine());
         spaces[0][1].getActions().add(new ConveyorBelt(Heading.NORTH));
+        spaces[0][2].getActions().add(new ConveyorBelt(Heading.NORTH));
 
 
         ConveyorBelt CB = new ConveyorBelt();
