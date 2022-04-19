@@ -439,7 +439,9 @@ public class GameController {
     }
 
     /**
-     * Doing all the fields actions
+     * Doing all the fields, If a player is on the field.
+     * Changed from doing all field action to avoid a certain problem with conveyerbelts pointing south or east.
+     * Because of how the fields where looped thorugh
      */
     private void activateEOTActions() {
         for (int i = 0; i < board.getPlayers().size(); i++) {
