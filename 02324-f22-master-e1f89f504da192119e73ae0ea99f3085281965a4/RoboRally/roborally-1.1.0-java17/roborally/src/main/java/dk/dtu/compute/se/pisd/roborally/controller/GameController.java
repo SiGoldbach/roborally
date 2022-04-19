@@ -171,8 +171,8 @@ public class GameController {
                         makeProgramFieldsVisible(step);
                         board.setStep(step);
                         board.setCurrentPlayer(board.getPlayer(0));
-                    } else {
                         activateEOTActions();
+                    } else {
                         startProgrammingPhase();
                     }
                 }
