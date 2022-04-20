@@ -113,11 +113,11 @@ public class    SpaceView extends StackPane implements ViewObserver {
         for(Iterator<FieldAction> i = myActions.iterator(); i.hasNext(); ) {
             FieldAction myAction = i.next();
             String myURL = "";
-            if(myAction.getClass() == ConveyorBelt.class){
+            if (myAction.getClass() == ConveyorBelt.class) {
                 ConveyorBelt myBelt = (ConveyorBelt) myAction;
                 Heading myBeltHeading = myBelt.getHeading();
 
-                switch(myBeltHeading) {
+                switch (myBeltHeading) {
                     case SOUTH:
                         myURL = conveyeurIMGs[0];
                         break;
@@ -138,13 +138,13 @@ public class    SpaceView extends StackPane implements ViewObserver {
                         "-fx-background-repeat: no-repeat; \n" +
                         "-fx-background-size: 64 64; \n" +
                         "-fx-background-position: center center;");
-            }
-            else if(myAction.getClass() == FinishLine.class)
+            } else if (myAction.getClass() == FinishLine.class)
                 myURL = finishlineIMG;
                 this.setStyle("-fx-background-image: url('" + myURL + "'); \n" +
-                        "-fx-background-repeat: no-repeat; \n" +
-                        "-fx-background-size: 64 64; \n" +
-                        "-fx-background-position: center center;");
+                    "-fx-background-repeat: no-repeat; \n" +
+                    "-fx-background-size: 64 64; \n" +
+                    "-fx-background-position: center center;");
+            }
             else if(myAction.getClass() == Checkpoint.class){
                 this.setStyle("-fx-background-color: green;");
             }
