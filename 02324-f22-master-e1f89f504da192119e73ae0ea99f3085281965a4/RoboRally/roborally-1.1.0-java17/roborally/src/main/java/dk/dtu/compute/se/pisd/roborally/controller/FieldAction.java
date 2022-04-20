@@ -41,4 +41,5 @@ public abstract class FieldAction {
      */
     public abstract boolean doAction(GameController gameController, Space space);
 
+
 }

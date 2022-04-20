@@ -68,7 +68,7 @@ public class Board extends Subject {
 
 
 
-    private String[] buttonOptions= {"Turn left","Turn right"};
+    private String[] buttonOptions= {"Turn left","Turn right","Left","Right"};
 
     public Player getWinner() {
         return winner;

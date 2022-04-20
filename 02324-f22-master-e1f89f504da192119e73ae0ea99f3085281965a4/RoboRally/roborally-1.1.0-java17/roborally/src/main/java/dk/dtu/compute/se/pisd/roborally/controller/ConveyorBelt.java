@@ -61,9 +61,6 @@ public class ConveyorBelt extends FieldAction {
      */
     @Override
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
-        System.out.println(space.x + " " + space.y);
-        System.out.println(space.getPlayer());
-        System.out.println("Doing converyerbelt action");
         if (space.getPlayer() == null)
             return false;
             gameController.moveForward(space.getPlayer(), heading);

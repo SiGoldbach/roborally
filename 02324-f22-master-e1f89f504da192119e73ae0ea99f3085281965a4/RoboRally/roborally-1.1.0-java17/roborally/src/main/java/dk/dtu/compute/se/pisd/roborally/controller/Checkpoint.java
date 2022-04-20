@@ -1,5 +1,6 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+import dk.dtu.compute.se.pisd.roborally.model.Phase;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
 public class Checkpoint extends FieldAction{
@@ -25,6 +26,9 @@ public class Checkpoint extends FieldAction{
             return false;
         if(space.getPlayer().getCheckpointNumber()==checkPointsRequired){
             space.getPlayer().setCheckpointNumber(space.getPlayer().getCheckpointNumber()+1);
+            String[] buttonOptions={space.getPlayer().getColor()+"Has reached checkpoint: "+space.getPlayer().getCheckpointNumber(),"Cool","Ok","Cool"};
+            gameController.board.setButtonOptions(buttonOptions);
+            gameController.board.setPhase(Phase.PLAYER_INTERACTION);
         }
 
         return true;

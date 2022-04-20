@@ -303,6 +303,8 @@ public class GameController {
      * New method in V3 for turning either left or right
      */
     public void leftOrRight(@NotNull Player player) {
+        String[] buttonOptions= {"Turn left","Turn right","Left","Right"};
+        board.setButtonOptions(buttonOptions);
 
         board.setPhase(Phase.PLAYER_INTERACTION);
 
@@ -368,18 +370,12 @@ public class GameController {
             turnLeft(tempPlayer);
         else if(choice.equals("Right"))
             turnRight(tempPlayer);
+        else if(choice.equals("OK")){
+        }
+        else if(choice.equals("Cool")){
+        }
 
-        this.continuePrograms();
 
-    }
-
-    public void executeCommandOptionAndContinue(String choice, Player player) {
-
-        board.setPhase(Phase.ACTIVATION);
-        if (choice.equals("Left"))
-            turnLeft(player);
-        else
-            turnRight(player);
 
         this.continuePrograms();
 
@@ -471,7 +467,6 @@ public class GameController {
      * Doing only the checkpoint actions which should also be done after the conveyor belts and stuff.
      */
     private void activateEOTCPActions(){
-        System.out.println("Activating EOT actions");
         for (int i = 0; i < board.width; i++) {
             for (int j = 0; j < board.height; j++) {
                 board.getSpace(i, j).doCPActions(this);
@@ -483,6 +478,8 @@ public class GameController {
 
     }
     public void wonGame(){
+        board.getWinner();
+
 
     }
 
