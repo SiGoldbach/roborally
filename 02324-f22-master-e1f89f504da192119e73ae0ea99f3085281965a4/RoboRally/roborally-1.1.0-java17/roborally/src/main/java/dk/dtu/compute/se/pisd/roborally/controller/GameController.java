@@ -466,6 +466,10 @@ public class GameController {
        // }
 
     }
+
+    /**
+     * Doing only the checkpoint actions which should also be done after the conveyor belts and stuff.
+     */
     private void activateEOTCPActions(){
         System.out.println("Activating EOT actions");
         for (int i = 0; i < board.width; i++) {
