@@ -3,7 +3,6 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
-import dk.dtu.compute.se.pisd.roborally.model.Space;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +20,7 @@ class GameControllerTest {
         Board board = new Board(TEST_WIDTH, TEST_HEIGHT);
         gameController = new GameController(board);
         for (int i = 0; i < 6; i++) {
-            Player player = new Player(board, null,"Player " + i);
+            Player player = new Player(board, null, "Player " + i);
             board.addPlayer(player);
             player.setSpace(board.getSpace(i, i));
             player.setHeading(Heading.values()[i % Heading.values().length]);
@@ -44,19 +43,21 @@ class GameControllerTest {
 
         Assertions.assertEquals(player1, board.getSpace(0, 4).getPlayer(), "Player " + player1.getName() + " should beSpace (0,4)!");
         Assertions.assertNull(board.getSpace(0, 0).getPlayer(), "Space (0,0) should be empty!");
-        Assertions.assertEquals(player2, board.getCurrentPlayer(), "Current player should be " + player2.getName() +"!");
+        Assertions.assertEquals(player2, board.getCurrentPlayer(), "Current player should be " + player2.getName() + "!");
     }
+
     @Test
-    void FastForward(){
-        Board board= gameController.board;
+    void FastForward() {
+        Board board = gameController.board;
         gameController.board.getCurrentPlayer().setHeading(Heading.EAST);
         gameController.fastForward(gameController.board.getCurrentPlayer());
 
-        Assertions.assertEquals(gameController.board.getCurrentPlayer().getSpace(),board.getSpace(2,0));
+        Assertions.assertEquals(gameController.board.getCurrentPlayer().getSpace(), board.getSpace(2, 0));
     }
+
     @Test
-    void moveBack(){
-        Board board= gameController.board;
+    void moveBack() {
+        Board board = gameController.board;
 
         System.out.println(gameController.board.getCurrentPlayer().getSpace().x);
         System.out.println(gameController.board.getCurrentPlayer().getSpace().y);
@@ -69,19 +70,20 @@ class GameControllerTest {
         System.out.println(gameController.board.getCurrentPlayer().getSpace().x);
         System.out.println(gameController.board.getCurrentPlayer().getSpace().y);
 
-        Assertions.assertEquals(gameController.board.getCurrentPlayer().getSpace(),board.getSpace(1,0));
+        Assertions.assertEquals(gameController.board.getCurrentPlayer().getSpace(), board.getSpace(1, 0));
     }
+
     @Test
-    void moveThreeTimes(){
-        Board board= gameController.board;
+    void moveThreeTimes() {
+        Board board = gameController.board;
         gameController.board.getCurrentPlayer().setHeading(Heading.EAST);
         gameController.moveThree(gameController.board.getCurrentPlayer());
 
-        Assertions.assertEquals(gameController.board.getCurrentPlayer().getSpace(),board.getSpace(3,0));
+        Assertions.assertEquals(gameController.board.getCurrentPlayer().getSpace(), board.getSpace(3, 0));
     }
 
     @Test
-    void moveForward(Player player) {
+    void moveForward() {
         Board board = gameController.board;
         Player current = board.getCurrentPlayer();
 
@@ -96,47 +98,53 @@ class GameControllerTest {
      * Here is an acceptance test for uturn method this test simply tries to see wether the method works as intended.
      */
     @Test
-    void U_turn(){
+    void U_turn() {
         Board board = gameController.board;
         Player current = board.getCurrentPlayer();
         current.setHeading(Heading.NORTH);
         gameController.uturn(current);
-        Assertions.assertEquals(Heading.SOUTH,current.getHeading());
+        Assertions.assertEquals(Heading.SOUTH, current.getHeading());
     }
+
     @Test
-    void turn_left(){
+    void turn_left() {
         Board board = gameController.board;
         Player current = board.getCurrentPlayer();
         current.setHeading(Heading.NORTH);
         gameController.turnRight(current);
-        Assertions.assertEquals(Heading.EAST,current.getHeading());
+        Assertions.assertEquals(Heading.EAST, current.getHeading());
 
     }
+
     @Test
-    void turn_right(){
+    void turn_right() {
         Board board = gameController.board;
         Player current = board.getCurrentPlayer();
         current.setHeading(Heading.NORTH);
         gameController.turnLeft(current);
-        Assertions.assertEquals(Heading.WEST,current.getHeading());
+        Assertions.assertEquals(Heading.WEST, current.getHeading());
 
     }
 
     @Test
-    void doAction(){
+    void doAction() {
         Board board = gameController.board;
 
-        ConveyorBelt con = new ConveyorBelt(Heading.SOUTH);
-        Space space = new Space(board,0,1);
-        space.addActions(con);
-        space.doActions(gameController);
+        Player player=gameController.board.getCurrentPlayer();
 
-        Player player = board.getPlayer(0);
-        moveForward(player);
+        ConveyorBelt belt=new ConveyorBelt(Heading.SOUTH);
+        gameController.board.getSpace(0, 0).addActions(belt);
+        gameController.board.getSpace(0, 0).doActions(gameController);
 
-
-        Assertions.assertNull(board.getSpace(0,0).getPlayer(), "There should not be any player on this space");
-        Assertions.assertEquals(player,board.getSpace(0,1).getPlayer(), "Player should be"+ player.getName());
+        Assertions.assertEquals(player.getSpace(),board.getSpace(0,1),"Player is on "+player.getSpace().x+" "+player.getSpace().y);
+        Assertions.assertEquals(player.getHeading(),Heading.SOUTH);
+        gameController.moveForward(player);
+        Assertions.assertEquals(player.getSpace(),board.getSpace(0,2));
+        gameController.moveBack(player);
+        gameController.moveBack(player);
+        gameController.board.getSpace(0, 0).doActions(gameController);
+        Assertions.assertEquals(player.getSpace(),board.getSpace(0,1),"Player is on "+player.getSpace().x+" "+player.getSpace().y);
+        Assertions.assertEquals(belt.getHeading(),Heading.SOUTH);
 
     }
 

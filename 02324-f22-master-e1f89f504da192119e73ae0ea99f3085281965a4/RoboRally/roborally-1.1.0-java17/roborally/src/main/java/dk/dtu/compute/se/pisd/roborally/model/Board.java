@@ -124,10 +124,10 @@ public class Board extends Subject {
         spaces[0][1].getActions().add(new ConveyorBelt(Heading.NORTH));
         spaces[0][2].getActions().add(new ConveyorBelt(Heading.NORTH));
 
-        addCP(0, 8);
+        addCP(0, 4);
         addCP(0, 7);
         addCP(0, 6);
-        addCP(1, 8);
+        addCP(1, 4);
         addCP(1, 7);
         addCP(1, 6);
     }
