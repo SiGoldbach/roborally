@@ -12,7 +12,10 @@ public class Checkpoint extends FieldAction{
      */
     public Checkpoint(int checkPointsRequired){
         this.checkPointsRequired=checkPointsRequired;
+    }
 
+    public int getCPRequired(){
+        return checkPointsRequired;
     }
 
     /**

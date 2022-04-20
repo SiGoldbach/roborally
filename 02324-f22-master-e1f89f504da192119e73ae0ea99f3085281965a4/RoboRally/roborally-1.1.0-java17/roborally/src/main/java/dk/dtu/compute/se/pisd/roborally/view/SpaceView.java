@@ -146,6 +146,10 @@ public class    SpaceView extends StackPane implements ViewObserver {
                     "-fx-background-position: center center;");
             }
             else if(myAction.getClass() == Checkpoint.class){
+                Checkpoint myCP = (Checkpoint) myAction;
+                myURL = checkpointIMGs[cp.get]
+
+
                 this.setStyle("-fx-background-color: green;");
             }
         }
