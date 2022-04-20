@@ -58,6 +58,16 @@ public class    SpaceView extends StackPane implements ViewObserver {
             "https://cdn.discordapp.com/attachments/903301180006989835/965640914569670716/unknown.png",
             "https://cdn.discordapp.com/attachments/903301180006989835/965644068413661194/New_Project_5.png"};
 
+    final private static String[] checkpointIMGs = {
+            "https://cdn.discordapp.com/attachments/903301180006989835/966368064021086278/New_Project_7.png",
+            "https://cdn.discordapp.com/attachments/903301180006989835/966368063622619156/New_Project_8.png",
+            "https://cdn.discordapp.com/attachments/903301180006989835/966368063404527696/New_Project_9.png",
+            "https://cdn.discordapp.com/attachments/903301180006989835/966368063123492874/New_Project_10.png",
+            "https://cdn.discordapp.com/attachments/903301180006989835/966368062683119636/New_Project_11.png",
+            "https://cdn.discordapp.com/attachments/903301180006989835/966368062389493760/New_Project_12.png"};
+
+    final private static String finishlineIMG = "https://cdn.discordapp.com/attachments/903301180006989835/966368859856699422/FINISHLINE.png";
+
     final public static int SPACE_HEIGHT = 60; // 60; // 75;
     final public static int SPACE_WIDTH = 60;  // 60; // 75;
 
@@ -129,12 +139,15 @@ public class    SpaceView extends StackPane implements ViewObserver {
                         "-fx-background-size: 64 64; \n" +
                         "-fx-background-position: center center;");
             }
-            if(myAction.getClass()== FinishLine.class)
-                this.setStyle("-fx-background-color: purple;");
-            if(myAction.getClass()== Checkpoint.class)
+            else if(myAction.getClass() == FinishLine.class)
+                myURL = finishlineIMG;
+                this.setStyle("-fx-background-image: url('" + myURL + "'); \n" +
+                        "-fx-background-repeat: no-repeat; \n" +
+                        "-fx-background-size: 64 64; \n" +
+                        "-fx-background-position: center center;");
+            else if(myAction.getClass() == Checkpoint.class){
                 this.setStyle("-fx-background-color: green;");
-
-
+            }
         }
     }
 
