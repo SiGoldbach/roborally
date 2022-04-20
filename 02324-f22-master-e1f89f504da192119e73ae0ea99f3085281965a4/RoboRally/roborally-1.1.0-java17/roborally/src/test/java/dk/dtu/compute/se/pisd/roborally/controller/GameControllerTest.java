@@ -46,6 +46,11 @@ class GameControllerTest {
         Assertions.assertNull(board.getSpace(0, 0).getPlayer(), "Space (0,0) should be empty!");
         Assertions.assertEquals(player2, board.getCurrentPlayer(), "Current player should be " + player2.getName() +"!");
     }
+    @Test
+    void FastForward(){
+        Board board= gameController.board;
+        gameController.moveCurrentPlayerToSpace(board.getSpace(0,0));
+    }
 
     @Test
     void moveForward() {

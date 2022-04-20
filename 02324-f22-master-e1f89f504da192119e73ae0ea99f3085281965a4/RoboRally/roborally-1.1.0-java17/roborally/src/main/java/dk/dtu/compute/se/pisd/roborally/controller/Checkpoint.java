@@ -17,6 +17,8 @@ public class Checkpoint extends FieldAction{
 
     /**
      * Here it increments the players checkpoint amount to control if the player can get the checkpoint yet
+     *
+     * Here the player gets information when he receaves the checkpoint.
      * @param gameController the gameController of the respective game
      * @param space the space this action should be executed for
      * @return

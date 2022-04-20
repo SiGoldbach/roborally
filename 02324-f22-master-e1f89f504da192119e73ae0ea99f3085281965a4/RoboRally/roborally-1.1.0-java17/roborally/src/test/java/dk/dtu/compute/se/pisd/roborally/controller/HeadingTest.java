@@ -17,5 +17,22 @@ public class HeadingTest {
         Assertions.assertEquals(h2,Heading.NORTH);
 
     }
+    @Test
+    void next(){
+        Heading g1=Heading.SOUTH;
+
+        Heading g2=g1.next();
+
+        Assertions.assertEquals(g2,Heading.WEST);
+    }
+    @Test
+    void prev(){
+        Heading g1=Heading.SOUTH;
+
+        Heading g2=g1.prev();
+
+        Assertions.assertEquals(g2,Heading.EAST);
+
+    }
 
 }

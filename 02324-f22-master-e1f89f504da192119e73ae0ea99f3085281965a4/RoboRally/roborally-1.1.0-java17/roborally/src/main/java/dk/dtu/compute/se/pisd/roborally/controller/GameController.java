@@ -339,17 +339,14 @@ public class GameController {
         uturn(player);
     }
 
-    public void winnerField(@NotNull Player player) {
-        board.setWinner(player);
-        board.setPhase(Phase.PLAYER_INTERACTION);
-    }
-
 
     /**
      * Method getting called from gameController
      * There are some issues because of the way execute next step is made it changes to next player before you choose
      * direction and therefore the previous player gets chosen.
      * As said this should be fixed later
+     *
+     * This method now also redirects from other Method to inform when a player has gotten a checkpoint or when a player has won the game
      *
      * @param choice
      */
@@ -374,12 +371,21 @@ public class GameController {
         }
         else if(choice.equals("Cool")){
         }
+        else if(choice.equals("WOption continue")){
+        }
+        else if(choice.equals("WOption endgame")){
+
+        }
 
 
 
         this.continuePrograms();
 
     }
+
+
+
+
 
     public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {
         CommandCard sourceCard = source.getCard();

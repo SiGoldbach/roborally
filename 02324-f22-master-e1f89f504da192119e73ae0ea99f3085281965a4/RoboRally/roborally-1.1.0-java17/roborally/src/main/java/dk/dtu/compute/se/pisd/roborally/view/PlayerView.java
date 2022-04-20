@@ -216,7 +216,8 @@ public class PlayerView extends Tab implements ViewObserver {
                     optionButton.setOnAction(e -> gameController.executeCommandOptionAndContinue(player.board.getButtonOptions()[2]));
                     optionButton.setDisable(false);
                     playerInteractionPanel.getChildren().add(optionButton);
-                    if (player.board.getButtonOptions()[3].equals("Right")) {
+                    if (player.board.getButtonOptions()[3].equals("Right") || player.board.getButtonOptions()[3]
+                            .equals("WOption endgame")) {
 
                         optionButton = new Button(player.board.getButtonOptions()[1]);
                         optionButton.setOnAction(e -> gameController.executeCommandOptionAndContinue(player.board.getButtonOptions()[3]));
@@ -226,7 +227,7 @@ public class PlayerView extends Tab implements ViewObserver {
                 }
             }
         }
-        if (player.board.getWinner() != null) {
+       /* if (player.board.getWinner() != null) {
             if (!playerInteractionPanel.getChildren().contains(buttonPanel2)) {
                 programPane.getChildren().remove(playerInteractionPanel);
                 programPane.getChildren().remove(buttonPanel);
@@ -239,6 +240,6 @@ public class PlayerView extends Tab implements ViewObserver {
             }
 
             winningButton.setDisable(false);
-        }
+        }*/
     }
 }
