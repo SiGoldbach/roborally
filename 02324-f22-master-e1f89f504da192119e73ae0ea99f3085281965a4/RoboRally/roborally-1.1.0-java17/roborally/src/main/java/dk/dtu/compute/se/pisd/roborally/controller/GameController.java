@@ -166,15 +166,19 @@ public class GameController {
                 if (nextPlayerNumber < board.getPlayersNumber()) {
                     board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
                 } else {
-                    activateEOTActions();
+
                     step++;
                     if (step < Player.NO_REGISTERS) {
                         makeProgramFieldsVisible(step);
                         board.setStep(step);
                         board.setCurrentPlayer(board.getPlayer(0));
+                        activateEOTActions();
+                        activateEOTCPActions();
                     } else {
                         startProgrammingPhase();
                     }
+                    activateEOTActions();
+                    activateEOTCPActions();
                 }
             } else {
                 // this should not happen
