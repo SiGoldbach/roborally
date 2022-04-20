@@ -138,7 +138,7 @@ public class    SpaceView extends StackPane implements ViewObserver {
                         "-fx-background-repeat: no-repeat; \n" +
                         "-fx-background-size: 64 64; \n" +
                         "-fx-background-position: center center;");
-            } else if (myAction.getClass() == FinishLine.class)
+            } else if (myAction.getClass() == FinishLine.class){
                 myURL = finishlineIMG;
                 this.setStyle("-fx-background-image: url('" + myURL + "'); \n" +
                     "-fx-background-repeat: no-repeat; \n" +
