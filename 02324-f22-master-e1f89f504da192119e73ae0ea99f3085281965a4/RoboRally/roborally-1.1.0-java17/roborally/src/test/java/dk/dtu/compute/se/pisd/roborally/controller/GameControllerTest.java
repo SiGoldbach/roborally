@@ -81,7 +81,7 @@ class GameControllerTest {
     }
 
     @Test
-    void moveForward() {
+    void moveForward(Player player) {
         Board board = gameController.board;
         Player current = board.getCurrentPlayer();
 
@@ -119,6 +119,24 @@ class GameControllerTest {
         current.setHeading(Heading.NORTH);
         gameController.turnLeft(current);
         Assertions.assertEquals(Heading.WEST,current.getHeading());
+
+    }
+
+    @Test
+    void doAction(){
+        Board board = gameController.board;
+
+        ConveyorBelt con = new ConveyorBelt(Heading.SOUTH);
+        Space space = new Space(board,0,1);
+        space.addActions(con);
+        space.doActions(gameController);
+
+        Player player = board.getPlayer(0);
+        moveForward(player);
+
+
+        Assertions.assertNull(board.getSpace(0,0).getPlayer(), "There should not be any player on this space");
+        Assertions.assertEquals(player,board.getSpace(0,1).getPlayer(), "Player should be"+ player.getName());
 
     }
 
