@@ -124,19 +124,16 @@ public class Board extends Subject {
         spaces[0][1].getActions().add(new ConveyorBelt(Heading.NORTH));
         spaces[0][2].getActions().add(new ConveyorBelt(Heading.NORTH));
 
-
-        ConveyorBelt CB = new ConveyorBelt();
-        CB.setHeading(Heading.SOUTH);
-        spaces[3][5].addActions(CB);
-
-        ConveyorBelt CB2 = new ConveyorBelt();
-        CB2.setHeading(Heading.NORTH);
-        spaces[3][4].addActions(CB2);
+        addCP(0, 8);
+        addCP(0, 7);
+        addCP(0, 6);
+        addCP(1, 8);
+        addCP(1, 7);
+        addCP(1, 6);
     }
     public void addCP(int x,int y){
         spaces[x][y].addActions(new Checkpoint(checkpointAmount));
         checkpointAmount++;
-
     }
 
     public void setGameId(int gameId) {
