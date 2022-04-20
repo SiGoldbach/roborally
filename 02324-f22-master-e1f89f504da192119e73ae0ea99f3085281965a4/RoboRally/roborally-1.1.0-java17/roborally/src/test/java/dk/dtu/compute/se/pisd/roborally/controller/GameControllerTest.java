@@ -49,7 +49,35 @@ class GameControllerTest {
     @Test
     void FastForward(){
         Board board= gameController.board;
-        gameController.moveCurrentPlayerToSpace(board.getSpace(0,0));
+        gameController.board.getCurrentPlayer().setHeading(Heading.EAST);
+        gameController.fastForward(gameController.board.getCurrentPlayer());
+
+        Assertions.assertEquals(gameController.board.getCurrentPlayer().getSpace(),board.getSpace(2,0));
+    }
+    @Test
+    void moveBack(){
+        Board board= gameController.board;
+
+        System.out.println(gameController.board.getCurrentPlayer().getSpace().x);
+        System.out.println(gameController.board.getCurrentPlayer().getSpace().y);
+
+
+        gameController.board.getCurrentPlayer().setHeading(Heading.EAST);
+        gameController.fastForward(gameController.board.getCurrentPlayer());
+        gameController.moveBack(gameController.board.getCurrentPlayer());
+
+        System.out.println(gameController.board.getCurrentPlayer().getSpace().x);
+        System.out.println(gameController.board.getCurrentPlayer().getSpace().y);
+
+        Assertions.assertEquals(gameController.board.getCurrentPlayer().getSpace(),board.getSpace(1,0));
+    }
+    @Test
+    void moveThreeTimes(){
+        Board board= gameController.board;
+        gameController.board.getCurrentPlayer().setHeading(Heading.EAST);
+        gameController.moveThree(gameController.board.getCurrentPlayer());
+
+        Assertions.assertEquals(gameController.board.getCurrentPlayer().getSpace(),board.getSpace(3,0));
     }
 
     @Test
