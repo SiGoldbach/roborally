@@ -116,20 +116,54 @@ public class Board extends Subject {
      * Method for testing our implementation of the walls both visually and logiaclly
      */
     public void setWallsTest(){
-        spaces[5][5].addWall(Heading.SOUTH);
-        spaces[4][4].addWall(Heading.EAST);
-        spaces[3][3].addWall(Heading.NORTH);
-        spaces[2][2].addWall(Heading.WEST);
-        spaces[0][0].getActions().add(new FinishLine());
-        spaces[0][1].getActions().add(new ConveyorBelt(Heading.NORTH));
-        spaces[0][2].getActions().add(new ConveyorBelt(Heading.NORTH));
+        spaces[4][3].addWall(Heading.NORTH);
+        spaces[4][3].addWall(Heading.SOUTH);
+        spaces[4][3].addWall(Heading.WEST);
+        spaces[7][3].addWall(Heading.NORTH);
+        spaces[7][3].addWall(Heading.SOUTH);
+        spaces[7][3].addWall(Heading.EAST);
+        spaces[5][6].getActions().add(new FinishLine());
+        spaces[1][5].getActions().add(new ConveyorBelt(Heading.NORTH));
+        spaces[1][4].getActions().add(new ConveyorBelt(Heading.NORTH));
+        spaces[1][3].getActions().add(new ConveyorBelt(Heading.NORTH));
+        spaces[1][2].getActions().add(new ConveyorBelt(Heading.EAST));
+        spaces[2][2].getActions().add(new ConveyorBelt(Heading.EAST));
+        spaces[3][2].getActions().add(new ConveyorBelt(Heading.SOUTH));
+        spaces[3][3].getActions().add(new ConveyorBelt(Heading.SOUTH));
+        spaces[3][4].getActions().add(new ConveyorBelt(Heading.SOUTH));
+        spaces[3][5].getActions().add(new ConveyorBelt(Heading.EAST));
+        spaces[4][5].getActions().add(new ConveyorBelt(Heading.EAST));
+        spaces[5][5].getActions().add(new ConveyorBelt(Heading.EAST));
+        spaces[6][5].getActions().add(new ConveyorBelt(Heading.EAST));
+        spaces[7][5].getActions().add(new ConveyorBelt(Heading.SOUTH));
+        spaces[7][6].getActions().add(new ConveyorBelt(Heading.SOUTH));
+        spaces[7][7].getActions().add(new ConveyorBelt(Heading.SOUTH));
+        spaces[7][8].getActions().add(new ConveyorBelt(Heading.WEST));
+        spaces[6][8].getActions().add(new ConveyorBelt(Heading.WEST));
+        spaces[5][8].getActions().add(new ConveyorBelt(Heading.WEST));
+        spaces[4][8].getActions().add(new ConveyorBelt(Heading.WEST));
+        spaces[3][8].getActions().add(new ConveyorBelt(Heading.WEST));
+        spaces[2][8].getActions().add(new ConveyorBelt(Heading.WEST));
+        spaces[1][8].getActions().add(new ConveyorBelt(Heading.NORTH));
+        spaces[1][7].getActions().add(new ConveyorBelt(Heading.NORTH));
+        spaces[1][6].getActions().add(new ConveyorBelt(Heading.NORTH));
 
-        addCP(0, 8);
-        addCP(0, 7);
-        addCP(0, 6);
-        addCP(1, 8);
-        addCP(1, 7);
-        addCP(1, 6);
+        spaces[4][6].addWall(Heading.NORTH);
+        spaces[4][6].addWall(Heading.EAST);
+        spaces[6][6].addWall(Heading.NORTH);
+        spaces[6][6].addWall(Heading.WEST);
+
+        spaces[9][2].addWall(Heading.NORTH);
+        spaces[8][2].addWall(Heading.NORTH);
+        spaces[7][2].addWall(Heading.NORTH);
+        spaces[7][1].addWall(Heading.WEST);
+
+        addCP(4, 4);
+        addCP(2, 7);
+        addCP(9, 9);
+        addCP(9, 0);
+        addCP(2, 3);
+        addCP(7, 4);
     }
     public void addCP(int x,int y){
         spaces[x][y].addActions(new Checkpoint(checkpointAmount));
