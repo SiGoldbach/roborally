@@ -63,9 +63,9 @@ Game"1"--l"1"Board:Contains
 
 DamageCard "0..*" ---r "1" Robot:Has
 
-ProgrammingCard "0..*" --u> "8" CardRegister
-CardRegister "8" --> "0..5" CardSelection
-CardSelection "0..5" --> "1" PlayerMat
+ProgrammingCard "0..*" --u> "8" CardSelection
+CardSelection "8" --> "0..5" CardRegister
+CardRegister "0..5" --> "1" PlayerMat
 
 
 Player"2..6"--d>"1"Board:Uses
