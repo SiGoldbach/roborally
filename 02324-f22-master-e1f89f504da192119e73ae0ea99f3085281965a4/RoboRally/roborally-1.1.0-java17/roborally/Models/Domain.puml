@@ -26,6 +26,8 @@ Direction
 Object ProgrammingCard{
 Effects
 }
+Object CardRegister
+Object CardSelection
 Object SpecialProgrammingCard{
 Effects
 }
@@ -44,26 +46,26 @@ Object PlayerMat
 Object EnergyBank
 
 
-
 FieldEffect "0..*" --* Field
-Field"1.." --l "1"Board:Contains
-PriorityAntenna"1"--r"1"Board:Contains
+Field"1.." --u "1"Board:Contains
+PriorityAntenna "1"--l "1" Board:Contains
 EnergyBank"1"--u"1"Board:Contains
 UpgradeShop"1"--u"1"Board:Contains
-SpecialProgrammingCard"0.."--r"1"Board:Contains
+SpecialProgrammingCard"0..*"--r"1"Board:Contains
 
 Robot"1"-r"1"Player:Controls
-PlayerMat"1" --d* "1"Player:Has
+PlayerMat"1" --l* "1"Player:Has
 EnergyToken"0..*" --d "1"Player:Has
 RebootToken"0..*"--d"1"Player:Has
 CheckpointToken"0..*"--d"1"Player:Has
-Game"1"--"1"Board:Contains
+Game"1"--l"1"Board:Contains
 
 
-DamageCard"0..*"--r"1"Robot:Has
+DamageCard "0..*" ---r "1" Robot:Has
 
-ProgrammingCard"0.."--"1"PlayerMat:Contains
-
+ProgrammingCard "0..*" --u> "8" CardRegister
+CardRegister "8" --> "0..5" CardSelection
+CardSelection "0..5" --> "1" PlayerMat
 
 
 Player"2..6"--d>"1"Board:Uses
@@ -75,7 +77,7 @@ LaserField--u|>FieldEffect
 ConveyerBeltField--l|>FieldEffect
 PushField--u|>FieldEffect
 
-UpgradeCard"1.."-l*"1"UpgradeShop:Contains
+UpgradeCard"1..*"-l*"1"UpgradeShop:Contains
 
 
 @enduml
