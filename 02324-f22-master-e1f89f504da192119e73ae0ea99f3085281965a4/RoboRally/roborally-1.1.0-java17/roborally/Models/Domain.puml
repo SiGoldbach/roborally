@@ -24,18 +24,18 @@ Space
 Direction
 }
 Object ProgrammingCard{
-Effects
+Types
 }
 Object CardRegister
 Object CardSelection
 Object SpecialProgrammingCard{
-Effects
+Types
 }
 Object DamageCard{
-Effects
+Types
 }
 Object UpgradeCard{
-Effects
+Types
 }
 Object CheckpointToken
 Object EnergyToken
