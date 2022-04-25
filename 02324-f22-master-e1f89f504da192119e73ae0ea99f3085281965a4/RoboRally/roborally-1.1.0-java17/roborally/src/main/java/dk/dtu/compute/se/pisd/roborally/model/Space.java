@@ -28,7 +28,6 @@ import dk.dtu.compute.se.pisd.roborally.controller.FinishLine;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -40,8 +39,8 @@ import java.util.List;
 public class Space extends Subject {
 
     public final Board board;
-    private List<Heading> walls2;
-    private List<FieldAction> actions = new LinkedList<>();
+    private final List<Heading> walls2;
+    private final List<FieldAction> actions = new ArrayList<>();
 
     public final int x;
     public final int y;
@@ -54,7 +53,7 @@ public class Space extends Subject {
         this.y = y;
         player = null;
 
-        walls2 = new LinkedList();
+        walls2 = new ArrayList<>();
     }
 
     public Player getPlayer() {

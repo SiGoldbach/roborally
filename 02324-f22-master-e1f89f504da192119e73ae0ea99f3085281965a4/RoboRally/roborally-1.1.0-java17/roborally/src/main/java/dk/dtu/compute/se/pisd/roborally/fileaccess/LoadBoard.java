@@ -54,7 +54,11 @@ public class LoadBoard {
 
         ClassLoader classLoader = LoadBoard.class.getClassLoader();
         InputStream inputStream = classLoader.getResourceAsStream(BOARDSFOLDER + "/" + boardname + "." + JSON_EXT);
+        //Trying to find the bug by specifying the exact file instead of taking variable input.
+        //InputStream inputStream = classLoader.getResourceAsStream("C:\\Users\\Sebastian\\IdeaProjects\\roborallyTryingJson\\02324-f22-master-e1f89f504da192119e73ae0ea99f3085281965a4\\RoboRally\\roborally-1.1.0-java17\\roborally\\boards\\defaultboard.json");
+
         if (inputStream == null) {
+            System.out.println("InputStream is null");
             // TODO these constants should be defined somewhere
             return new Board(8,8);
         }
@@ -123,6 +127,7 @@ public class LoadBoard {
         //       the file "simpleCards.json" to exist!
         String filename =
                 classLoader.getResource(BOARDSFOLDER).getPath() + "/" + name + "." + JSON_EXT;
+
 
         // In simple cases, we can create a Gson object with new:
         //

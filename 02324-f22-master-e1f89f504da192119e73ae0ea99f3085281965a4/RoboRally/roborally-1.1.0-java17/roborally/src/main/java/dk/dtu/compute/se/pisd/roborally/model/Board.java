@@ -95,7 +95,6 @@ public class Board extends Subject {
                 spaces[x][y] = new Space(this, x, y);;
             }
         }
-        setWallsTest();
 
         this.stepMode = false;
     }
