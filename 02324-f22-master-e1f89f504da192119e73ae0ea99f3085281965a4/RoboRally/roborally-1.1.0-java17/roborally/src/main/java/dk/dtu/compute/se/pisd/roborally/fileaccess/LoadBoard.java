@@ -158,7 +158,9 @@ public class LoadBoard {
             if (fileWriter != null) {
                 try {
                     fileWriter.close();
-                } catch (IOException e2) {}
+                } catch (IOException e2) {
+                    System.out.println("Cant write to file");
+                }
             }
         }
     }
