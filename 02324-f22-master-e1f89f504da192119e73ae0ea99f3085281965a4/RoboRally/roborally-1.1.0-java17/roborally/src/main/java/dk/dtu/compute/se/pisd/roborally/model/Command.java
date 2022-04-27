@@ -39,9 +39,9 @@ public enum Command {
     RIGHT("Turn Right"),
     LEFT("Turn Left"),
     FAST_FORWARD("Fast Fwd"),
-    UTURN("Make U-turn"),
-    moveThree("Move three blocks"),
-    moveBack("Move player back"),
+    U_TURN("Make U-turn"),
+    MOVE_THREE("Move three blocks"),
+    MOVE_BACK("Move player back"),
 
     // XXX Assignment P3
     OPTION_LEFT_RIGHT("Left OR Right", LEFT, RIGHT);

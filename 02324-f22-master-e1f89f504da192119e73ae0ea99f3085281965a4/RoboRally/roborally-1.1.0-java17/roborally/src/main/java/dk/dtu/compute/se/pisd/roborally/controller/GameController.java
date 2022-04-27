@@ -212,13 +212,13 @@ public class GameController {
                 case OPTION_LEFT_RIGHT:
                     this.leftOrRight(player);
                     break;
-                case UTURN:
+                case U_TURN:
                     this.uturn(player);
                     break;
-                case moveThree:
+                case MOVE_THREE:
                     this.moveThree(player);
                     break;
-                case moveBack:
+                case MOVE_BACK:
                     this.moveBack(player);
                     break;
                 default:

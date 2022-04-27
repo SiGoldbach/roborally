@@ -131,10 +131,12 @@ public class AppController implements Observer {
             // board.setCurrentPlayer(board.getPlayer(0));
             gameController.startProgrammingPhase();
         }
-        if (gameController.board.getPhase() == Phase.PROGRAMMING) {
-            System.out.println("Starting programming phase");
-            gameController.startProgrammingPhase();
+        switch (gameController.board.getPhase()) {
+            case ACTIVATION -> gameController.finishProgrammingPhase();
+            case PROGRAMMING, INITIALISATION -> gameController.startProgrammingPhase();
+
         }
+
         roboRally.createBoardView(gameController);
         // XXX needs to be implememted eventually
         // for now, we just create a new game
