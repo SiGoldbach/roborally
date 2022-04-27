@@ -21,6 +21,8 @@
  */
 package dk.dtu.compute.se.pisd.roborally.fileaccess.model;
 
+import dk.dtu.compute.se.pisd.roborally.model.Phase;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +37,7 @@ public class BoardTemplate {
 
     public int width;
     public int height;
+    public Phase phase;
 
     public List<SpaceTemplate> spaces = new ArrayList<>();
 

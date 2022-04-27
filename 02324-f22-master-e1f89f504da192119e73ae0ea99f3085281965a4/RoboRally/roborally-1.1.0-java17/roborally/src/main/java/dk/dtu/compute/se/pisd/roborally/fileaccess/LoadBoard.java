@@ -75,6 +75,7 @@ public class LoadBoard {
 			// fileReader = new FileReader(filename);
 			reader = gson.newJsonReader(new InputStreamReader(inputStream));
 			BoardTemplate template = gson.fromJson(reader, BoardTemplate.class);
+            System.out.println(template.phase);
 
 			result = new Board(template.width, template.height);
 			for (SpaceTemplate spaceTemplate: template.spaces) {
@@ -106,6 +107,7 @@ public class LoadBoard {
         BoardTemplate template = new BoardTemplate();
         template.width = board.width;
         template.height = board.height;
+        template.phase=board.getPhase();
 
         for (int i=0; i<board.width; i++) {
             for (int j=0; j<board.height; j++) {
@@ -149,6 +151,7 @@ public class LoadBoard {
             gson.toJson(template, template.getClass(), writer);
             writer.close();
         } catch (IOException e1) {
+            System.out.println("e1");
             if (writer != null) {
                 try {
                     writer.close();

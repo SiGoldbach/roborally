@@ -95,22 +95,28 @@ public class AppController implements Observer {
     }
 
     public void saveGame() {
-        LoadBoard.saveBoard(gameController.board,"TestingSaveMethod");
+        LoadBoard.saveBoard(gameController.board,"simpleCards");
         // XXX needs to be implemented eventually
     }
 
+    /**
+     * This method needs to be flexible, since it needs to be able to load a template to play on.
+     * But also an ongoing game the players did not finish last time therefore there will be a check.
+     * Whether the players have been instantiated or not. If they have not the popup box will appear and ask,
+     * and set the game to programming phase but. But if there are not the game should just continue.
+     */
     public void loadGame() {
-        ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
-        dialog.setTitle("Player number");
-        dialog.setHeaderText("Select number of players");
-        Optional<Integer> result = dialog.showAndWait();
+
         gameController = new GameController(LoadBoard.loadBoard("defaultboard"));
         if (gameController == null) {
             System.out.println("GameController is null");
             newGame();
             return;
         }
-
+        ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
+        dialog.setTitle("Player number");
+        dialog.setHeaderText("Select number of players");
+        Optional<Integer> result = dialog.showAndWait();
         int no = result.get();
         for (int i = 0; i < no; i++) {
             Player player = new Player(gameController.board, PLAYER_COLORS.get(i), "Player " + (i + 1));
