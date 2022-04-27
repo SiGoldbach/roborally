@@ -27,8 +27,10 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.BoardTemplate;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.PlayerTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
 import java.io.FileWriter;
@@ -60,58 +62,75 @@ public class LoadBoard {
         if (inputStream == null) {
             System.out.println("InputStream is null");
             // TODO these constants should be defined somewhere
-            return new Board(8,8);
+            return new Board(8, 8);
         }
 
-		// In simple cases, we can create a Gson object with new Gson():
+        // In simple cases, we can create a Gson object with new Gson():
         GsonBuilder simpleBuilder = new GsonBuilder().
                 registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
         Gson gson = simpleBuilder.create();
 
-		Board result;
-		// FileReader fileReader = null;
+        Board result;
+        // FileReader fileReader = null;
         JsonReader reader = null;
-		try {
-			// fileReader = new FileReader(filename);
-			reader = gson.newJsonReader(new InputStreamReader(inputStream));
-			BoardTemplate template = gson.fromJson(reader, BoardTemplate.class);
+        try {
+            // fileReader = new FileReader(filename);
+            reader = gson.newJsonReader(new InputStreamReader(inputStream));
+            BoardTemplate template = gson.fromJson(reader, BoardTemplate.class);
             System.out.println(template.phase);
 
-			result = new Board(template.width, template.height);
-			for (SpaceTemplate spaceTemplate: template.spaces) {
-			    Space space = result.getSpace(spaceTemplate.x, spaceTemplate.y);
-			    if (space != null) {
+            result = new Board(template.width, template.height);
+            for (SpaceTemplate spaceTemplate : template.spaces) {
+                Space space = result.getSpace(spaceTemplate.x, spaceTemplate.y);
+                if (space != null) {
                     space.getActions().addAll(spaceTemplate.actions);
                     space.getWalls().addAll(spaceTemplate.walls);
                 }
             }
-			reader.close();
-			return result;
-		} catch (IOException e1) {
+            for (PlayerTemplate playerTemplate : template.players) {
+                System.out.println(playerTemplate.isCurrent);
+                Player player=new Player(result, playerTemplate.color, playerTemplate.name);
+                player.setCheckpointNumber(playerTemplate.CheckpointAmount);
+                player.setHeading(player.getHeading());
+                player.setSpace(result.getSpace(playerTemplate.x, playerTemplate.y));
+                result.getPlayers().add(player);
+                if(playerTemplate.isCurrent)
+                    System.out.println("Player is current");
+                    result.setCurrentPlayer(player);
+
+            }
+            result.setPhase(template.phase);
+            reader.close();
+            return result;
+        } catch (IOException e1) {
             if (reader != null) {
                 try {
                     reader.close();
                     inputStream = null;
-                } catch (IOException e2) {}
+                } catch (IOException e2) {
+                }
             }
             if (inputStream != null) {
-				try {
-					inputStream.close();
-				} catch (IOException e2) {}
-			}
-		}
-		return null;
+                try {
+                    inputStream.close();
+                } catch (IOException e2) {
+                }
+            }
+        }
+        return null;
     }
 
     public static void saveBoard(Board board, String name) {
         BoardTemplate template = new BoardTemplate();
         template.width = board.width;
         template.height = board.height;
-        template.phase=board.getPhase();
+        template.phase = board.getPhase();
 
-        for (int i=0; i<board.width; i++) {
-            for (int j=0; j<board.height; j++) {
-                Space space = board.getSpace(i,j);
+
+        //Loop for saving the spaces
+        for (int i = 0; i < board.width; i++) {
+            for (int j = 0; j < board.height; j++) {
+                Space space = board.getSpace(i, j);
                 if (!space.getWalls().isEmpty() || !space.getActions().isEmpty()) {
                     SpaceTemplate spaceTemplate = new SpaceTemplate();
                     spaceTemplate.x = space.x;
@@ -122,6 +141,24 @@ public class LoadBoard {
                 }
             }
         }
+        //Loop for saving the players
+        for (int i = 0; i < board.getPlayers().size(); i++) {
+            PlayerTemplate playerTemplate=new PlayerTemplate();
+            playerTemplate.heading=board.getPlayers().get(i).getHeading();
+            playerTemplate.CheckpointAmount=board.getPlayers().get(i).getCheckpointNumber();
+            playerTemplate.x=board.getPlayers().get(i).getSpace().x;
+            playerTemplate.y=board.getPlayers().get(i).getSpace().y;
+            playerTemplate.name=board.getPlayers().get(i).getName();
+            playerTemplate.color=board.getPlayers().get(i).getColor();
+            if(board.getPlayers().get(i).equals(board.getCurrentPlayer()))
+                playerTemplate.isCurrent=true;
+            else
+                playerTemplate.isCurrent=false;
+
+            template.players.add(playerTemplate);
+        }
+
+
 
         ClassLoader classLoader = LoadBoard.class.getClassLoader();
         // TODO: this is not very defensive, and will result in a NullPointerException
@@ -156,7 +193,8 @@ public class LoadBoard {
                 try {
                     writer.close();
                     fileWriter = null;
-                } catch (IOException e2) {}
+                } catch (IOException e2) {
+                }
             }
             if (fileWriter != null) {
                 try {
