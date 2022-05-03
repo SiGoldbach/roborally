@@ -22,6 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.Antenna;
 import dk.dtu.compute.se.pisd.roborally.controller.Checkpoint;
 import dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt;
 import dk.dtu.compute.se.pisd.roborally.controller.FinishLine;
@@ -146,6 +147,7 @@ public class Board extends Subject {
         spaces[1][8].getActions().add(new ConveyorBelt(Heading.NORTH));
         spaces[1][7].getActions().add(new ConveyorBelt(Heading.NORTH));
         spaces[1][6].getActions().add(new ConveyorBelt(Heading.NORTH));
+        spaces[0][7].getActions().add(new Antenna());
 
         spaces[4][6].addWall(Heading.NORTH);
         spaces[4][6].addWall(Heading.EAST);
