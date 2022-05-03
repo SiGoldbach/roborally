@@ -130,21 +130,21 @@ class GameControllerTest {
     void doAction() {
         Board board = gameController.board;
 
-        Player player=gameController.board.getCurrentPlayer();
+        Player player = gameController.board.getCurrentPlayer();
 
-        ConveyorBelt belt=new ConveyorBelt(Heading.SOUTH);
+        ConveyorBelt belt = new ConveyorBelt(Heading.SOUTH);
         gameController.board.getSpace(0, 0).addActions(belt);
         gameController.board.getSpace(0, 0).doActions(gameController);
 
-        Assertions.assertEquals(player.getSpace(),board.getSpace(0,1),"Player is on "+player.getSpace().x+" "+player.getSpace().y);
-        Assertions.assertEquals(player.getHeading(),Heading.SOUTH);
+        Assertions.assertEquals(player.getSpace(), board.getSpace(0, 1), "Player is on " + player.getSpace().x + " " + player.getSpace().y);
+        Assertions.assertEquals(player.getHeading(), Heading.SOUTH);
         gameController.moveForward(player);
-        Assertions.assertEquals(player.getSpace(),board.getSpace(0,2));
+        Assertions.assertEquals(player.getSpace(), board.getSpace(0, 2));
         gameController.moveBack(player);
         gameController.moveBack(player);
         gameController.board.getSpace(0, 0).doActions(gameController);
-        Assertions.assertEquals(player.getSpace(),board.getSpace(0,1),"Player is on "+player.getSpace().x+" "+player.getSpace().y);
-        Assertions.assertEquals(belt.getHeading(),Heading.SOUTH);
+        Assertions.assertEquals(player.getSpace(), board.getSpace(0, 1), "Player is on " + player.getSpace().x + " " + player.getSpace().y);
+        Assertions.assertEquals(belt.getHeading(), Heading.SOUTH);
 
     }
 
@@ -154,25 +154,38 @@ class GameControllerTest {
      * So i accept test both functionalities of the method
      */
     @Test
-    void findAntenna(){
-        gameController.board.getSpace(2,2).getActions().add(new Antenna());
-        Assertions.assertEquals(gameController.board.getAntennaSpace(),null);
-        Assertions.assertEquals(gameController.findAntenna(),true);
-        Assertions.assertEquals(gameController.board.getAntennaSpace(),gameController.board.getSpace(2,2));
+    void findAntenna() {
+        gameController.board.getSpace(2, 2).getActions().add(new Antenna());
+        Assertions.assertEquals(gameController.board.getAntennaSpace(), null);
+        Assertions.assertEquals(gameController.findAntenna(), true);
+        Assertions.assertEquals(gameController.board.getAntennaSpace(), gameController.board.getSpace(2, 2));
 
     }
+    /**
+     * Testing the first step in figuring out who is closest to the antenna
+     */
+
     @Test
-    void FindClosestPlayer(){
+    void testFindDifferenceBetweenTwoFields() {
+        int diff = gameController.board.calculateDistance(gameController.board.getSpace(2, 2), gameController.board.getSpace(4, 4));
+        Assertions.assertEquals(diff, 4);
+        diff = gameController.board.calculateDistance(gameController.board.getSpace(3, 3), gameController.board.getSpace(4, 4));
+        Assertions.assertEquals(diff, 2);
+        diff = gameController.board.calculateDistance(gameController.board.getSpace(0, 0), gameController.board.getSpace(6, 6));
+        Assertions.assertEquals(diff, 12);
+
 
     }
+
+    /**
+     * Testing whether the method for finding the first player works properly.
+     *
+     */
     @Test
-    void testFindDifferenceBetweenTwoFields(){
-        int diff=gameController.board.calculateDistance(gameController.board.getSpace(2,2),gameController.board.getSpace(4,4));
-        Assertions.assertEquals(diff,4);
-         diff=gameController.board.calculateDistance(gameController.board.getSpace(3,3),gameController.board.getSpace(4,4));
-        Assertions.assertEquals(diff,2);
-
-
+    void FindClosestPlayer() {
+        gameController.board.setAntennaSpace(gameController.board.getSpace(0,0));
+        Player testPlayer=gameController.board.getSpace(0,0).getPlayer();
+        Assertions.assertEquals(gameController.findFirstPLayerToMoveRobot(),testPlayer);
     }
 
 }

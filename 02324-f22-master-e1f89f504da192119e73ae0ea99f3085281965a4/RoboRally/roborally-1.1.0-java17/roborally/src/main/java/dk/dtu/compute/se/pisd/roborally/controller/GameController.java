@@ -110,28 +110,33 @@ public class GameController {
      * in the player interaction phase.
      * We are also avoiding infinite loops if there for some reason can not be found an antenna.
      * By making a if else instead of a loop.
-     *
      */
     // XXX: V2
     public void finishProgrammingPhase() {
         makeProgramFieldsInvisible();
         makeProgramFieldsVisible(0);
+        findAntenna();
+        if (board.getAntennaSpace() != null) {
+            board.setCurrentPlayer(findFirstPLayerToMoveRobot());
+        } else {
+            board.setCurrentPlayer(board.getPlayer(0));
+        }
         board.setPhase(Phase.ACTIVATION);
-        board.setCurrentPlayer(board.getPlayer(0));
         board.setStep(0);
     }
 
     /**
      * I am making a method finding the antenna if it is not there it will return false.
      * This return statement might be used for error handling later...
+     *
      * @return
      */
-    public boolean findAntenna(){
+    public boolean findAntenna() {
         for (int x = 0; x < board.width; x++) {
             for (int y = 0; y < board.height; y++) {
-                for (int k = 0; k < board.getSpace(x,y).getActions().size(); k++) {
-                    if(board.getSpace(x,y).getActions().get(k).getClass()==Antenna.class){
-                        board.setAntennaSpace(board.getSpace(x,y));
+                for (int k = 0; k < board.getSpace(x, y).getActions().size(); k++) {
+                    if (board.getSpace(x, y).getActions().get(k).getClass() == Antenna.class) {
+                        board.setAntennaSpace(board.getSpace(x, y));
                         return true;
                     }
 
@@ -141,19 +146,29 @@ public class GameController {
         }
 
 
-
         return false;
 
     }
 
-    public Player findCurrentPlayer(){
+    /**
+     * This method needs exeption handling since if the Antenna is null it will be mad.
+     * This will be handled elsewhere.
+     *
+     * @return
+     */
+    public Player findFirstPLayerToMoveRobot() {
+        int diff = board.width + board.height + 1;
+        Player player = null;
         for (int i = 0; i < board.getPlayers().size(); i++) {
+            int testDiff = board.calculateDistance(board.getAntennaSpace(), board.getPlayers().get(i).getSpace());
+            if (testDiff < diff) {
+                player = board.getPlayers().get(i);
+                diff = testDiff;
+
+            }
 
         }
-
-
-
-        return null;
+        return player;
     }
 
     // XXX: V2
@@ -303,6 +318,7 @@ public class GameController {
 
     /**
      * Method overloading for conveyorBelts that need to move in a specific direction instead of the players heading.
+     *
      * @param player
      * @param heading
      */
@@ -348,7 +364,7 @@ public class GameController {
      * New method in V3 for turning either left or right
      */
     public void leftOrRight(@NotNull Player player) {
-        String[] buttonOptions= {"Turn left","Turn right","Left","Right"};
+        String[] buttonOptions = {"Turn left", "Turn right", "Left", "Right"};
         board.setButtonOptions(buttonOptions);
 
         board.setPhase(Phase.PLAYER_INTERACTION);
@@ -390,7 +406,7 @@ public class GameController {
      * There are some issues because of the way execute next step is made it changes to next player before you choose
      * direction and therefore the previous player gets chosen.
      * As said this should be fixed later
-     *
+     * <p>
      * This method now also redirects from other Method to inform when a player has gotten a checkpoint or when a player has won the game
      *
      * @param choice
@@ -410,26 +426,19 @@ public class GameController {
         board.setPhase(Phase.ACTIVATION);
         if (choice.equals("Left"))
             turnLeft(tempPlayer);
-        else if(choice.equals("Right"))
+        else if (choice.equals("Right"))
             turnRight(tempPlayer);
-        else if(choice.equals("OK")){
-        }
-        else if(choice.equals("Cool")){
-        }
-        else if(choice.equals("WOption continue")){
-        }
-        else if(choice.equals("WOption endgame")){
+        else if (choice.equals("OK")) {
+        } else if (choice.equals("Cool")) {
+        } else if (choice.equals("WOption continue")) {
+        } else if (choice.equals("WOption endgame")) {
 
         }
-
 
 
         this.continuePrograms();
 
     }
-
-
-
 
 
     public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {
@@ -497,7 +506,7 @@ public class GameController {
     private void activateEOTActions() {
         for (int i = 0; i < board.getPlayers().size(); i++) {
             for (int j = 0; j < board.getPlayers().get(i).getSpace().getActions().size(); j++) {
-                board.getPlayers().get(i).getSpace().getActions().get(j).doAction(this,board.getPlayers().get(i).getSpace());
+                board.getPlayers().get(i).getSpace().getActions().get(j).doAction(this, board.getPlayers().get(i).getSpace());
 
             }
 
@@ -505,19 +514,19 @@ public class GameController {
 
         //System.out.println("Activating EOT actions");
         //for (int i = 0; i < board.width; i++) {
-          //  for (int j = 0; j < board.height; j++) {
-            //    board.getSpace(i, j).doActions(this);
+        //  for (int j = 0; j < board.height; j++) {
+        //    board.getSpace(i, j).doActions(this);
 
-           // }
+        // }
 
-       // }
+        // }
 
     }
 
     /**
      * Doing only the checkpoint actions which should also be done after the conveyor belts and stuff.
      */
-    private void activateEOTCPActions(){
+    private void activateEOTCPActions() {
         for (int i = 0; i < board.width; i++) {
             for (int j = 0; j < board.height; j++) {
                 board.getSpace(i, j).doCPActions(this);
@@ -528,7 +537,8 @@ public class GameController {
 
 
     }
-    public void wonGame(){
+
+    public void wonGame() {
         board.getWinner();
 
     }
