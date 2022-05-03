@@ -60,6 +60,9 @@ public class Board extends Subject {
     private Player winner;
 
 
+    private Space AntennaSpace;
+
+
 
     private Phase phase = INITIALISATION;
 
@@ -110,6 +113,14 @@ public class Board extends Subject {
 
     public Integer getGameId() {
         return gameId;
+    }
+
+    public Space getAntennaSpace() {
+        return AntennaSpace;
+    }
+
+    public void setAntennaSpace(Space antennaSpace) {
+        AntennaSpace = antennaSpace;
     }
 
     /**
@@ -340,6 +351,19 @@ public class Board extends Subject {
         }
         return getSpace(x, y);
 
+
+    }
+
+    /**
+     * Method for determining the distance between to fields.
+     * Only move sideways or up or down. No clever calculations.
+     * @return The difference between two spaces.
+     */
+    public int calculateDistance(Space space1,Space space2){
+        int xDiff=Math.max(space1.x,space2.x)-Math.min(space1.x,space2.x);
+        int yDiff=Math.max((space1.y),space2.y)-Math.min(space1.y,space2.y);
+
+        return xDiff+yDiff;
 
     }
 

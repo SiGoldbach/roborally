@@ -148,4 +148,31 @@ class GameControllerTest {
 
     }
 
+    /**
+     * I am here making a method testing whether the antenna was found correctly.
+     * First i am asserting the antenna is there Afterwords i check the field is in the rigth place.
+     * So i accept test both functionalities of the method
+     */
+    @Test
+    void findAntenna(){
+        gameController.board.getSpace(2,2).getActions().add(new Antenna());
+        Assertions.assertEquals(gameController.board.getAntennaSpace(),null);
+        Assertions.assertEquals(gameController.findAntenna(),true);
+        Assertions.assertEquals(gameController.board.getAntennaSpace(),gameController.board.getSpace(2,2));
+
+    }
+    @Test
+    void FindClosestPlayer(){
+
+    }
+    @Test
+    void testFindDifferenceBetweenTwoFields(){
+        int diff=gameController.board.calculateDistance(gameController.board.getSpace(2,2),gameController.board.getSpace(4,4));
+        Assertions.assertEquals(diff,4);
+         diff=gameController.board.calculateDistance(gameController.board.getSpace(3,3),gameController.board.getSpace(4,4));
+        Assertions.assertEquals(diff,2);
+
+
+    }
+
 }

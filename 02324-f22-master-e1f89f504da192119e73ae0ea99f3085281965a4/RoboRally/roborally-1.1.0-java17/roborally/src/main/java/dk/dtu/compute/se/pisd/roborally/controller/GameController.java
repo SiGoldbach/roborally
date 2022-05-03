@@ -101,6 +101,17 @@ public class GameController {
         return new CommandCard(commands[random]);
     }
 
+
+    /**
+     * Now we will change this method to make the player closest to the antenna start,
+     * Little side note is that we will then set it to the previous player. We are doing it
+     * this way because Then we can switch the player in the start of the turn instead of the end
+     * This saves us a lot of trouble when dealing with synchronising the logic and the visual aspect,
+     * in the player interaction phase.
+     * We are also avoiding infinite loops if there for some reason can not be found an antenna.
+     * By making a if else instead of a loop.
+     *
+     */
     // XXX: V2
     public void finishProgrammingPhase() {
         makeProgramFieldsInvisible();
@@ -108,6 +119,41 @@ public class GameController {
         board.setPhase(Phase.ACTIVATION);
         board.setCurrentPlayer(board.getPlayer(0));
         board.setStep(0);
+    }
+
+    /**
+     * I am making a method finding the antenna if it is not there it will return false.
+     * This return statement might be used for error handling later...
+     * @return
+     */
+    public boolean findAntenna(){
+        for (int x = 0; x < board.width; x++) {
+            for (int y = 0; y < board.height; y++) {
+                for (int k = 0; k < board.getSpace(x,y).getActions().size(); k++) {
+                    if(board.getSpace(x,y).getActions().get(k).getClass()==Antenna.class){
+                        board.setAntennaSpace(board.getSpace(x,y));
+                        return true;
+                    }
+
+                }
+            }
+
+        }
+
+
+
+        return false;
+
+    }
+
+    public Player findCurrentPlayer(){
+        for (int i = 0; i < board.getPlayers().size(); i++) {
+
+        }
+
+
+
+        return null;
     }
 
     // XXX: V2
