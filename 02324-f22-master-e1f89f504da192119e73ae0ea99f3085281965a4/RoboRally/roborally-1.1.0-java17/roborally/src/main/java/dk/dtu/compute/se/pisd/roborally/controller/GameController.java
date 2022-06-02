@@ -107,7 +107,7 @@ public class GameController {
      * Little side note is that we will then set it to the previous player. We are doing it
      * this way because Then we can switch the player in the start of the turn instead of the end
      * This saves us a lot of trouble when dealing with synchronising the logic and the visual aspect,
-     * in the player interaction phase. 
+     * in the player interaction phase.
      */
     // XXX: V2
     public void finishProgrammingPhase() {
@@ -285,6 +285,7 @@ public class GameController {
             }
         }
     }
+
     public void moveForward(@NotNull Player player) {
         if (player.board == board) {
             Space space = player.getSpace();
@@ -306,7 +307,7 @@ public class GameController {
     /**
      * Method overloading for conveyorBelts that need to move in a specific direction instead of the players heading.
      *
-     * @param player The player that must be moved
+     * @param player  The player that must be moved
      * @param heading The heading the player must be moved
      */
     public void moveForward(@NotNull Player player, Heading heading) {

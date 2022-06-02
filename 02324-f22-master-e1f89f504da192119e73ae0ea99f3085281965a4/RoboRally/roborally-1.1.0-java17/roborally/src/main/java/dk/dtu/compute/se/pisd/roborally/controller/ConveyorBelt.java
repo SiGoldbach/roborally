@@ -42,7 +42,7 @@ public class ConveyorBelt extends FieldAction {
         this.heading = heading;
     }
 
-    public ConveyorBelt(){
+    public ConveyorBelt() {
 
     }
 
@@ -63,7 +63,7 @@ public class ConveyorBelt extends FieldAction {
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
         if (space.getPlayer() == null)
             return false;
-            gameController.moveForward(space.getPlayer(), heading);
+        gameController.moveForward(space.getPlayer(), heading);
         // TODO needs to be implemented
         return true;
     }
