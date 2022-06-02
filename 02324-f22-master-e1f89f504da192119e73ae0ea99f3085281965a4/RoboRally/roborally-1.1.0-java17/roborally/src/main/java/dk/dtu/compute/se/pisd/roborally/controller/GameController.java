@@ -107,9 +107,7 @@ public class GameController {
      * Little side note is that we will then set it to the previous player. We are doing it
      * this way because Then we can switch the player in the start of the turn instead of the end
      * This saves us a lot of trouble when dealing with synchronising the logic and the visual aspect,
-     * in the player interaction phase.
-     * We are also avoiding infinite loops if there for some reason can not be found an antenna.
-     * By making a if else instead of a loop.
+     * in the player interaction phase. 
      */
     // XXX: V2
     public void finishProgrammingPhase() {
@@ -488,7 +486,7 @@ public class GameController {
     /**
      * Doing all the fields, If a player is on the field.
      * Changed from doing all field action to avoid a certain problem with conveyerbelts pointing south or east.
-     * Because of how the fields where looped thorugh
+     * Because of how the fields where looped through
      */
     private void activateEOTActions() {
         for (int i = 0; i < board.getPlayers().size(); i++) {

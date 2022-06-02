@@ -102,7 +102,7 @@ class GameControllerTest {
         Board board = gameController.board;
         Player current = board.getCurrentPlayer();
         current.setHeading(Heading.NORTH);
-        gameController.uturn(current);
+        gameController.uTurn(current);
         Assertions.assertEquals(Heading.SOUTH, current.getHeading());
     }
 
