@@ -17,19 +17,13 @@ public class ServerPacketThread implements Runnable {
     private int currentID;
     private List<ServerColumn> clientColumn = new ArrayList<ServerColumn>();
 
-    private int roomCount;
-    private int currentRoomID;
-    private List<ServerRooms> roomColumn = new ArrayList<ServerRooms>();
-
     public ServerPacketThread(ServerMain server){
         this.server = server;
         packetList = new LinkedList<String>();
 
         currentID = 0;
-        currentRoomID = 0;
 
         userCount = 0;
-        roomCount = 0;
     }
 
     public void addPacket(String packetIn){
@@ -45,88 +39,6 @@ public class ServerPacketThread implements Runnable {
         clientColumn.add(new ServerColumn(currentID, 0, uSocket));
 
         return currentID;
-    }
-
-    private String createRoom(ServerColumn host, int hostID, int hostRID){
-        String response = "";
-        if(hostRID == 0){
-            currentRoomID++;
-            roomCount++;
-            host.roomIDSet(currentRoomID);
-            roomColumn.add(new ServerRooms(currentRoomID, new ServerGame(8, hostID), host));
-
-            response = "CREATED-" + currentRoomID;
-        }
-        else{
-            response = "DISPLAY-You are in a room";
-        }
-
-        return response;
-    }
-
-    private String moveVerify(int user, int room, String move){
-        ServerRooms gameRoom = getRoom(room);
-        String moveVerification = 0 + "-" + user + "-" + room + "-" + "DISPLAY-NOT IN A ROOM";
-
-        if(gameRoom != null){
-            ServerGame game = gameRoom.gameGet();
-            moveVerification = game.moveChecker(user, room, move);
-        }
-
-        return moveVerification;
-    }
-
-    private ServerRooms getRoom(int room){
-        int verifyRID = 0;
-        ServerRooms currentRoom = null;
-        int a = 0;
-        while (a < roomCount) {
-            currentRoom = roomColumn.get(a);
-            if(currentRoom.roomIDGet() == room){
-                verifyRID = room;
-                break;
-            }
-            a++;
-        }
-
-        if(verifyRID > 0){
-            return currentRoom;
-        }
-        else{
-            // Could not verify the room. E.g it doesn't exist
-            // Returns null
-            return null;
-        }
-    }
-
-    private String joinRoom(int room, ServerColumn joiner, int joinerID){
-        ServerRooms currentRoom = getRoom(room);
-        String joinResult = "";
-
-        if(joiner.roomIDGet() == 0){
-            if(currentRoom != null){
-                if(currentRoom.roomFullGet() < 2){
-                    currentRoom.addUser(joiner, joinerID);
-
-                    // Sets the joiners new room
-                    joiner.roomIDSet(room);
-                    joinResult = "JOINED-" + joinerID; // Returns true indicating success.
-                }
-                else{
-                    joinResult = "DISPLAY-Room is full";
-                }
-            }
-            else{
-                // Could not verify the room. E.g it doesn't exist
-                joinResult = "DISPLAY-Room doesn't exist";
-            }
-        }
-        else{
-            // Already in a room, so cant join another one.
-            joinResult = "DISPLAY-You are in a room";
-        }
-
-        return joinResult;
     }
 
     private String userResign(int room, int resignerID){
@@ -159,45 +71,6 @@ public class ServerPacketThread implements Runnable {
         // If if doesn't run, could not verify the room. E.g it doesn't exist
 
         return gameState;
-    }
-
-    private String refreshRoomList(){
-        String rooms = "ROOMS-";
-
-        Iterator i = roomColumn.iterator();
-        while(i.hasNext()){
-            ServerRooms iRoom = (ServerRooms) i.next();
-            int iRoomID = iRoom.roomIDGet();
-            int iRoomCount = iRoom.roomFullGet();
-
-            if(rooms != "ROOMS-"){
-                rooms += "," + iRoomID + "/" + iRoomCount;
-            }
-            else{
-                rooms += iRoomID + "/" + iRoomCount;
-            }
-        }
-        return rooms;
-    }
-
-    // Leaves the room, removing all data from room and game.
-    private String leaveRoom(int verifyUID, int verifyRID){
-        String leaveResult = null;
-
-        ServerRooms leaveRoom = getRoom(verifyRID);
-        if(leaveRoom != null){
-            leaveRoom.removeUser(verifyUID);
-            leaveResult = 2 + "-" + verifyUID + "-" + verifyRID + "-" + "LEAVE-" + verifyUID;
-
-            if(leaveRoom.roomFullGet() == 0){
-                // Pop the room from the list, deleting it.
-                roomColumn.remove(leaveRoom); // Untested.
-                roomCount--;
-                leaveResult = null;
-            }
-        }
-
-        return leaveResult;
     }
 
     // Leaves the server, removing all data from the server.

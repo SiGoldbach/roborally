@@ -1,0 +1,15 @@
+.conveyeur-left {
+   -fx-background-image: url("a.jpg");
+}
+
+.conveyeur-right {
+   -fx-background-image: url("a.jpg");
+}
+
+.conveyeur-up {
+   -fx-background-image: url("a.jpg");
+}
+
+.conveyeur-down {
+   -fx-background-image: url("a.jpg");
+}
