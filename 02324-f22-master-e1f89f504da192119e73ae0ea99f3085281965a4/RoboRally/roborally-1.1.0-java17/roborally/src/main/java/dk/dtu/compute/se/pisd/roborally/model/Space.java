@@ -34,7 +34,6 @@ import java.util.List;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class Space extends Subject {
 
@@ -82,11 +81,12 @@ public class Space extends Subject {
         // notify the space of these changes by calling this method.
         notifyChange();
     }
+
     public List<Heading> getWalls() {
         return walls2;
     }
 
-    public void addWall(Heading myHeading){
+    public void addWall(Heading myHeading) {
         walls2.add(myHeading);
     }
 
@@ -98,16 +98,17 @@ public class Space extends Subject {
         actions.add(myAction);
     }
 
-    public void doActions(GameController gameController){
+    public void doActions(GameController gameController) {
         for (int i = 0; i < this.getActions().size(); i++) {
-            this.getActions().get(i).doAction(gameController,this);
+            this.getActions().get(i).doAction(gameController, this);
 
         }
     }
-    public void doCPActions(GameController gameController){
+
+    public void doCPActions(GameController gameController) {
         for (int i = 0; i < this.getActions().size(); i++) {
-            if(this.getActions().get(i).getClass().equals(Checkpoint.class)|| this.getActions().get(i).getClass().equals(FinishLine.class))
-            this.getActions().get(i).doAction(gameController,this);
+            if (this.getActions().get(i).getClass().equals(Checkpoint.class) || this.getActions().get(i).getClass().equals(FinishLine.class))
+                this.getActions().get(i).doAction(gameController, this);
 
         }
 
