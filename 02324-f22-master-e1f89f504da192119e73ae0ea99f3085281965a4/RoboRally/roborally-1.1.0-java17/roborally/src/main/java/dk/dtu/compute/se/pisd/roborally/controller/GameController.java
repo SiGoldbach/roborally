@@ -129,7 +129,7 @@ public class GameController {
      * I am making a method finding the antenna if it is not there it will return false.
      * This return statement might be used for error handling later...
      *
-     * @return
+     * @return If it finds an antenna or not and set the board.antenna to be correct
      */
     public boolean findAntenna() {
         for (int x = 0; x < board.width; x++) {
@@ -154,7 +154,7 @@ public class GameController {
      * This method needs exeption handling since if the Antenna is null it will be mad.
      * This will be handled elsewhere.
      *
-     * @return
+     * @return Returns the first player to move the in the turn
      */
     public Player findFirstPLayerToMoveRobot() {
         int diff = board.width + board.height + 1;
@@ -252,7 +252,7 @@ public class GameController {
 
     // XXX: V2
     private void executeCommand(@NotNull Player player, Command command) {
-        if (player != null && player.board == board && command != null) {
+        if (player.board == board && command != null) {
             // XXX This is a very simplistic way of dealing with some basic cards and
             //     their execution. This should eventually be done in a more elegant way
             //     (this concerns the way cards are modelled as well as the way they are executed).
@@ -287,17 +287,6 @@ public class GameController {
             }
         }
     }
-
-    // TODO Assignment V2
-    public void moveForward2(@NotNull Player player) {
-        System.out.println("Cords of player" + player.getSpace().x + " " + player.getSpace().y);
-        if (board.doesSpaceExist(player) == null)
-            return;
-        player.setSpace(board.doesSpaceExist(player));
-
-
-    }
-
     public void moveForward(@NotNull Player player) {
         if (player.board == board) {
             Space space = player.getSpace();
@@ -319,8 +308,8 @@ public class GameController {
     /**
      * Method overloading for conveyorBelts that need to move in a specific direction instead of the players heading.
      *
-     * @param player
-     * @param heading
+     * @param player The player that must be moved
+     * @param heading The heading the player must be moved
      */
     public void moveForward(@NotNull Player player, Heading heading) {
         if (player.board == board) {
@@ -344,8 +333,6 @@ public class GameController {
     public void fastForward(@NotNull Player player) {
         moveForward(player);
         moveForward(player);
-        System.out.println("Cords of player" + player.getSpace().x + " " + player.getSpace().y);
-
     }
 
     // TODO Assignment V2
@@ -409,7 +396,7 @@ public class GameController {
      * <p>
      * This method now also redirects from other Method to inform when a player has gotten a checkpoint or when a player has won the game
      *
-     * @param choice
+     * @param choice This is where we get after using the gui to get a choice the lambda expression will be called with choice.
      */
     public void executeCommandOptionAndContinue(String choice) {
         Player tempPlayer = null;
@@ -539,8 +526,6 @@ public class GameController {
     }
 
     public void wonGame() {
-        board.getWinner();
-
     }
 
 }
