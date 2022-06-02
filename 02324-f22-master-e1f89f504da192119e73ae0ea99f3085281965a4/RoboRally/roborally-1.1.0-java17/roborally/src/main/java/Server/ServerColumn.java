@@ -8,20 +8,10 @@ public class ServerColumn {
     private int roomID;
     private Socket userSocket;
 
-    private Key clientPubKey;
-
     public ServerColumn(int userID, int roomID, Socket userSocket){
         this.userID = userID;
         this.roomID = roomID;
         this.userSocket = userSocket;
-    }
-
-    public void keySet(Key myPubKey){
-        clientPubKey = myPubKey;
-    }
-
-    public Key keyGet(){
-        return clientPubKey;
     }
 
     public int userIDGet(){
