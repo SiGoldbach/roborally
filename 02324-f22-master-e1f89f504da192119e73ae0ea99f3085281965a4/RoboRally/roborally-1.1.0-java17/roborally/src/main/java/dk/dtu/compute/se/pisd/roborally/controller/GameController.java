@@ -220,6 +220,10 @@ public class GameController {
                 if (card != null) {
                     Command command = card.command;
                     executeCommand(currentPlayer, command);
+                    if(card.command==Command.OPTION_LEFT_RIGHT){
+                        board.getCurrentPlayer().getProgramField(step).setCard(null);
+                        return;
+                    }
                 }
                 int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
                 if (nextPlayerNumber < board.getPlayersNumber()) {
@@ -352,6 +356,8 @@ public class GameController {
     public void leftOrRight(@NotNull Player player) {
         String[] buttonOptions = {"Turn left", "Turn right", "Left", "Right"};
         board.setButtonOptions(buttonOptions);
+        moveForward(board.getCurrentPlayer());
+        moveBack(board.getCurrentPlayer());
 
         board.setPhase(Phase.PLAYER_INTERACTION);
 
@@ -398,22 +404,13 @@ public class GameController {
      * @param choice This is where we get after using the gui to get a choice the lambda expression will be called with choice.
      */
     public void executeCommandOptionAndContinue(String choice) {
-        Player tempPlayer = null;
-        for (int i = 0; i < board.getPlayers().size(); i++) {
-            if (board.getPlayers().get(i).equals(board.getCurrentPlayer())) {
-                if (i == 0)
-                    tempPlayer = board.getPlayers().get(board.getPlayersNumber() - 1);
-                else
-                    tempPlayer = board.getPlayers().get(i - 1);
-            }
-
-        }
-
         board.setPhase(Phase.ACTIVATION);
-        if (choice.equals("Left"))
-            turnLeft(tempPlayer);
-        else if (choice.equals("Right"))
-            turnRight(tempPlayer);
+        if (choice.equals("Left")){
+            turnLeft(board.getCurrentPlayer());
+        }
+        else if (choice.equals("Right")){
+            turnRight(board.getCurrentPlayer());
+        }
         else if (choice.equals("OK")) {
         } else if (choice.equals("Cool")) {
         } else if (choice.equals("WOption continue")) {
@@ -497,16 +494,6 @@ public class GameController {
             }
 
         }
-
-        //System.out.println("Activating EOT actions");
-        //for (int i = 0; i < board.width; i++) {
-        //  for (int j = 0; j < board.height; j++) {
-        //    board.getSpace(i, j).doActions(this);
-
-        // }
-
-        // }
-
     }
 
     /**
