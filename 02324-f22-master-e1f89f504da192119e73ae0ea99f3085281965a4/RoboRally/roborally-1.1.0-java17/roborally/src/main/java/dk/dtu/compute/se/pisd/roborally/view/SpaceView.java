@@ -45,9 +45,8 @@ import java.util.List;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
-public class    SpaceView extends StackPane implements ViewObserver {
+public class SpaceView extends StackPane implements ViewObserver {
 
     final private static String[] conveyeurIMGs = {
             "https://cdn.discordapp.com/attachments/903301180006989835/965644068598194267/New_Project_4.png",
@@ -95,19 +94,19 @@ public class    SpaceView extends StackPane implements ViewObserver {
         update(space);
     }
 
-    public void checkWalls(){
+    public void checkWalls() {
         List<Heading> myWalls = space.getWalls();
 
-        for(Iterator<Heading> i = myWalls.iterator(); i.hasNext(); ) {
+        for (Iterator<Heading> i = myWalls.iterator(); i.hasNext(); ) {
             Heading myHeading = i.next();
             drawWall(myHeading);
         }
     }
 
-    public void checkActions(){
+    public void checkActions() {
         List<FieldAction> myActions = space.getActions();
 
-        for(Iterator<FieldAction> i = myActions.iterator(); i.hasNext(); ) {
+        for (Iterator<FieldAction> i = myActions.iterator(); i.hasNext(); ) {
             FieldAction myAction = i.next();
             String myURL = "";
             if (myAction.getClass() == ConveyorBelt.class) {
@@ -130,17 +129,16 @@ public class    SpaceView extends StackPane implements ViewObserver {
                     default:
                         break;
                 }
-            } else if (myAction.getClass() == FinishLine.class){
+            } else if (myAction.getClass() == FinishLine.class) {
                 myURL = finishlineIMG;
-            }
-            else if(myAction.getClass() == Checkpoint.class){
+            } else if (myAction.getClass() == Checkpoint.class) {
                 Checkpoint myCP = (Checkpoint) myAction;
                 myURL = checkpointIMGs[myCP.getCPRequired()];
-            } else if(myAction.getClass()== Antenna.class){
+            } else if (myAction.getClass() == Antenna.class) {
                 this.setStyle("-fx-background-color: purple;");
             }
 
-            if(!myURL.equals("")){
+            if (!myURL.equals("")) {
                 this.setStyle("-fx-background-image: url('" + myURL + "'); \n" +
                         "-fx-background-repeat: no-repeat; \n" +
                         "-fx-background-size: 64 64; \n" +
@@ -149,36 +147,36 @@ public class    SpaceView extends StackPane implements ViewObserver {
         }
     }
 
-    private void drawWall(Heading wallHeading){
+    private void drawWall(Heading wallHeading) {
         Pane pane = new Pane();
         Rectangle rectangle = new Rectangle(0.0, 0.0, SPACE_WIDTH, SPACE_HEIGHT);
         rectangle.setFill(Color.TRANSPARENT);
         pane.getChildren().add(rectangle);
 
-        switch(wallHeading){
+        switch (wallHeading) {
             case SOUTH:
-                Line Sline = new Line(2, SPACE_HEIGHT-2, SPACE_WIDTH-2, SPACE_HEIGHT-2);
+                Line Sline = new Line(2, SPACE_HEIGHT - 2, SPACE_WIDTH - 2, SPACE_HEIGHT - 2);
                 Sline.setStroke(Color.RED);
                 Sline.setStrokeWidth(5);
                 pane.getChildren().add(Sline);
                 this.getChildren().add(pane);
                 break;
             case NORTH:
-                Line Nline = new Line(2, 2, SPACE_WIDTH-2, 2);
+                Line Nline = new Line(2, 2, SPACE_WIDTH - 2, 2);
                 Nline.setStroke(Color.RED);
                 Nline.setStrokeWidth(5);
                 pane.getChildren().add(Nline);
                 this.getChildren().add(pane);
                 break;
             case WEST:
-                Line Wline = new Line(2, 2, 2, SPACE_HEIGHT-2);
+                Line Wline = new Line(2, 2, 2, SPACE_HEIGHT - 2);
                 Wline.setStroke(Color.RED);
                 Wline.setStrokeWidth(5);
                 pane.getChildren().add(Wline);
                 this.getChildren().add(pane);
                 break;
             case EAST:
-                Line Eline = new Line(SPACE_WIDTH-2, 2, SPACE_WIDTH-2, SPACE_HEIGHT-2);
+                Line Eline = new Line(SPACE_WIDTH - 2, 2, SPACE_WIDTH - 2, SPACE_HEIGHT - 2);
                 Eline.setStroke(Color.RED);
                 Eline.setStrokeWidth(5);
                 pane.getChildren().add(Eline);
@@ -199,14 +197,14 @@ public class    SpaceView extends StackPane implements ViewObserver {
         if (player != null) {
             Polygon arrow = new Polygon(0.0, 0.0,
                     10.0, 20.0,
-                    20.0, 0.0 );
+                    20.0, 0.0);
             try {
                 arrow.setFill(Color.valueOf(player.getColor()));
             } catch (Exception e) {
                 arrow.setFill(Color.MEDIUMPURPLE);
             }
 
-            arrow.setRotate((90*player.getHeading().ordinal())%360);
+            arrow.setRotate((90 * player.getHeading().ordinal()) % 360);
             this.getChildren().add(arrow);
         }
     }
