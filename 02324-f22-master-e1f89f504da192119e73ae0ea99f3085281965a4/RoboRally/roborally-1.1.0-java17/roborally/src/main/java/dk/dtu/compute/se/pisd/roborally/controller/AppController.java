@@ -31,6 +31,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Phase;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
+import dk.dtu.compute.se.pisd.roborally.view.PopUpBoxView;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -47,7 +48,7 @@ import java.util.Optional;
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  */
-public class AppController implements Observer {
+public class AppController extends PopUpBoxView implements Observer {
 
     final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
@@ -95,8 +96,8 @@ public class AppController implements Observer {
         }
     }
 
-    public void saveGame() {
-        LoadBoard.saveBoard(gameController.board, "simpleCards");
+    public void saveGame () {
+        LoadBoard.saveBoard(gameController.board, saveGameInstance());
         // XXX needs to be implemented eventually
     }
 
@@ -108,7 +109,7 @@ public class AppController implements Observer {
      */
     public void loadGame() {
 
-        gameController = new GameController(LoadBoard.loadBoard("LoadWithPlayersTest"));
+        gameController = new GameController(LoadBoard.loadBoard(loadGameInstance()));
         if (gameController == null) {
             System.out.println("GameController is null");
             newGame();
