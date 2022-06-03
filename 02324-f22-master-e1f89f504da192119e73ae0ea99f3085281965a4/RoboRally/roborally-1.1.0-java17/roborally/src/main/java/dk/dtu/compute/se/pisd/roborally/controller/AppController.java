@@ -97,7 +97,7 @@ public class AppController extends PopUpBoxView implements Observer {
     }
 
     public void saveGame () {
-        LoadBoard.saveBoard(gameController.board, saveGameInstance());
+        LoadBoard.saveBoard(gameController.board, new PopUpBoxView().saveGameInstance("Save game as: ", "Game saved as:"));
         // XXX needs to be implemented eventually
     }
 
@@ -108,6 +108,8 @@ public class AppController extends PopUpBoxView implements Observer {
      * and set the game to programming phase but. But if there are not the game should just continue.
      */
     public void loadGame() {
+
+
 
         gameController = new GameController(LoadBoard.loadBoard(loadGameInstance()));
         if (gameController == null) {
