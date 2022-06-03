@@ -123,6 +123,7 @@ public class LoadBoard {
     }
 
     public static void saveBoard(Board board, String name) {
+        System.out.println(name);
         BoardTemplate template = new BoardTemplate();
         template.width = board.width;
         template.height = board.height;
@@ -168,6 +169,7 @@ public class LoadBoard {
         //       the file "simpleCards.json" to exist!
         String filename =
                 classLoader.getResource(BOARDSFOLDER).getPath() + "/" + name + "." + JSON_EXT;
+        System.out.println(filename);
 
 
         // In simple cases, we can create a Gson object with new:

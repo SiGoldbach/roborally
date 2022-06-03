@@ -100,7 +100,7 @@ public class AppController extends PopUpBoxView implements Observer {
     }
 
     public void saveGame () {
-        LoadBoard.saveBoard(gameController.board, new PopUpBoxView().saveGameInstance("Save game as: ", "Game saved as:"));
+        LoadBoard.saveBoard(gameController.board, new PopUpBoxView().gameInstance("Save game as: ", "Game saved as:"));
         // XXX needs to be implemented eventually
     }
 
@@ -114,7 +114,7 @@ public class AppController extends PopUpBoxView implements Observer {
 
 
 
-        gameController = new GameController(LoadBoard.loadBoard(loadGameInstance()));
+        gameController = new GameController(LoadBoard.loadBoard(new PopUpBoxView().gameInstance("Load game:", "Game loaded:")));
         if (gameController == null) {
             System.out.println("GameController is null");
             newGame();
