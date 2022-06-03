@@ -66,7 +66,6 @@ public class AppController extends PopUpBoxView implements Observer {
         dialog.setTitle("Player number");
         dialog.setHeaderText("Select number of players");
         Optional<Integer> result = dialog.showAndWait();
-
         if (result.isPresent()) {
             if (gameController != null) {
                 // The UI should not allow this, but in case this happens anyway.
@@ -79,6 +78,10 @@ public class AppController extends PopUpBoxView implements Observer {
             // XXX the board should eventually be created programmatically or loaded from a file
             //     here we just create an empty board with the required number of players.
             Board board = new Board(10, 10);
+            Board myBoard=LoadBoard.loadBoard("defaultboard");
+            if(board==null){
+                System.out.println("Error");
+            }
             gameController = new GameController(board);
             gameController.board.setWallsTest();
             int no = result.get();

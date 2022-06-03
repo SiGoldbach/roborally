@@ -108,8 +108,6 @@ public class GameController {
      * this way because Then we can switch the player in the start of the turn instead of the end
      * This saves us a lot of trouble when dealing with synchronising the logic and the visual aspect,
      * in the player interaction phase.
-     * We are also avoiding infinite loops if there for some reason can not be found an antenna.
-     * By making a if else instead of a loop.
      */
     // XXX: V2
     public void finishProgrammingPhase() {
@@ -129,7 +127,7 @@ public class GameController {
      * I am making a method finding the antenna if it is not there it will return false.
      * This return statement might be used for error handling later...
      *
-     * @return
+     * @return If it finds an antenna or not and set the board.antenna to be correct
      */
     public boolean findAntenna() {
         for (int x = 0; x < board.width; x++) {
@@ -154,7 +152,7 @@ public class GameController {
      * This method needs exeption handling since if the Antenna is null it will be mad.
      * This will be handled elsewhere.
      *
-     * @return
+     * @return Returns the first player to move the in the turn
      */
     public Player findFirstPLayerToMoveRobot() {
         int diff = board.width + board.height + 1;
@@ -222,6 +220,10 @@ public class GameController {
                 if (card != null) {
                     Command command = card.command;
                     executeCommand(currentPlayer, command);
+                    if(card.command==Command.OPTION_LEFT_RIGHT){
+                        board.getCurrentPlayer().getProgramField(step).setCard(null);
+                        return;
+                    }
                 }
                 int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
                 if (nextPlayerNumber < board.getPlayersNumber()) {
@@ -252,7 +254,7 @@ public class GameController {
 
     // XXX: V2
     private void executeCommand(@NotNull Player player, Command command) {
-        if (player != null && player.board == board && command != null) {
+        if (player.board == board && command != null) {
             // XXX This is a very simplistic way of dealing with some basic cards and
             //     their execution. This should eventually be done in a more elegant way
             //     (this concerns the way cards are modelled as well as the way they are executed).
@@ -288,16 +290,6 @@ public class GameController {
         }
     }
 
-    // TODO Assignment V2
-    public void moveForward2(@NotNull Player player) {
-        System.out.println("Cords of player" + player.getSpace().x + " " + player.getSpace().y);
-        if (board.doesSpaceExist(player) == null)
-            return;
-        player.setSpace(board.doesSpaceExist(player));
-
-
-    }
-
     public void moveForward(@NotNull Player player) {
         if (player.board == board) {
             Space space = player.getSpace();
@@ -319,8 +311,8 @@ public class GameController {
     /**
      * Method overloading for conveyorBelts that need to move in a specific direction instead of the players heading.
      *
-     * @param player
-     * @param heading
+     * @param player  The player that must be moved
+     * @param heading The heading the player must be moved
      */
     public void moveForward(@NotNull Player player, Heading heading) {
         if (player.board == board) {
@@ -344,8 +336,6 @@ public class GameController {
     public void fastForward(@NotNull Player player) {
         moveForward(player);
         moveForward(player);
-        System.out.println("Cords of player" + player.getSpace().x + " " + player.getSpace().y);
-
     }
 
     // TODO Assignment V2
@@ -366,6 +356,8 @@ public class GameController {
     public void leftOrRight(@NotNull Player player) {
         String[] buttonOptions = {"Turn left", "Turn right", "Left", "Right"};
         board.setButtonOptions(buttonOptions);
+        moveForward(board.getCurrentPlayer());
+        moveBack(board.getCurrentPlayer());
 
         board.setPhase(Phase.PLAYER_INTERACTION);
 
@@ -409,25 +401,16 @@ public class GameController {
      * <p>
      * This method now also redirects from other Method to inform when a player has gotten a checkpoint or when a player has won the game
      *
-     * @param choice
+     * @param choice This is where we get after using the gui to get a choice the lambda expression will be called with choice.
      */
     public void executeCommandOptionAndContinue(String choice) {
-        Player tempPlayer = null;
-        for (int i = 0; i < board.getPlayers().size(); i++) {
-            if (board.getPlayers().get(i).equals(board.getCurrentPlayer())) {
-                if (i == 0)
-                    tempPlayer = board.getPlayers().get(board.getPlayersNumber() - 1);
-                else
-                    tempPlayer = board.getPlayers().get(i - 1);
-            }
-
-        }
-
         board.setPhase(Phase.ACTIVATION);
-        if (choice.equals("Left"))
-            turnLeft(tempPlayer);
-        else if (choice.equals("Right"))
-            turnRight(tempPlayer);
+        if (choice.equals("Left")){
+            turnLeft(board.getCurrentPlayer());
+        }
+        else if (choice.equals("Right")){
+            turnRight(board.getCurrentPlayer());
+        }
         else if (choice.equals("OK")) {
         } else if (choice.equals("Cool")) {
         } else if (choice.equals("WOption continue")) {
@@ -501,7 +484,7 @@ public class GameController {
     /**
      * Doing all the fields, If a player is on the field.
      * Changed from doing all field action to avoid a certain problem with conveyerbelts pointing south or east.
-     * Because of how the fields where looped thorugh
+     * Because of how the fields where looped through
      */
     private void activateEOTActions() {
         for (int i = 0; i < board.getPlayers().size(); i++) {
@@ -511,16 +494,6 @@ public class GameController {
             }
 
         }
-
-        //System.out.println("Activating EOT actions");
-        //for (int i = 0; i < board.width; i++) {
-        //  for (int j = 0; j < board.height; j++) {
-        //    board.getSpace(i, j).doActions(this);
-
-        // }
-
-        // }
-
     }
 
     /**
@@ -539,8 +512,6 @@ public class GameController {
     }
 
     public void wonGame() {
-        board.getWinner();
-
     }
 
 }
