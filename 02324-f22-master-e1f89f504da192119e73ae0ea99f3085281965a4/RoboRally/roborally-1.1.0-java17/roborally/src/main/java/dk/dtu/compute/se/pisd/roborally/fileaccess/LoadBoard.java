@@ -62,7 +62,7 @@ public class LoadBoard {
         if (inputStream == null) {
             System.out.println("InputStream is null");
             // TODO these constants should be defined somewhere
-            return new Board(8, 8);
+            return null;
         }
 
         // In simple cases, we can create a Gson object with new Gson():
@@ -89,14 +89,14 @@ public class LoadBoard {
             }
             for (PlayerTemplate playerTemplate : template.players) {
                 System.out.println(playerTemplate.isCurrent);
-                Player player=new Player(result, playerTemplate.color, playerTemplate.name);
+                Player player = new Player(result, playerTemplate.color, playerTemplate.name);
                 player.setCheckpointNumber(playerTemplate.CheckpointAmount);
                 player.setHeading(player.getHeading());
                 player.setSpace(result.getSpace(playerTemplate.x, playerTemplate.y));
                 result.getPlayers().add(player);
-                if(playerTemplate.isCurrent)
+                if (playerTemplate.isCurrent)
                     System.out.println("Player is current");
-                    result.setCurrentPlayer(player);
+                result.setCurrentPlayer(player);
 
             }
             result.setPhase(template.phase);
@@ -146,21 +146,20 @@ public class LoadBoard {
         }
         //Loop for saving the players
         for (int i = 0; i < board.getPlayers().size(); i++) {
-            PlayerTemplate playerTemplate=new PlayerTemplate();
-            playerTemplate.heading=board.getPlayers().get(i).getHeading();
-            playerTemplate.CheckpointAmount=board.getPlayers().get(i).getCheckpointNumber();
-            playerTemplate.x=board.getPlayers().get(i).getSpace().x;
-            playerTemplate.y=board.getPlayers().get(i).getSpace().y;
-            playerTemplate.name=board.getPlayers().get(i).getName();
-            playerTemplate.color=board.getPlayers().get(i).getColor();
-            if(board.getPlayers().get(i).equals(board.getCurrentPlayer()))
-                playerTemplate.isCurrent=true;
+            PlayerTemplate playerTemplate = new PlayerTemplate();
+            playerTemplate.heading = board.getPlayers().get(i).getHeading();
+            playerTemplate.CheckpointAmount = board.getPlayers().get(i).getCheckpointNumber();
+            playerTemplate.x = board.getPlayers().get(i).getSpace().x;
+            playerTemplate.y = board.getPlayers().get(i).getSpace().y;
+            playerTemplate.name = board.getPlayers().get(i).getName();
+            playerTemplate.color = board.getPlayers().get(i).getColor();
+            if (board.getPlayers().get(i).equals(board.getCurrentPlayer()))
+                playerTemplate.isCurrent = true;
             else
-                playerTemplate.isCurrent=false;
+                playerTemplate.isCurrent = false;
 
             template.players.add(playerTemplate);
         }
-
 
 
         ClassLoader classLoader = LoadBoard.class.getClassLoader();

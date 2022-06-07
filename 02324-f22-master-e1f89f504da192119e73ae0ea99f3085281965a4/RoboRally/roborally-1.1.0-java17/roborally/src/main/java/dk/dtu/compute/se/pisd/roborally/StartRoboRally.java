@@ -32,7 +32,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  */
-@SpringBootApplication
 public class StartRoboRally {
 
     public static void main(String[] args) {
