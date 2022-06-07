@@ -78,7 +78,7 @@ public class AppController extends PopUpBoxView implements Observer {
 
             // XXX the board should eventually be created programmatically or loaded from a file
             //     here we just create an empty board with the required number of players.
-            Board myBoard=LoadBoard.loadBoard(new PopUpBoxView().gameInstance("Enter file","Game loaded"));
+            Board myBoard=LoadBoard.loadBoard(new PopUpBoxView().gameInstance("Write a loaded game","Game loaded"));
             if(myBoard==null){
                 System.out.println("Getting default board");
                 myBoard=LoadBoard.loadBoard("defaultboard");
@@ -112,7 +112,7 @@ public class AppController extends PopUpBoxView implements Observer {
      */
     public void loadGame () throws IOException, InterruptedException {
 
-        gameController = new GameController(LoadBoard.loadBoard(new PopUpBoxView().loadGame(new ServerClientController().possibleBoards())));
+        gameController = new GameController(LoadBoard.loadBoard(new PopUpBoxView().gameInstance("Load game", "Game loaded")));
         if (gameController == null) {
             System.out.println("GameController is null");
             newGame();
