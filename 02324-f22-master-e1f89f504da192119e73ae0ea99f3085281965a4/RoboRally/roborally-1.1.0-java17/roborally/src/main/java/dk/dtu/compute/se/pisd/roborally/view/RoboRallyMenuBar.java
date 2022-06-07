@@ -26,6 +26,8 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 
+import javax.swing.*;
+
 /**
  * ...
  *
@@ -37,6 +39,8 @@ public class RoboRallyMenuBar extends MenuBar {
     private AppController appController;
 
     private Menu controlMenu;
+
+    private Menu loadMenu;
 
     private MenuItem saveGame;
 
@@ -66,6 +70,7 @@ public class RoboRallyMenuBar extends MenuBar {
         saveGame.setOnAction( e -> this.appController.saveGame());
         controlMenu.getItems().add(saveGame);
 
+
         loadGame = new MenuItem("Load Game");
         loadGame.setOnAction( e -> this.appController.loadGame());
         controlMenu.getItems().add(loadGame);
@@ -92,5 +97,7 @@ public class RoboRallyMenuBar extends MenuBar {
             loadGame.setVisible(true);
         }
     }
+
+
 
 }

@@ -110,9 +110,7 @@ public class AppController extends PopUpBoxView implements Observer {
      * Whether the players have been instantiated or not. If they have not the popup box will appear and ask,
      * and set the game to programming phase but. But if there are not the game should just continue.
      */
-    public void loadGame() {
-
-
+    public void loadGame () {
 
         gameController = new GameController(LoadBoard.loadBoard(new PopUpBoxView().gameInstance("Load game:", "Game loaded:")));
         if (gameController == null) {
