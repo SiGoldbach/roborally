@@ -27,6 +27,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 
 import javax.swing.*;
+import java.io.IOException;
 
 /**
  * ...
@@ -72,7 +73,15 @@ public class RoboRallyMenuBar extends MenuBar {
 
 
         loadGame = new MenuItem("Load Game");
-        loadGame.setOnAction( e -> this.appController.loadGame());
+        loadGame.setOnAction( e -> {
+            try {
+                this.appController.loadGame();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+        });
         controlMenu.getItems().add(loadGame);
 
         exitApp = new MenuItem("Exit");
