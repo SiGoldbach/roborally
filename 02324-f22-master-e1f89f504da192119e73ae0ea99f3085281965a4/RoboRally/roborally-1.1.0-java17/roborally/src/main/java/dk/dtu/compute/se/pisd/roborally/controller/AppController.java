@@ -101,6 +101,7 @@ public class AppController extends PopUpBoxView implements Observer {
 
     public void saveGame () {
         LoadBoard.saveBoard(gameController.board, new PopUpBoxView().gameInstance("Save game as: ", "Game saved as:"));
+
         // XXX needs to be implemented eventually
     }
 
@@ -112,7 +113,10 @@ public class AppController extends PopUpBoxView implements Observer {
      */
     public void loadGame () throws IOException, InterruptedException {
 
-        gameController = new GameController(LoadBoard.loadBoard(new PopUpBoxView().gameInstance("Load game", "Game loaded")));
+        //gameController = new GameController(LoadBoard.loadBoard(new PopUpBoxView().gameInstance("Load game", "Game loaded")));
+        String chosenBoard=new PopUpBoxView().loadGame(new ServerClientController().possibleBoards());
+        gameController = new GameController(LoadBoard.loadBoard(new ServerClientController().getBoard(chosenBoard)));
+
         if (gameController == null) {
             System.out.println("GameController is null");
             newGame();
