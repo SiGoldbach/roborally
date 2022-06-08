@@ -126,7 +126,7 @@ public class LoadBoard {
         return null;
     }
 
-    public static void saveBoard(Board board, String name) {
+    public static String saveBoard(Board board, String name) {
         System.out.println(name);
         BoardTemplate template = new BoardTemplate();
         template.width = board.width;
@@ -183,8 +183,8 @@ public class LoadBoard {
         // a builder (here, we want to configure the JSON serialisation with
         // a pretty printer):
         GsonBuilder simpleBuilder = new GsonBuilder().
-                registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>()).
-                setPrettyPrinting();
+        registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>()).
+        setPrettyPrinting();
         Gson gson = simpleBuilder.create();
 
         FileWriter fileWriter = null;
@@ -212,6 +212,6 @@ public class LoadBoard {
                 }
             }
         }
+        return gson.toJson(template, template.getClass());
     }
-
 }
