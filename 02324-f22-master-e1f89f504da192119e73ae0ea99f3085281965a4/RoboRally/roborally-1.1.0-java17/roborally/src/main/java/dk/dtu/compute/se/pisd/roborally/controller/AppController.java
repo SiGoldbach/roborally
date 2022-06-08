@@ -39,6 +39,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import org.jetbrains.annotations.NotNull;
 
+import javax.imageio.IIOException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -78,10 +79,10 @@ public class AppController extends PopUpBoxView implements Observer {
 
             // XXX the board should eventually be created programmatically or loaded from a file
             //     here we just create an empty board with the required number of players.
-            Board myBoard=LoadBoard.loadBoard(new PopUpBoxView().gameInstance("Write a loaded game","Game loaded"));
-            if(myBoard==null){
+            Board myBoard = LoadBoard.loadBoard(new PopUpBoxView().gameInstance("Write a loaded game", "Game loaded"));
+            if (myBoard == null) {
                 System.out.println("Getting default board");
-                myBoard=LoadBoard.loadBoard("defaultboard");
+                myBoard = LoadBoard.loadBoard("defaultboard");
             }
             gameController = new GameController(myBoard);
             int no = result.get();
@@ -99,10 +100,19 @@ public class AppController extends PopUpBoxView implements Observer {
         }
     }
 
-    public void saveGame () {
-        LoadBoard.saveBoard(gameController.board, new PopUpBoxView().gameInstance("Save game as: ", "Game saved as:"));
+    public void saveGame() {
+        String name = new PopUpBoxView().gameInstance("Save game as: ", "Game saved as:");
+        String toServer = LoadBoard.saveBoard(gameController.board, name);
+        try {
 
-        // XXX needs to be implemented eventually
+
+            new ServerClientController().saveBoard(toServer, name);
+        }catch (InterruptedException e){
+            System.out.println("Problems with server connection");// XXX needs to be implemented eventually
+        }catch (IOException e){
+            System.out.println("Problems with IOE");
+
+        }
     }
 
     /**
@@ -111,10 +121,10 @@ public class AppController extends PopUpBoxView implements Observer {
      * Whether the players have been instantiated or not. If they have not the popup box will appear and ask,
      * and set the game to programming phase but. But if there are not the game should just continue.
      */
-    public void loadGame () throws IOException, InterruptedException {
+    public void loadGame() throws IOException, InterruptedException {
 
         //gameController = new GameController(LoadBoard.loadBoard(new PopUpBoxView().gameInstance("Load game", "Game loaded")));
-        String chosenBoard=new PopUpBoxView().loadGame(new ServerClientController().possibleBoards());
+        String chosenBoard = new PopUpBoxView().loadGame(new ServerClientController().possibleBoards());
         gameController = new GameController(LoadBoard.loadBoard(new ServerClientController().getBoard(chosenBoard)));
 
         if (gameController == null) {
