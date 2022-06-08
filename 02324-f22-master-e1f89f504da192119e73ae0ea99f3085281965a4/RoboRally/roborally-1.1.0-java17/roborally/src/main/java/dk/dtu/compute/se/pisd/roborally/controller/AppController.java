@@ -31,6 +31,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Phase;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
+import dk.dtu.compute.se.pisd.roborally.view.PopUpBoxView;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -38,6 +39,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -47,7 +49,7 @@ import java.util.Optional;
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  */
-public class AppController implements Observer {
+public class AppController extends PopUpBoxView implements Observer {
 
     final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
@@ -76,18 +78,17 @@ public class AppController implements Observer {
 
             // XXX the board should eventually be created programmatically or loaded from a file
             //     here we just create an empty board with the required number of players.
-            Board board = new Board(10, 10);
-            Board myBoard=LoadBoard.loadBoard("defaultboard");
-            if(board==null){
-                System.out.println("Error");
+            Board myBoard=LoadBoard.loadBoard(new PopUpBoxView().gameInstance("Write a loaded game","Game loaded"));
+            if(myBoard==null){
+                System.out.println("Getting default board");
+                myBoard=LoadBoard.loadBoard("defaultboard");
             }
-            gameController = new GameController(board);
-            gameController.board.setWallsTest();
+            gameController = new GameController(myBoard);
             int no = result.get();
             for (int i = 0; i < no; i++) {
-                Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
-                board.addPlayer(player);
-                player.setSpace(board.getSpace(i % board.width, i));
+                Player player = new Player(gameController.board, PLAYER_COLORS.get(i), "Player " + (i + 1));
+                gameController.board.addPlayer(player);
+                player.setSpace(gameController.board.getSpace(i % gameController.board.width, i));
             }
 
             // XXX: V2
@@ -98,8 +99,8 @@ public class AppController implements Observer {
         }
     }
 
-    public void saveGame() {
-        LoadBoard.saveBoard(gameController.board, "simpleCards");
+    public void saveGame () {
+        LoadBoard.saveBoard(gameController.board, new PopUpBoxView().gameInstance("Save game as: ", "Game saved as:"));
         // XXX needs to be implemented eventually
     }
 
@@ -109,9 +110,9 @@ public class AppController implements Observer {
      * Whether the players have been instantiated or not. If they have not the popup box will appear and ask,
      * and set the game to programming phase but. But if there are not the game should just continue.
      */
-    public void loadGame() {
+    public void loadGame () throws IOException, InterruptedException {
 
-        gameController = new GameController(LoadBoard.loadBoard("LoadWithPlayersTest"));
+        gameController = new GameController(LoadBoard.loadBoard(new PopUpBoxView().gameInstance("Load game", "Game loaded")));
         if (gameController == null) {
             System.out.println("GameController is null");
             newGame();

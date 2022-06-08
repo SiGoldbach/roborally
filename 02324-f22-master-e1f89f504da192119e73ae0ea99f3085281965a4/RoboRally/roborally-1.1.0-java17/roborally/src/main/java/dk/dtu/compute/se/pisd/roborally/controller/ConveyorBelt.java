@@ -42,9 +42,6 @@ public class ConveyorBelt extends FieldAction {
         this.heading = heading;
     }
 
-    public ConveyorBelt() {
-
-    }
 
     public ConveyorBelt(Heading heading) {
         this.heading = heading;

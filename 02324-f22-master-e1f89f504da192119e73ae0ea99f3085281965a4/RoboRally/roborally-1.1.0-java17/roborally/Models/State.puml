@@ -1,0 +1,34 @@
+@startuml
+'https://plantuml.com/state-diagram
+
+scale 350 width
+[*] --> InitializeState : StartGame
+
+state InitializeState {
+  [*] --> Idle
+  Idle --> ProgrammingState : Begin ProgrammingState
+}
+
+state ProgrammingState {
+  [*] --> NewProgramSelection
+  NewProgramSelection --L> Processing : Choose card
+  Processing --L> NewProgramSelection: Not enough cards
+
+
+}
+Processing --> ActivationState: Enough cards
+
+state ActivationState{
+ [*] --> RunProgram
+}
+RunProgram --d> PlayerInterractionState
+
+state PlayerInterractionState{
+[*] --> Interraction
+
+}
+
+Interraction --u> Idle: No winner
+Interraction --d> [*]: Winner found
+
+@enduml

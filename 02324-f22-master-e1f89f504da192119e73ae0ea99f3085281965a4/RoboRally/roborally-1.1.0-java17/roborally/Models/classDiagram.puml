@@ -1,0 +1,31 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+
+Class AppController
+Class Checkpoint
+Abstract Class "FieldAction"
+Class FinishLine
+Class GameController
+
+
+Class Board
+Class Command
+Class CommandCard
+Class CommandCardField
+Class Player
+
+
+Class BoardView
+Class PlayersView
+Class PlayerView
+Class RoboRallyMenuBar
+Class SpaceView
+
+Checkpoint "1..*"--|> "1   " "FieldAction"
+FinishLine "1   " --|> "1   ""FieldAction"
+AppController "1   "--|>"1   " GameController
+SpaceView "1   "--|>"1   " "FieldAction"
+
+
+@enduml
