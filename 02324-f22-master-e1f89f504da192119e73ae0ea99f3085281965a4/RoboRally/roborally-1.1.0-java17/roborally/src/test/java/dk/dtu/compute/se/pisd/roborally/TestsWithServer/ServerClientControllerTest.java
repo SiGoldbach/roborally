@@ -1,11 +1,16 @@
-package dk.dtu.compute.se.pisd.roborally.controller;
+package dk.dtu.compute.se.pisd.roborally.TestsWithServer;
 
+import dk.dtu.compute.se.pisd.roborally.controller.ServerClientController;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * These test are used to test if the client side of our server client relationship works,
+ * so they won't work if the server is closed.
+ */
 class ServerClientControllerTest {
 
     @Test
