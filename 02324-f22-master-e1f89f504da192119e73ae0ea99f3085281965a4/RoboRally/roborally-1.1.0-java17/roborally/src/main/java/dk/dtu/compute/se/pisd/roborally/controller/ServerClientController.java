@@ -38,10 +38,11 @@ public class ServerClientController {
     }
 
     public void saveBoard(String board, String boardName) throws IOException, InterruptedException {
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/boards/upload/" + boardName))
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/boards/saveboard/" + boardName))
                 .POST(HttpRequest.BodyPublishers.ofString(board)).build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
 
 
     }
