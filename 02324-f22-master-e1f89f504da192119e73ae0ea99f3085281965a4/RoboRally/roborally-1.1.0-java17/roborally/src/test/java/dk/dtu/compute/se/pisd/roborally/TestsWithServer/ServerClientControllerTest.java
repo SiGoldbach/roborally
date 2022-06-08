@@ -30,4 +30,8 @@ class ServerClientControllerTest {
     void GetListOfBoards() throws IOException, InterruptedException {
         System.out.println(new ServerClientController().possibleBoards());
     }
+    @Test
+    void GettingBoard() throws IOException, InterruptedException {
+        new ServerClientController().saveBoard("Board","Boardname");
+    }
 }

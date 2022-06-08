@@ -75,7 +75,8 @@ public class LoadBoard {
         JsonReader reader = null;
         try {
             // fileReader = new FileReader(filename);
-            reader = gson.newJsonReader(new InputStreamReader(inputStream));
+
+                    reader = gson.newJsonReader(new InputStreamReader(inputStream));
             BoardTemplate template = gson.fromJson(reader, BoardTemplate.class);
             System.out.println(template.phase);
 

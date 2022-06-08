@@ -39,6 +39,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -77,7 +78,7 @@ public class AppController extends PopUpBoxView implements Observer {
 
             // XXX the board should eventually be created programmatically or loaded from a file
             //     here we just create an empty board with the required number of players.
-            Board myBoard=LoadBoard.loadBoard(new PopUpBoxView().gameInstance("Enter file","Game loaded"));
+            Board myBoard=LoadBoard.loadBoard(new PopUpBoxView().gameInstance("Write a loaded game","Game loaded"));
             if(myBoard==null){
                 System.out.println("Getting default board");
                 myBoard=LoadBoard.loadBoard("defaultboard");
@@ -109,9 +110,9 @@ public class AppController extends PopUpBoxView implements Observer {
      * Whether the players have been instantiated or not. If they have not the popup box will appear and ask,
      * and set the game to programming phase but. But if there are not the game should just continue.
      */
-    public void loadGame () {
+    public void loadGame () throws IOException, InterruptedException {
 
-        gameController = new GameController(LoadBoard.loadBoard(new PopUpBoxView().gameInstance("Load game:", "Game loaded:")));
+        gameController = new GameController(LoadBoard.loadBoard(new PopUpBoxView().gameInstance("Load game", "Game loaded")));
         if (gameController == null) {
             System.out.println("GameController is null");
             newGame();
