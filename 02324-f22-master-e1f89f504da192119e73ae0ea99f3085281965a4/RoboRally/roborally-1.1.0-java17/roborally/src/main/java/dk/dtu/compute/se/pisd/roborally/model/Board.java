@@ -40,7 +40,6 @@ import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
  */
 public class Board extends Subject {
 
-
     private int checkpointAmount=0;
 
     public final int width;
@@ -59,18 +58,13 @@ public class Board extends Subject {
 
     private Player winner;
 
-
     private Space AntennaSpace;
-
-
 
     private Phase phase = INITIALISATION;
 
     private int step = 0;
 
     private boolean stepMode;
-
-
 
     private String[] buttonOptions= {"Turn left","Turn right","Left","Right"};
 

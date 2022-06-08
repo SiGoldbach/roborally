@@ -33,10 +33,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 
 /**
  * ...
@@ -49,13 +46,19 @@ public class LoadBoard {
     private static final String DEFAULTBOARD = "defaultboard";
     private static final String JSON_EXT = "json";
 
-    public static Board loadBoard(String boardname) {
-        if (boardname == null) {
-            boardname = DEFAULTBOARD;
+    public static Board loadBoard(String stringOrBoard) {
+        if (stringOrBoard == null) {
+            stringOrBoard = DEFAULTBOARD;
         }
 
         ClassLoader classLoader = LoadBoard.class.getClassLoader();
-        InputStream inputStream = classLoader.getResourceAsStream(BOARDSFOLDER + "/" + boardname + "." + JSON_EXT);
+        InputStream inputStream = null;
+        if(stringOrBoard.length() < 50){
+            inputStream = classLoader.getResourceAsStream(BOARDSFOLDER + "/" + stringOrBoard + "." + JSON_EXT);
+        }
+        else{
+            inputStream = new ByteArrayInputStream(stringOrBoard.getBytes());
+        }
         //Trying to find the bug by specifying the exact file instead of taking variable input.
         //InputStream = classLoader.getResourceAsStream("C:\\Users\\Sebastian\\IdeaProjects\\roborallyTryingJson\\02324-f22-master-e1f89f504da192119e73ae0ea99f3085281965a4\\RoboRally\\roborally-1.1.0-java17\\roborally\\boards\\defaultboard.json");
 
@@ -67,7 +70,7 @@ public class LoadBoard {
 
         // In simple cases, we can create a Gson object with new Gson():
         GsonBuilder simpleBuilder = new GsonBuilder().
-                registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
+        registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
         Gson gson = simpleBuilder.create();
 
         Board result;
@@ -76,7 +79,7 @@ public class LoadBoard {
         try {
             // fileReader = new FileReader(filename);
             
-                    reader = gson.newJsonReader(new InputStreamReader(inputStream));
+            reader = gson.newJsonReader(new InputStreamReader(inputStream));
             BoardTemplate template = gson.fromJson(reader, BoardTemplate.class);
             System.out.println(template.phase);
 
