@@ -26,7 +26,6 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 
-import javax.swing.*;
 import java.io.IOException;
 
 /**
@@ -59,8 +58,16 @@ public class RoboRallyMenuBar extends MenuBar {
         controlMenu = new Menu("File");
         this.getMenus().add(controlMenu);
 
-        newGame = new MenuItem("New Game");
-        newGame.setOnAction( e -> this.appController.newGame());
+        newGame = new MenuItem("Connect To Game");
+        newGame.setOnAction( e -> {
+            try {
+                this.appController.connectToGame();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+        });
         controlMenu.getItems().add(newGame);
 
         stopGame = new MenuItem("Stop Game");
@@ -72,10 +79,10 @@ public class RoboRallyMenuBar extends MenuBar {
         controlMenu.getItems().add(saveGame);
 
 
-        loadGame = new MenuItem("Load Game");
+        loadGame = new MenuItem("Host Game");
         loadGame.setOnAction( e -> {
             try {
-                this.appController.loadGame();
+                this.appController.hostGame();
             } catch (IOException ex) {
                 ex.printStackTrace();
             } catch (InterruptedException ex) {

@@ -37,6 +37,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
+import org.apache.catalina.Server;
 import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.IIOException;
@@ -63,41 +64,21 @@ public class AppController extends PopUpBoxView implements Observer {
         this.roboRally = roboRally;
     }
 
-    public void newGame() {
-        ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
-        dialog.setTitle("Player number");
-        dialog.setHeaderText("Select number of players");
-        Optional<Integer> result = dialog.showAndWait();
-        if (result.isPresent()) {
-            if (gameController != null) {
-                // The UI should not allow this, but in case this happens anyway.
-                // give the user the option to save the game or abort this operation!
-                if (!stopGame()) {
-                    return;
-                }
-            }
+    public void connectToGame() throws IOException, InterruptedException {
+            String username = new PopUpBoxView().gameInstance("Enter username", "Confirm ");
+            String gamename = new PopUpBoxView().gameInstance("Enter gamename", "Confirm ");
 
-            // XXX the board should eventually be created programmatically or loaded from a file
-            //     here we just create an empty board with the required number of players.
-            Board myBoard = LoadBoard.loadBoard(new PopUpBoxView().gameInstance("Write a loaded game", "Game loaded"));
-            if (myBoard == null) {
-                System.out.println("Getting default board");
-                myBoard = LoadBoard.loadBoard("defaultboard");
-            }
-            gameController = new GameController(myBoard);
-            int no = result.get();
-            for (int i = 0; i < no; i++) {
-                Player player = new Player(gameController.board, PLAYER_COLORS.get(i), "Player " + (i + 1));
-                gameController.board.addPlayer(player);
-                player.setSpace(gameController.board.getSpace(i % gameController.board.width, i));
-            }
+            String response = new ServerClientController().connectToGame(gamename, username);
 
-            // XXX: V2
-            // board.setCurrentPlayer(board.getPlayer(0));
+            String[] responseArr = response.split("-");
+            String boardJson = responseArr[2];
+            gameController = new GameController(LoadBoard.loadBoard(boardJson));
+
+            gameController.board.setMyGameRoomNumber(Integer.parseInt(responseArr[0]));
+            gameController.board.setMyPlayerNumber(Integer.parseInt(responseArr[1]));
+
             gameController.startProgrammingPhase();
-
-            roboRally.createBoardView(gameController);
-        }
+            gameController.startWaitingPhase();
     }
 
     public void saveGame() {
@@ -121,17 +102,12 @@ public class AppController extends PopUpBoxView implements Observer {
      * Whether the players have been instantiated or not. If they have not the popup box will appear and ask,
      * and set the game to programming phase but. But if there are not the game should just continue.
      */
-    public void loadGame() throws IOException, InterruptedException {
+    public void hostGame() throws IOException, InterruptedException {
 
         //gameController = new GameController(LoadBoard.loadBoard(new PopUpBoxView().gameInstance("Load game", "Game loaded")));
         String chosenBoard = new PopUpBoxView().loadGame(new ServerClientController().possibleBoards());
         gameController = new GameController(LoadBoard.loadBoard(new ServerClientController().getBoard(chosenBoard)));
 
-        if (gameController == null) {
-            System.out.println("GameController is null");
-            newGame();
-            return;
-        }
         System.out.println(gameController.board.getPlayers().size());
         if (gameController.board.getPlayers().size() == 0) {
             ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
@@ -145,10 +121,22 @@ public class AppController extends PopUpBoxView implements Observer {
                 player.setSpace(gameController.board.getSpace(i % gameController.board.width, i));
             }
 
+            String username = new PopUpBoxView().gameInstance("Enter username", "Confirm ");
+            String gamename = new PopUpBoxView().gameInstance("Enter gamename", "Confirm ");
+
+            String response = new ServerClientController().hostGame(gamename, username, chosenBoard, gameController.board.getPlayers().size());
+
+            String[] responseArr = response.split("-");
+
+            gameController.board.setMyGameRoomNumber(Integer.parseInt(responseArr[0]));
+            gameController.board.setMyPlayerNumber(Integer.parseInt(responseArr[1]));
+
             // XXX: V2
             // board.setCurrentPlayer(board.getPlayer(0));
             gameController.startProgrammingPhase();
+            gameController.startWaitingPhase();
         }
+
         switch (gameController.board.getPhase()) {
             case ACTIVATION -> gameController.finishProgrammingPhase();
             case PROGRAMMING, INITIALISATION -> gameController.startProgrammingPhase();

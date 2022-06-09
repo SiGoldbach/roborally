@@ -68,6 +68,9 @@ public class Board extends Subject {
 
     private String[] buttonOptions= {"Turn left","Turn right","Left","Right"};
 
+    private int myPlayerNumber;
+    private int myGameRoomNumber;
+
     public Player getWinner() {
         return winner;
     }
@@ -361,5 +364,20 @@ public class Board extends Subject {
 
     }
 
+    public int getMyPlayerNumber() {
+        return myPlayerNumber;
+    }
+
+    public void setMyPlayerNumber(int myPlayerNumber) {
+        this.myPlayerNumber = myPlayerNumber;
+    }
+
+    public int getMyGameRoomNumber() {
+        return myGameRoomNumber;
+    }
+
+    public void setMyGameRoomNumber(int myGameRoomNumber) {
+        this.myGameRoomNumber = myGameRoomNumber;
+    }
 
 }

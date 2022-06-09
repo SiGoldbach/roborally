@@ -56,5 +56,25 @@ public class ServerClientController {
 
     }
 
+    public String hostGame(String gameName, String username, String json, int playerCount) throws IOException, InterruptedException {
+        // Data is = hosting(always true here)-gamename-username-playercount-boardjson
+        String data = "true-" + gameName + "-" + username + "-" + playerCount + "-" + json;
 
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/gamehandler/connect"))
+                .POST(HttpRequest.BodyPublishers.ofString(data)).build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        return response.body();
+    }
+
+    public String connectToGame(String gameName, String username) throws IOException, InterruptedException {
+        // Data is = hosting(always true here)-gamename-username-playercount-boardjson
+        String data = "true-" + gameName + "-" + username;
+
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/gamehandler/connect"))
+                .POST(HttpRequest.BodyPublishers.ofString(data)).build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        return response.body();
+    }
 }

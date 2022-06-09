@@ -94,6 +94,10 @@ public class GameController {
         }
     }
 
+    public void startWaitingPhase() {
+        board.setPhase(Phase.WAITINGPLAYERS);
+    }
+
     // XXX: V2
     private CommandCard generateRandomCommandCard() {
         Command[] commands = Command.values();
