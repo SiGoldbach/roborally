@@ -195,6 +195,7 @@ public class GameController {
         board.setPhase(Phase.WAITPROGRAMMING);
 
         while(refresh()[0].equals("WaitingForOthersToLock"));
+        waitActivation();
     }
 
     /**
@@ -470,10 +471,10 @@ public class GameController {
     public void executeCommandOptionAndContinue(String choice) {
         board.setPhase(Phase.ACTIVATION);
         if (choice.equals("Left")) {
-            turnLeft(board.getCurrentPlayer());
+            turnLeft(board.getPlayer(board.getMyPlayerNumber()));
             board.setPhase(Phase.WAITENDTURN);
         } else if (choice.equals("Right")) {
-            turnRight(board.getCurrentPlayer());
+            turnRight(board.getPlayer(board.getMyPlayerNumber()));
             board.setPhase(Phase.WAITENDTURN);
         } else if (choice.equals("OK")) {
         } else if (choice.equals("Cool")) {
@@ -481,10 +482,6 @@ public class GameController {
         } else if (choice.equals("WOption endgame")) {
 
         }
-
-
-        this.continuePrograms();
-
     }
 
 
