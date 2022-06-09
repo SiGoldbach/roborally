@@ -81,7 +81,21 @@ public class ServerClientController {
 
     public String refresh(int gamenumber, int playernumber) throws IOException, InterruptedException {
         // Data is = gamenumber-playernumber-whatdo-bigdata
-        String data = gamenumber + "-" + (playernumber + 1) + "-" + "refresh" + "-" + "refresh";
+        int playerNumberCalc = playernumber - 1;
+        String data = gamenumber + "-" + playerNumberCalc + "-" + "refresh" + "-" + "refresh";
+
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/gamehandler/play"))
+                .POST(HttpRequest.BodyPublishers.ofString(data)).build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
+        return response.body();
+    }
+
+    public String lockin(int gamenumber, int playernumber, int registersToLock) throws IOException, InterruptedException {
+        // Data is = gamenumber-playernumber-whatdo-bigdata
+        int playerNumberCalc = playernumber - 1;
+        String data = gamenumber + "-" + playerNumberCalc + "-" + "lock" + "-" + registersToLock;
 
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/gamehandler/play"))
                 .POST(HttpRequest.BodyPublishers.ofString(data)).build();

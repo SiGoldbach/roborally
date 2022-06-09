@@ -45,6 +45,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 /**
  * ...
@@ -87,9 +88,14 @@ public class AppController extends PopUpBoxView implements Observer {
             gameController.board.setMyPlayerNumber(Integer.parseInt(responseArr[1]) - 1);
 
             gameController.startProgrammingPhase();
-            gameController.startWaitingPhase();
 
             roboRally.createBoardView(gameController);
+
+        try {
+            gameController.startWaitingPhase();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
     public void saveGame() {
@@ -146,7 +152,6 @@ public class AppController extends PopUpBoxView implements Observer {
             // XXX: V2
             // board.setCurrentPlayer(board.getPlayer(0));
             gameController.startProgrammingPhase();
-            gameController.startWaitingPhase();
         }
 
         switch (gameController.board.getPhase()) {
@@ -158,6 +163,11 @@ public class AppController extends PopUpBoxView implements Observer {
         // XXX needs to be implememted eventually
         // for now, we just create a new game
 
+        try {
+            gameController.startWaitingPhase();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
