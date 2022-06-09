@@ -125,8 +125,6 @@ public class GameController {
      */
     // XXX: V2
     public void finishProgrammingPhase() throws IOException, InterruptedException {
-        makeProgramFieldsInvisible();
-        makeProgramFieldsVisible(0);
         findAntenna();
         if (board.getAntennaSpace() != null) {
             board.setCurrentPlayer(findFirstPLayerToMoveRobot());
@@ -276,26 +274,26 @@ public class GameController {
     // XXX: V2
     private void continuePrograms() {
         executeNextStep();
+        System.out.println(board.getStep());
+        board.setStep(board.getStep() + 1);
     }
 
     // XXX: V2
     private void executeNextStep() {
         Player currentPlayer = board.getPlayer(board.getMyPlayerNumber());
         if (board.getPhase() == Phase.ACTIVATION && currentPlayer != null) {
-            int step = board.getStep();
-            if (step >= 0 && step < Player.NO_REGISTERS) {
-                CommandCard card = currentPlayer.getProgramField(step).getCard();
+            if (board.getStep() >= 0 && board.getStep() < Player.NO_REGISTERS) {
+                CommandCard card = currentPlayer.getProgramField(board.getStep()).getCard();
                 if (card != null) {
                     Command command = card.command;
                     executeCommand(currentPlayer, command);
                     if (card.command == Command.OPTION_LEFT_RIGHT) {
-                        board.getCurrentPlayer().getProgramField(step).setCard(null);
+                        board.getCurrentPlayer().getProgramField(board.getStep()).setCard(null);
                         return;
                     }
                 }
                 activateEOTActions();
                 activateEOTCPActions();
-                board.setStep(step++);
             } else {
                 // this should not happen
                 assert false;
