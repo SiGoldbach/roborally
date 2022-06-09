@@ -315,8 +315,10 @@ public class GameController {
                     Command command = card.command;
                     executeCommand(currentPlayer, command);
                 }
-                activateEOTActions();
-                activateEOTCPActions();
+                if(board.getMyPlayerNumber() == (board.getPlayersNumber() - 1)){
+                    activateEOTActions();
+                    activateEOTCPActions();
+                }
             } else {
                 // this should not happen
                 assert false;
