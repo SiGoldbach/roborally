@@ -45,6 +45,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 /**
  * ...
@@ -90,7 +91,11 @@ public class AppController extends PopUpBoxView implements Observer {
 
             roboRally.createBoardView(gameController);
 
+        try {
             gameController.startWaitingPhase();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
     public void saveGame() {
