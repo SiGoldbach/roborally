@@ -80,6 +80,8 @@ public class AppController extends PopUpBoxView implements Observer {
 
             gameController.startProgrammingPhase();
             gameController.startWaitingPhase();
+
+            roboRally.createBoardView(gameController);
     }
 
     public void saveGame() {
