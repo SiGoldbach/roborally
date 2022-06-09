@@ -105,7 +105,10 @@ abstract class subject{
 +void detach
 #void notifyChange
 }
-Class CommandCard
+class CommandCard {
++Command command
+
+}
 Class CommandCardField
 class Player{
 {static} +int NO_REGISTERS
@@ -117,35 +120,79 @@ class Player{
 -CommandCardField[] program
 -CommandCardField[] cards
 
-
-
-
 }
 class space{
 +Board board
 }
 interface viewObserver{
 #void update
+void update
 }
 
+class BoardView{
+-Board board
+-GridPane mainBoardPane
+-SpaceView[][] spaces
+-PlayersView playersView
+-Label statusLabel
+-SpaceEventHandler spaceEventHandler
++BoardView()
++void updateView()
 
-Class BoardView
-Class PlayersView
-Class PlayerView
+}
+class SpaceEventHandler{
++GameController gameController
++SpaceEventHandler()
++void handle()
+
+}
+class PlayerView {
+-Player player
+-VBox top
+-Label programLabel
+-GridPane programPane
+-Label cardsLabel
+-GridPane cardsPane
+-CardFieldView[] programCardViews
+-CardFieldView[] cardViews
+-VBox buttonPanel
+-VBox buttonPanel2
+-Button finishButton
+-Button executeButton
+-Button stepButton
+-Button winningButton
+-VBox playerInteractionPanel
+-GameController gameController
++PlayerView()
++void updateView()
+
+
+}
+Class PlayersView {
+-Board board
+-PlayerView[] playerViews
++PlayersView()
+}
 Class RoboRallyMenuBar
 Class SpaceView
 
+BoardView +-- "SpaceEventHandler"
 Checkpoint --|>  "FieldAction"
 FinishLine  --|> "FieldAction"
 GearSpace --|> "FieldAction"
 ConveyorBelt--|>"FieldAction"
-
+BoardView --|> "Vbox"
+BoardView ..|> "viewObserver"
+PlayerView ..|> "viewObserver"
+PlayerView --|> Tab
+PlayersView ..|> "viewObserver"
+PlayersView --|> TabPane
 space "..*"*--"1"Board
 space "1"*--"..*""FieldAction"
 
 GameController "1"*--"1"Board
 AppController "1"--*"1" GameController
 Command"1"*--"1"CommandCard
-
-subject<|..viewObserver
+CommandCard <|-- subject
+subject *-- viewObserver
 @enduml
