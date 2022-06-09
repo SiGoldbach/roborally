@@ -21,6 +21,7 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.PlayerPositionGenerator;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -103,7 +104,7 @@ public class GameController {
     public void startWaitingPhase() throws IOException, InterruptedException, ExecutionException {
         board.setPhase(Phase.WAITINGPLAYERS);
 
-        refresh("WaitingForPlayersToConnect");
+        while(refresh()[0].equals("WaitingForPlayersToConnect"));
         startProgrammingPhase();
     }
 
@@ -139,38 +140,48 @@ public class GameController {
         board.setStep(0);
     }
 
-    public void refresh(String msgToChange){
-        Boolean wait = true;
-        while(wait){
-            try {
-                Thread.sleep(333);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            String response = null;
-            try {
-                response = new ServerClientController().refresh(board.getMyGameRoomNumber(), board.getMyPlayerNumber());
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            String[] responseArr = response.split("-");
-            if(responseArr[0].equals(msgToChange)){
-                System.out.println("BIGWAITTIME");
-            }
-            else{
-                wait = false;
-            }
+    public String[] refresh() {
+        try {
+            Thread.sleep(333);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+
+        String response = null;
+        try {
+            response = new ServerClientController().refresh(board.getMyGameRoomNumber(), board.getMyPlayerNumber());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        String[] responseArr = response.split("-");
+        return responseArr;
     }
 
-    public void waitProgrammingPhase(){
+    public void waitActivation() {
+        board.setPhase(Phase.WAITACTIVATION);
+
+        while(!refresh()[0].equals("WaitingForOthersToPlayTurn"));
+
+        if(refresh()[0].equals("WaitingForYouToPlayTurn")){
+            try {
+                new PlayerPositionGenerator().updatePlayersPosition(refresh()[1], board);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else if(refresh()[0].equals("WaitingForYouToLock")){
+            startProgrammingPhase();
+        }
+
+    }
+
+    public void waitProgrammingPhase() {
         board.setPhase(Phase.WAITPROGRAMMING);
 
-        refresh("WaitingForOthersToLock");
+        while(refresh()[0].equals("WaitingForOthersToLock"));
     }
 
     /**
@@ -192,10 +203,7 @@ public class GameController {
             }
 
         }
-
-
         return false;
-
     }
 
     /**
@@ -251,6 +259,16 @@ public class GameController {
     public void executeStep() {
         board.setStepMode(true);
         continuePrograms();
+
+        try {
+            new ServerClientController().playturn(board.getMyGameRoomNumber(), board.getMyPlayerNumber(), new PlayerPositionGenerator().toString(board));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        waitActivation();
     }
 
     // XXX: V2

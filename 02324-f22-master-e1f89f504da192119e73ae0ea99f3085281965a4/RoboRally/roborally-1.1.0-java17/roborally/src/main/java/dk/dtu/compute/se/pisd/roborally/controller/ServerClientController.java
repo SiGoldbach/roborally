@@ -104,4 +104,17 @@ public class ServerClientController {
         System.out.println(response.body());
         return response.body();
     }
+
+    public String playturn(int gamenumber, int playernumber, String playPos) throws IOException, InterruptedException {
+        // Data is = gamenumber-playernumber-whatdo-bigdata
+        String data = gamenumber + "-" + playernumber + "-" + "playturn" + "-" + playPos;
+        System.out.println("LOCKIN" + data);
+
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/gamehandler/play"))
+                .POST(HttpRequest.BodyPublishers.ofString(data)).build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
+        return response.body();
+    }
 }
