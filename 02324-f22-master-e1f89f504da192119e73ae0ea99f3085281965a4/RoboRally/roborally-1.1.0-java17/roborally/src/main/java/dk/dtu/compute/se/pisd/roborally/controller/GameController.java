@@ -100,54 +100,12 @@ public class GameController {
         }
     }
 
-    public Future<String> waitForMe() throws InterruptedException {
-        CompletableFuture<String> completableFuture = new CompletableFuture<>();
-
-        Executors.newCachedThreadPool().submit(() -> {
-            while (true) {
-
-                try {
-                    Thread.sleep(250);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                String response = null;
-                try {
-                    response = new ServerClientController().refresh(board.getMyGameRoomNumber(), board.getMyPlayerNumber());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                String[] responseArr = response.split("-");
-                if (responseArr[0].equals("WaitingForPlayersToConnect")) {
-                    System.out.println("BIGWAITTIME");
-                } else {
-                    completableFuture.complete("NOWAIT");
-                    return null;
-                }
-            }
-        });
-
-        return completableFuture;
-    }
-
     public void startWaitingPhase() throws IOException, InterruptedException, ExecutionException {
         board.setPhase(Phase.WAITINGPLAYERS);
 
-        Future<String> completableFuture = waitForMe();
-
-        String result = completableFuture.get();
-        if(result == "NOWAIT"){
-            startProgrammingPhase();
-        }
-
-
-        /*
         while(board.getPhase() == Phase.WAITINGPLAYERS){
             try {
-                Thread.sleep(250);
+                Thread.sleep(333);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -162,7 +120,6 @@ public class GameController {
                 startProgrammingPhase();
             }
         }
-        */
     }
 
     // XXX: V2
