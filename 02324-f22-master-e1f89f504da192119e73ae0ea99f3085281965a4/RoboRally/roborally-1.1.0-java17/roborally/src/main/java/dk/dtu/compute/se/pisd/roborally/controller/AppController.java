@@ -107,7 +107,8 @@ public class AppController extends PopUpBoxView implements Observer {
 
         //gameController = new GameController(LoadBoard.loadBoard(new PopUpBoxView().gameInstance("Load game", "Game loaded")));
         String chosenBoard = new PopUpBoxView().loadGame(new ServerClientController().possibleBoards());
-        gameController = new GameController(LoadBoard.loadBoard(new ServerClientController().getBoard(chosenBoard)));
+        String boardJson = new ServerClientController().getBoard(chosenBoard);
+        gameController = new GameController(LoadBoard.loadBoard(boardJson));
 
         System.out.println(gameController.board.getPlayers().size());
         if (gameController.board.getPlayers().size() == 0) {
@@ -125,7 +126,7 @@ public class AppController extends PopUpBoxView implements Observer {
             String username = new PopUpBoxView().gameInstance("Enter username", "Confirm ");
             String gamename = new PopUpBoxView().gameInstance("Enter gamename", "Confirm ");
 
-            String response = new ServerClientController().hostGame(gamename, username, chosenBoard, gameController.board.getPlayers().size());
+            String response = new ServerClientController().hostGame(gamename, username, boardJson, gameController.board.getPlayers().size());
 
             String[] responseArr = response.split("-");
 
