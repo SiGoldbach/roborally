@@ -24,6 +24,8 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
+
 /**
  * ...
  *
@@ -94,8 +96,26 @@ public class GameController {
         }
     }
 
-    public void startWaitingPhase() {
+    public void startWaitingPhase() throws IOException, InterruptedException {
         board.setPhase(Phase.WAITINGPLAYERS);
+
+        while(board.getPhase() == Phase.WAITINGPLAYERS){
+            try {
+                Thread.sleep(250);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            String response = new ServerClientController().refresh(board.getMyGameRoomNumber(), board.getMyPlayerNumber());
+
+            String[] responseArr = response.split("-");
+            if(responseArr[0].equals("WaitingForPlayersToConnect")){
+                System.out.println("BIGWAITTIME");
+            }
+            else{
+                startProgrammingPhase();
+            }
+        }
     }
 
     // XXX: V2
