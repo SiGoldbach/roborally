@@ -10,29 +10,18 @@ import java.util.Arrays;
  * Class for putting players position into files and getting them of files again.
  */
 public class PlayerPositionGenerator {
-    public String toString(Board board) {
-        StringBuilder PlayerPositions = new StringBuilder();
+    public String toString(Board board){
+        StringBuilder PlayerPositions= new StringBuilder();
         for (int i = 0; i < board.getPlayers().size(); i++) {
-            Player p = board.getPlayers().get(i);
-            String temp = (p.getColor() + "," + p.getHeading() + "," + p.getSpace().x + "," + p.getSpace().y + "-");
+            Player p=board.getPlayers().get(i);
+            String temp=(p.getColor() + "," + p.getHeading() +","+ p.getSpace().x + "," + p.getSpace().y+",/");
             PlayerPositions.append(temp);
-
-
         }
-
-
         return PlayerPositions.toString();
-
     }
 
-    /**
-     * Method for rearranging players position from the string here no special checks are really needed.
-     * Since the toString never
-     *
-     * @param position
-     */
     public void updatePlayersPosition(String position, Board board) throws Exception {
-        String[] eachIndividualPlayer = position.split("-");
+        String[] eachIndividualPlayer = position.split("/");
         System.out.println(Arrays.toString(eachIndividualPlayer) + " Length: " + eachIndividualPlayer.length);
         if (board.getPlayers().size() != eachIndividualPlayer.length)
             throw new BoardAnPositionOutOfSyncException(board.getPlayers().size(), eachIndividualPlayer.length);
@@ -55,7 +44,6 @@ public class PlayerPositionGenerator {
                     p.setHeading(Heading.EAST);
                     break;
             }
-
         }
     }
 
@@ -64,8 +52,5 @@ public class PlayerPositionGenerator {
             System.out.println("Players on the board is: " + playersOnBoard + " Players on the server is: " + playersOnServer);
 
         }
-
     }
-
-
 }

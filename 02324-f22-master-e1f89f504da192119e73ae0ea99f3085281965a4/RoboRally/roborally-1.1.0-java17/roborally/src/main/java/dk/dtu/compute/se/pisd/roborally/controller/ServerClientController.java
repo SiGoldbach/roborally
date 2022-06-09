@@ -81,8 +81,8 @@ public class ServerClientController {
 
     public String refresh(int gamenumber, int playernumber) throws IOException, InterruptedException {
         // Data is = gamenumber-playernumber-whatdo-bigdata
-        int playerNumberCalc = playernumber - 1;
-        String data = gamenumber + "-" + playerNumberCalc + "-" + "refresh" + "-" + "refresh";
+        String data = gamenumber + "-" + playernumber + "-" + "refresh" + "-" + "refresh";
+        System.out.println("REFRESH" + data);
 
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/gamehandler/play"))
                 .POST(HttpRequest.BodyPublishers.ofString(data)).build();
@@ -94,8 +94,21 @@ public class ServerClientController {
 
     public String lockin(int gamenumber, int playernumber, int registersToLock) throws IOException, InterruptedException {
         // Data is = gamenumber-playernumber-whatdo-bigdata
-        int playerNumberCalc = playernumber - 1;
-        String data = gamenumber + "-" + playerNumberCalc + "-" + "lock" + "-" + registersToLock;
+        String data = gamenumber + "-" + playernumber + "-" + "lock" + "-" + registersToLock;
+        System.out.println("LOCKIN" + data);
+
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/gamehandler/play"))
+                .POST(HttpRequest.BodyPublishers.ofString(data)).build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
+        return response.body();
+    }
+
+    public String playturn(int gamenumber, int playernumber, String playPos) throws IOException, InterruptedException {
+        // Data is = gamenumber-playernumber-whatdo-bigdata
+        String data = gamenumber + "-" + playernumber + "-" + "playturn" + "-" + playPos;
+        System.out.println("LOCKIN-" + data);
 
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/gamehandler/play"))
                 .POST(HttpRequest.BodyPublishers.ofString(data)).build();
