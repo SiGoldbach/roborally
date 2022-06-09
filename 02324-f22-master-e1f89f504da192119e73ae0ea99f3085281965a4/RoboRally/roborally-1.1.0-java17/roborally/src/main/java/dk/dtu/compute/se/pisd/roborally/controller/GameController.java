@@ -161,7 +161,13 @@ public class GameController {
     public void waitActivation() {
         board.setPhase(Phase.WAITACTIVATION);
 
-        while(refresh()[0].equals("WaitingForOthersToPlayTurn"));
+        while(refresh()[0].equals("WaitingForOthersToPlayTurn")){
+            try {
+                new PlayerPositionGenerator().updatePlayersPosition(refresh()[1], board);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
         if(refresh()[0].equals("WaitingForYouToPlayTurn")){
             try {
@@ -172,6 +178,12 @@ public class GameController {
             board.setPhase(Phase.ACTIVATION);
         }
         else if(refresh()[0].equals("WaitingForYouToLock")){
+            try {
+                new PlayerPositionGenerator().updatePlayersPosition(refresh()[1], board);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             startProgrammingPhase();
         }
     }
@@ -266,12 +278,12 @@ public class GameController {
             e.printStackTrace();
         }
 
-        System.out.println("TEST IS SOMETHING SENT");
         try {
             new PlayerPositionGenerator().updatePlayersPosition(refresh()[1], board);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         waitActivation();
     }
 
