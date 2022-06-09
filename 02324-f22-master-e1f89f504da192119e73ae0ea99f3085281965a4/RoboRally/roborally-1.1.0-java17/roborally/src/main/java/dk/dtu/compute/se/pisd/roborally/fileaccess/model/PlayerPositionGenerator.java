@@ -14,14 +14,14 @@ public class PlayerPositionGenerator {
         StringBuilder PlayerPositions= new StringBuilder();
         for (int i = 0; i < board.getPlayers().size(); i++) {
             Player p=board.getPlayers().get(i);
-            String temp=(p.getColor() + "," + p.getHeading() +","+ p.getSpace().x + "," + p.getSpace().y+",-");
+            String temp=(p.getColor() + "," + p.getHeading() +","+ p.getSpace().x + "," + p.getSpace().y+",/");
             PlayerPositions.append(temp);
         }
         return PlayerPositions.toString();
     }
 
     public void updatePlayersPosition(String position, Board board) throws Exception {
-        String[] eachIndividualPlayer = position.split("-");
+        String[] eachIndividualPlayer = position.split("/");
         System.out.println(Arrays.toString(eachIndividualPlayer) + " Length: " + eachIndividualPlayer.length);
         if (board.getPlayers().size() != eachIndividualPlayer.length)
             throw new BoardAnPositionOutOfSyncException(board.getPlayers().size(), eachIndividualPlayer.length);
