@@ -2,18 +2,131 @@
 'https://plantuml.com/sequence-diagram
 
 
-Class AppController
-Class Checkpoint
-Abstract Class "FieldAction"
-Class FinishLine
-Class GameController
+class AppController{
+-List<Integer> PLAYER_NUMBER_OPTIONS
+-List<String> PLAYER_COLORS
+
+}
+Class Checkpoint{
+-int checkpointsRequired
+}
+Abstract Class "FieldAction"{
++boolean doAction()
+}
+Class FinishLine{
+
+}
+class GameController{
++Board board
++ void startProgrammingPhase()
+-commandCard generateRandomCommandCard()
++void finishProgrammingPhase()
+-void makeProgramFieldsVisible()
+-void makeProgramFieldsInvisible()
++void executePrograms()
++void executeStep()
++void continuePrograms()
+-void executeNextStep()
+-void executeCommand()
++void moveForward()
++void moveForward()
++void fastForward()
++void turnRight()
++void turnLeft()
++void leftOrRight()
++void uTurn()
++void moveThree()
++void moveBack()
++void executeCommandAndContinue()
++boolean moveCards()
+~void moveToSpace
+-void activateEOPActions
+-void activateCPEOPActions
+
+}
+class impossibleMoveException{
+-Player player
+-Space space
+-Heading heading
+
+}
+class GearSpace{
+-boolean direction
+}
+class ConveyorBelt{
+-Heading heading
+}
 
 
-Class Board
-Class Command
+class Board{
+-int checkpointAmount;
+-int width
+-int height
+-String boardName
+-Integer gameId
+-int step
++void setGameId()
++void addCP()
++Space getSpace()
++int getPlayersNumbers()
++Space getNeighbour
++String getStatusMessage()
++int counter
+}
+enum phase{
+PROGRAMMING
+ACTIVATION
+INITIALIZATION
+PLAYER-INTERACTION
+}
+enum Heading{
+NORTH
+WEST
+SOUTH
+EAST
+}
+enum Command{
+FORWARD
+RIGHT
+LEFT
+FAST_FORWARD
+U_TURN
+MOVE_THREE
+MOVE_BACK
+OPTION_LEFT_RIGHT
++String displayName
+-List<Command> options
++boolean isInteractive()
++List<Command> getOptions()
+
+}
+abstract class subject{
++void attach
++void detach
+#void notifyChange
+}
 Class CommandCard
 Class CommandCardField
-Class Player
+class Player{
+{static} +int NO_REGISTERS
+{static} +int NO_CARDS
++Board board
+-String name
+-String color
+-Heading heading
+-CommandCardField[] program
+-CommandCardField[] cards
+
+
+
+
+}
+class space{
++Board board
+}
+interface viewObserver{
+#void update
+}
 
 
 Class BoardView
@@ -22,10 +135,17 @@ Class PlayerView
 Class RoboRallyMenuBar
 Class SpaceView
 
-Checkpoint "1..*"--|> "1   " "FieldAction"
-FinishLine "1   " --|> "1   ""FieldAction"
-AppController "1   "--|>"1   " GameController
-SpaceView "1   "--|>"1   " "FieldAction"
+Checkpoint --|>  "FieldAction"
+FinishLine  --|> "FieldAction"
+GearSpace --|> "FieldAction"
+ConveyorBelt--|>"FieldAction"
 
+space "..*"*--"1"Board
+space "1"*--"..*""FieldAction"
 
+GameController "1"*--"1"Board
+AppController "1"--*"1" GameController
+Command"1"*--"1"CommandCard
+
+subject<|..viewObserver
 @enduml
