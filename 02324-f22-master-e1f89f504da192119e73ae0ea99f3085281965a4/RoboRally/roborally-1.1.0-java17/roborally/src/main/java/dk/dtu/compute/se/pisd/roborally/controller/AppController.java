@@ -84,7 +84,7 @@ public class AppController extends PopUpBoxView implements Observer {
             }
 
             gameController.board.setMyGameRoomNumber(Integer.parseInt(responseArr[0]));
-            gameController.board.setMyPlayerNumber(Integer.parseInt(responseArr[1]));
+            gameController.board.setMyPlayerNumber(Integer.parseInt(responseArr[1]) - 1);
 
             gameController.startProgrammingPhase();
             gameController.startWaitingPhase();
@@ -141,7 +141,7 @@ public class AppController extends PopUpBoxView implements Observer {
             String[] responseArr = response.split("-");
 
             gameController.board.setMyGameRoomNumber(Integer.parseInt(responseArr[0]));
-            gameController.board.setMyPlayerNumber(Integer.parseInt(responseArr[1]));
+            gameController.board.setMyPlayerNumber(Integer.parseInt(responseArr[1])  - 1);
 
             // XXX: V2
             // board.setCurrentPlayer(board.getPlayer(0));
