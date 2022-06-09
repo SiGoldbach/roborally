@@ -163,18 +163,19 @@ public class GameController {
     public void waitActivation() {
         board.setPhase(Phase.WAITACTIVATION);
 
+        while(refresh()[0].equals("WaitingForOthersToPlayTurn"));
+
         if(refresh()[0].equals("WaitingForYouToPlayTurn")){
             try {
                 new PlayerPositionGenerator().updatePlayersPosition(refresh()[1], board);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            board.setPhase(Phase.ACTIVATION);
         }
         else if(refresh()[0].equals("WaitingForYouToLock")){
             startProgrammingPhase();
         }
-
-        while(refresh()[0].equals("WaitingForOthersToPlayTurn"));
     }
 
     public void waitProgrammingPhase() {
