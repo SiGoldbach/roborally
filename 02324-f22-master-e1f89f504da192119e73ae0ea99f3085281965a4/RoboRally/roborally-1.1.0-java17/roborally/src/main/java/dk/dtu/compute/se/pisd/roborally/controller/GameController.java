@@ -273,14 +273,12 @@ public class GameController {
 
     // XXX: V2
     private void continuePrograms() {
-        do {
-            executeNextStep();
-        } while (board.getPhase() == Phase.ACTIVATION && !board.isStepMode());
+        executeNextStep();
     }
 
     // XXX: V2
     private void executeNextStep() {
-        Player currentPlayer = board.getCurrentPlayer();
+        Player currentPlayer = board.getPlayer(board.getMyPlayerNumber());
         if (board.getPhase() == Phase.ACTIVATION && currentPlayer != null) {
             int step = board.getStep();
             if (step >= 0 && step < Player.NO_REGISTERS) {
@@ -293,23 +291,9 @@ public class GameController {
                         return;
                     }
                 }
-                int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
-                if (nextPlayerNumber < board.getPlayersNumber()) {
-                    board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
-                } else {
-                    activateEOTActions();
-                    activateEOTCPActions();
-                    step++;
-                    if (step < Player.NO_REGISTERS) {
-                        makeProgramFieldsVisible(step);
-                        board.setStep(step);
-                        board.setCurrentPlayer(board.getPlayer(0));
-
-                    } else {
-                        startProgrammingPhase();
-                    }
-
-                }
+                activateEOTActions();
+                activateEOTCPActions();
+                step++;
             } else {
                 // this should not happen
                 assert false;
