@@ -147,7 +147,6 @@ public class AppController extends PopUpBoxView implements Observer {
             // XXX: V2
             // board.setCurrentPlayer(board.getPlayer(0));
             gameController.startProgrammingPhase();
-            gameController.startWaitingPhase();
         }
 
         switch (gameController.board.getPhase()) {
@@ -159,6 +158,7 @@ public class AppController extends PopUpBoxView implements Observer {
         // XXX needs to be implememted eventually
         // for now, we just create a new game
 
+        gameController.startWaitingPhase();
     }
 
     /**
