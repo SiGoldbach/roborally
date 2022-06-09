@@ -72,6 +72,7 @@ public class AppController extends PopUpBoxView implements Observer {
 
             String[] responseArr = response.split("-");
             String boardJson = responseArr[2];
+            System.out.println(boardJson);
             gameController = new GameController(LoadBoard.loadBoard(boardJson));
 
             gameController.board.setMyGameRoomNumber(Integer.parseInt(responseArr[0]));
