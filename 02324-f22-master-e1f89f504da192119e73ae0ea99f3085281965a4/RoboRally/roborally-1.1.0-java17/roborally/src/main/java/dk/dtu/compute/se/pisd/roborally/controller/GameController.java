@@ -163,8 +163,6 @@ public class GameController {
     public void waitActivation() {
         board.setPhase(Phase.WAITACTIVATION);
 
-        while(!refresh()[0].equals("WaitingForOthersToPlayTurn"));
-
         if(refresh()[0].equals("WaitingForYouToPlayTurn")){
             try {
                 new PlayerPositionGenerator().updatePlayersPosition(refresh()[1], board);
@@ -176,6 +174,7 @@ public class GameController {
             startProgrammingPhase();
         }
 
+        while(refresh()[0].equals("WaitingForOthersToPlayTurn"));
     }
 
     public void waitProgrammingPhase() {
@@ -267,6 +266,8 @@ public class GameController {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        System.out.println("TEST IS SOMETHING SENT");
 
         waitActivation();
     }
@@ -408,12 +409,8 @@ public class GameController {
     public void leftOrRight(@NotNull Player player) {
         String[] buttonOptions = {"Turn left", "Turn right", "Left", "Right"};
         board.setButtonOptions(buttonOptions);
-        moveForward(board.getCurrentPlayer());
-        moveBack(board.getCurrentPlayer());
 
         board.setPhase(Phase.PLAYER_INTERACTION);
-
-
     }
 
     /**
