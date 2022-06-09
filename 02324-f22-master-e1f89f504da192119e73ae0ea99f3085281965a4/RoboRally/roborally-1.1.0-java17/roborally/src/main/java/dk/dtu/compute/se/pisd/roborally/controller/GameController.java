@@ -166,7 +166,9 @@ public class GameController {
 
         while(refresh()[0].equals("WaitingForOthersToPlayTurn")){
             try {
-                new PlayerPositionGenerator().updatePlayersPosition(refresh()[1], board);
+                if(refresh().length >= 2){
+                    new PlayerPositionGenerator().updatePlayersPosition(refresh()[1], board);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -174,7 +176,9 @@ public class GameController {
 
         if(refresh()[0].equals("WaitingForYouToPlayTurn")){
             try {
-                new PlayerPositionGenerator().updatePlayersPosition(refresh()[1], board);
+                if(refresh().length >= 2){
+                    new PlayerPositionGenerator().updatePlayersPosition(refresh()[1], board);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -182,7 +186,9 @@ public class GameController {
         }
         else if(refresh()[0].equals("WaitingForYouToLock")){
             try {
-                new PlayerPositionGenerator().updatePlayersPosition(refresh()[1], board);
+                if(refresh().length >= 2){
+                    new PlayerPositionGenerator().updatePlayersPosition(refresh()[1], board);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
