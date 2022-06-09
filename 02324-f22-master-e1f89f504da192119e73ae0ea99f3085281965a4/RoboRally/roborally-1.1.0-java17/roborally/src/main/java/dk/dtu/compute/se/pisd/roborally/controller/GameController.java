@@ -260,16 +260,7 @@ public class GameController {
     }
 
     // XXX: V2
-    public void executePrograms() {
-        board.setStepMode(false);
-        continuePrograms();
-    }
-
-    // XXX: V2
-    public void executeStep() {
-        board.setStepMode(true);
-        continuePrograms();
-
+    public void turnFinished() {
         try {
             new ServerClientController().playturn(board.getMyGameRoomNumber(), board.getMyPlayerNumber(), new PlayerPositionGenerator().toString(board));
         } catch (IOException e) {
@@ -285,6 +276,12 @@ public class GameController {
         }
 
         waitActivation();
+    }
+
+    // XXX: V2
+    public void executeStep() {
+        board.setStepMode(true);
+        continuePrograms();
     }
 
     // XXX: V2
