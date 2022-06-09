@@ -108,7 +108,7 @@ public class ServerClientController {
     public String playturn(int gamenumber, int playernumber, String playPos) throws IOException, InterruptedException {
         // Data is = gamenumber-playernumber-whatdo-bigdata
         String data = gamenumber + "-" + playernumber + "-" + "playturn" + "-" + playPos;
-        System.out.println("LOCKIN" + data);
+        System.out.println("LOCKIN-" + data);
 
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/gamehandler/play"))
                 .POST(HttpRequest.BodyPublishers.ofString(data)).build();
