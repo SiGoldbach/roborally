@@ -46,6 +46,15 @@ public class ServerClientController {
 
 
     }
+    public String startGame() throws IOException, InterruptedException {
+        String board="true-name2-player1-3";
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/gamehandler/connect"))
+                .POST(HttpRequest.BodyPublishers.ofString(board)).build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        return response.body();
+
+    }
 
 
 }
