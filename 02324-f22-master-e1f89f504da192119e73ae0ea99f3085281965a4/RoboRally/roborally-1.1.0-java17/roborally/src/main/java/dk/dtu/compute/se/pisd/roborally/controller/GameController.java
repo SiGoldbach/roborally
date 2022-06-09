@@ -123,6 +123,7 @@ public class GameController {
                     System.out.println("BIGWAITTIME");
                 } else {
                     startProgrammingPhase();
+                    break;
                 }
             }
         });
