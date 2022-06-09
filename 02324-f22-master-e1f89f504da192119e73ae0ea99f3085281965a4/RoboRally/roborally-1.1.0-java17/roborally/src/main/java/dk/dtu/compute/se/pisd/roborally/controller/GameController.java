@@ -289,6 +289,8 @@ public class GameController {
         executeNextStep();
         System.out.println(board.getStep());
         board.setStep(board.getStep() + 1);
+
+        board.setPhase(Phase.WAITENDTURN);
     }
 
     // XXX: V2

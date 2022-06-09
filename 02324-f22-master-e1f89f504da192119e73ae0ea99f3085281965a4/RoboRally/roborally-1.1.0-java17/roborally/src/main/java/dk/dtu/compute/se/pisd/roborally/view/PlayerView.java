@@ -197,11 +197,10 @@ public class PlayerView extends Tab implements ViewObserver {
                         stepButton.setDisable(true);
                         break;
 
-                    case WAITACTIVATION:
-                    case WAITPROGRAMMING:
-                        finishButton.setDisable(true);
+                    case WAITENDTURN:
+                        finishButton.setDisable(false);
                         finishTurnBtn.setDisable(true);
-                        stepButton.setDisable(true);
+                        stepButton.setDisable(false);
                         break;
 
                     case ACTIVATION:
@@ -210,6 +209,8 @@ public class PlayerView extends Tab implements ViewObserver {
                         stepButton.setDisable(false);
                         break;
 
+                    case WAITACTIVATION:
+                    case WAITPROGRAMMING:
                     default:
                         finishButton.setDisable(true);
                         finishTurnBtn.setDisable(true);
