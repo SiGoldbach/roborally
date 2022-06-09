@@ -290,7 +290,9 @@ public class GameController {
         System.out.println(board.getStep());
         board.setStep(board.getStep() + 1);
 
-        board.setPhase(Phase.WAITENDTURN);
+        if(board.getPhase() != Phase.PLAYER_INTERACTION){
+            board.setPhase(Phase.WAITENDTURN);
+        }
     }
 
     // XXX: V2
@@ -470,8 +472,10 @@ public class GameController {
         board.setPhase(Phase.ACTIVATION);
         if (choice.equals("Left")) {
             turnLeft(board.getCurrentPlayer());
+            board.setPhase(Phase.WAITENDTURN);
         } else if (choice.equals("Right")) {
             turnRight(board.getCurrentPlayer());
+            board.setPhase(Phase.WAITENDTURN);
         } else if (choice.equals("OK")) {
         } else if (choice.equals("Cool")) {
         } else if (choice.equals("WOption continue")) {
