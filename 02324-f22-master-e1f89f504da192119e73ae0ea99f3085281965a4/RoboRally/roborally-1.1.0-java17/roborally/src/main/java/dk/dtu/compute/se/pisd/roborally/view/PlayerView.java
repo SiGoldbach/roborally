@@ -198,9 +198,9 @@ public class PlayerView extends Tab implements ViewObserver {
                         break;
 
                     case WAITENDTURN:
-                        finishButton.setDisable(false);
-                        finishTurnBtn.setDisable(true);
-                        stepButton.setDisable(false);
+                        finishButton.setDisable(true);
+                        finishTurnBtn.setDisable(false);
+                        stepButton.setDisable(true);
                         break;
 
                     case ACTIVATION:
