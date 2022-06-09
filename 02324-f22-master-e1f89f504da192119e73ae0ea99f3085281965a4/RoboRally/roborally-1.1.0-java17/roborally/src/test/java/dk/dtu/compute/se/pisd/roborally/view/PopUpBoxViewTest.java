@@ -1,6 +1,9 @@
 package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.roborally.controller.ServerClientController;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.PlayerPositionGenerator;
+import dk.dtu.compute.se.pisd.roborally.model.Board;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -29,6 +32,14 @@ public class PopUpBoxViewTest {
         String val = new PopUpBoxView().loadGame(new ServerClientController().possibleBoards());
         String board = new ServerClientController().getBoard(val);
         System.out.println(board);
+
+    }
+    @Test
+    void testingSomeServerLogic() throws IOException, InterruptedException {
+        String val = new PopUpBoxView().loadGame(new ServerClientController().possibleBoards());
+        String board = new ServerClientController().getBoard(val);
+        Board toTest= LoadBoard.loadBoard(board);
+        System.out.println(new PlayerPositionGenerator().toString(toTest));
 
     }
 
