@@ -69,7 +69,7 @@ public class ServerClientController {
 
     public String connectToGame(String gameName, String username) throws IOException, InterruptedException {
         // Data is = hosting(always true here)-gamename-username-playercount-boardjson
-        String data = "true-" + gameName + "-" + username;
+        String data = "false-" + gameName + "-" + username;
 
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/gamehandler/connect"))
                 .POST(HttpRequest.BodyPublishers.ofString(data)).build();
