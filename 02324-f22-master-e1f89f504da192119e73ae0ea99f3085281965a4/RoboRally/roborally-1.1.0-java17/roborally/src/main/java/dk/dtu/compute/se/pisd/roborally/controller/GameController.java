@@ -267,7 +267,11 @@ public class GameController {
         }
 
         System.out.println("TEST IS SOMETHING SENT");
-
+        try {
+            new PlayerPositionGenerator().updatePlayersPosition(refresh()[1], board);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         waitActivation();
     }
 
