@@ -103,23 +103,8 @@ public class GameController {
     public void startWaitingPhase() throws IOException, InterruptedException, ExecutionException {
         board.setPhase(Phase.WAITINGPLAYERS);
 
-        while(board.getPhase() == Phase.WAITINGPLAYERS){
-            try {
-                Thread.sleep(333);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            String response = new ServerClientController().refresh(board.getMyGameRoomNumber(), board.getMyPlayerNumber());
-
-            String[] responseArr = response.split("-");
-            if(responseArr[0].equals("WaitingForPlayersToConnect")){
-                System.out.println("BIGWAITTIME");
-            }
-            else{
-                startProgrammingPhase();
-            }
-        }
+        refresh("WaitingForPlayersToConnect");
+        startProgrammingPhase();
     }
 
     // XXX: V2
@@ -138,7 +123,7 @@ public class GameController {
      * in the player interaction phase.
      */
     // XXX: V2
-    public void finishProgrammingPhase() {
+    public void finishProgrammingPhase() throws IOException, InterruptedException {
         makeProgramFieldsInvisible();
         makeProgramFieldsVisible(0);
         findAntenna();
@@ -147,8 +132,45 @@ public class GameController {
         } else {
             board.setCurrentPlayer(board.getPlayer(0));
         }
+        new ServerClientController().lockin(board.getMyGameRoomNumber(), board.getMyPlayerNumber(), board.getPlayer(board.getMyPlayerNumber()).getTotalRegisters());
+
+        waitProgrammingPhase();
         board.setPhase(Phase.ACTIVATION);
         board.setStep(0);
+    }
+
+    public void refresh(String msgToChange){
+        Boolean wait = true;
+        while(wait){
+            try {
+                Thread.sleep(333);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            String response = null;
+            try {
+                response = new ServerClientController().refresh(board.getMyGameRoomNumber(), board.getMyPlayerNumber());
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            String[] responseArr = response.split("-");
+            if(responseArr[0].equals(msgToChange)){
+                System.out.println("BIGWAITTIME");
+            }
+            else{
+                wait = false;
+            }
+        }
+    }
+
+    public void waitProgrammingPhase(){
+        board.setPhase(Phase.WAITPROGRAMMING);
+
+        refresh("WaitingForOthersToLock");
     }
 
     /**

@@ -32,6 +32,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
+
 /**
  * ...
  *
@@ -93,7 +95,15 @@ public class PlayerView extends Tab implements ViewObserver {
         //      refactored.
 
         finishButton = new Button("Finish Programming");
-        finishButton.setOnAction(e -> gameController.finishProgrammingPhase());
+        finishButton.setOnAction(e -> {
+            try {
+                gameController.finishProgrammingPhase();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+        });
 
         executeButton = new Button("Execute Program");
         executeButton.setOnAction(e -> gameController.executePrograms());

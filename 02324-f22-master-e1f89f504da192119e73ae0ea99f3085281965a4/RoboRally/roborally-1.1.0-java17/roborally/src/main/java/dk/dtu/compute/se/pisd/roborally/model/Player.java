@@ -81,6 +81,16 @@ public class Player extends Subject {
         return name;
     }
 
+    public int getTotalRegisters(){
+        int count = 0;
+        for (int i = 0; i < program.length; i++) {
+            if(program[i] != null){
+                count++;
+            }
+        }
+        return count;
+    }
+
     public void setName(String name) {
         if (name != null && !name.equals(this.name)) {
             this.name = name;
