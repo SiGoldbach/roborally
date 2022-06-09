@@ -25,6 +25,8 @@ import dk.dtu.compute.se.pisd.roborally.model.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executors;
 
 /**
  * ...
@@ -99,6 +101,34 @@ public class GameController {
     public void startWaitingPhase() throws IOException, InterruptedException {
         board.setPhase(Phase.WAITINGPLAYERS);
 
+        Executors.newCachedThreadPool().submit(() -> {
+            while (true) {
+
+                try {
+                    Thread.sleep(250);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                String response = null;
+                try {
+                    response = new ServerClientController().refresh(board.getMyGameRoomNumber(), board.getMyPlayerNumber());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                String[] responseArr = response.split("-");
+                if (responseArr[0].equals("WaitingForPlayersToConnect")) {
+                    System.out.println("BIGWAITTIME");
+                } else {
+                    startProgrammingPhase();
+                }
+            }
+        });
+
+
+        /*
         while(board.getPhase() == Phase.WAITINGPLAYERS){
             try {
                 Thread.sleep(250);
@@ -116,6 +146,7 @@ public class GameController {
                 startProgrammingPhase();
             }
         }
+        */
     }
 
     // XXX: V2
@@ -244,7 +275,7 @@ public class GameController {
                 if (card != null) {
                     Command command = card.command;
                     executeCommand(currentPlayer, command);
-                    if(card.command==Command.OPTION_LEFT_RIGHT){
+                    if (card.command == Command.OPTION_LEFT_RIGHT) {
                         board.getCurrentPlayer().getProgramField(step).setCard(null);
                         return;
                     }
@@ -429,13 +460,11 @@ public class GameController {
      */
     public void executeCommandOptionAndContinue(String choice) {
         board.setPhase(Phase.ACTIVATION);
-        if (choice.equals("Left")){
+        if (choice.equals("Left")) {
             turnLeft(board.getCurrentPlayer());
-        }
-        else if (choice.equals("Right")){
+        } else if (choice.equals("Right")) {
             turnRight(board.getCurrentPlayer());
-        }
-        else if (choice.equals("OK")) {
+        } else if (choice.equals("OK")) {
         } else if (choice.equals("Cool")) {
         } else if (choice.equals("WOption continue")) {
         } else if (choice.equals("WOption endgame")) {
