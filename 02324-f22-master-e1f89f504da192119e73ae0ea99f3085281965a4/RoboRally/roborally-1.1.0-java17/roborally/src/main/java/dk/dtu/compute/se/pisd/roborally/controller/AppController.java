@@ -163,7 +163,11 @@ public class AppController extends PopUpBoxView implements Observer {
         // XXX needs to be implememted eventually
         // for now, we just create a new game
 
-        gameController.startWaitingPhase();
+        try {
+            gameController.startWaitingPhase();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
