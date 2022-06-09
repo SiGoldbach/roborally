@@ -13,7 +13,6 @@ public class PopUpBoxView {
         return getSaveMessage;
     }
 
-
     public String loadGame(List<String> loadedGames){
         String[] games = new String[loadedGames.size()];
         loadedGames.toArray(games);
@@ -28,10 +27,19 @@ public class PopUpBoxView {
         return getGame;
     }
 
-
-
-
-
+    public String leftOrRight(List<String> leftOrRightCmd){
+        String[] options = new String[leftOrRightCmd.size()];
+        leftOrRightCmd.toArray(options);
+        String getGame = (String) JOptionPane.showInputDialog(
+                null,
+                "Choose an option",
+                "WHICH DIRECTION??",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                options[options.length-1]);
+        return getGame;
+    }
 
 
 }

@@ -23,9 +23,12 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.PlayerPositionGenerator;
 import dk.dtu.compute.se.pisd.roborally.model.*;
+import dk.dtu.compute.se.pisd.roborally.view.PopUpBoxView;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
@@ -304,13 +307,9 @@ public class GameController {
                 if (card != null) {
                     Command command = card.command;
                     executeCommand(currentPlayer, command);
-                    if (card.command == Command.OPTION_LEFT_RIGHT) {
-                        board.getCurrentPlayer().getProgramField(board.getStep()).setCard(null);
-                        return;
-                    }
                 }
-                //activateEOTActions();
-                //activateEOTCPActions();
+                activateEOTActions();
+                activateEOTCPActions();
             } else {
                 // this should not happen
                 assert false;
@@ -342,7 +341,7 @@ public class GameController {
                     this.fastForward(player);
                     break;
                 case OPTION_LEFT_RIGHT:
-                    this.leftOrRight(player);
+                    executeCommandOptionAndContinue(new PopUpBoxView().leftOrRight(Arrays.asList("Left", "Right")));
                     break;
                 case U_TURN:
                     this.uturn(player);
