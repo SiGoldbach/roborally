@@ -308,8 +308,8 @@ public class GameController {
                         return;
                     }
                 }
-                activateEOTActions();
-                activateEOTCPActions();
+                //activateEOTActions();
+                //activateEOTCPActions();
             } else {
                 // this should not happen
                 assert false;
