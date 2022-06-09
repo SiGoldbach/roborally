@@ -81,7 +81,7 @@ public class ServerClientController {
 
     public String refresh(int gamenumber, int playernumber) throws IOException, InterruptedException {
         // Data is = gamenumber-playernumber-whatdo-bigdata
-        String data = gamenumber + "-" + (playernumber + 1) + "-" + "refresh" + "-" + "refresh";
+        String data = gamenumber + "-" + (playernumber - 1) + "-" + "refresh" + "-" + "refresh";
 
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/gamehandler/play"))
                 .POST(HttpRequest.BodyPublishers.ofString(data)).build();
