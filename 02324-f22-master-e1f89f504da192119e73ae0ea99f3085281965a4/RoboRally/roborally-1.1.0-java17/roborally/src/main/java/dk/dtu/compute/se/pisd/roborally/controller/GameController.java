@@ -295,7 +295,7 @@ public class GameController {
                 }
                 activateEOTActions();
                 activateEOTCPActions();
-                step++;
+                board.setStep(step++);
             } else {
                 // this should not happen
                 assert false;
