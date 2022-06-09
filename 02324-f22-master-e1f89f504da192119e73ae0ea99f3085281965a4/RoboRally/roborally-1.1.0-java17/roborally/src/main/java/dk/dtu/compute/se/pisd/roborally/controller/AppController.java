@@ -71,9 +71,17 @@ public class AppController extends PopUpBoxView implements Observer {
             String response = new ServerClientController().connectToGame(gamename, username);
 
             String[] responseArr = response.split("-");
-            String boardJson = responseArr[2];
+
+            String boardJson = responseArr[3];
             System.out.println("JSON " + boardJson);
             gameController = new GameController(LoadBoard.loadBoard(boardJson));
+
+            int totalPlayers = Integer.parseInt(responseArr[2]);
+            for (int i = 0; i < totalPlayers; i++) {
+                Player player = new Player(gameController.board, PLAYER_COLORS.get(i), "Player " + (i + 1));
+                gameController.board.addPlayer(player);
+                player.setSpace(gameController.board.getSpace(i % gameController.board.width, i));
+            }
 
             gameController.board.setMyGameRoomNumber(Integer.parseInt(responseArr[0]));
             gameController.board.setMyPlayerNumber(Integer.parseInt(responseArr[1]));
@@ -144,7 +152,6 @@ public class AppController extends PopUpBoxView implements Observer {
         switch (gameController.board.getPhase()) {
             case ACTIVATION -> gameController.finishProgrammingPhase();
             case PROGRAMMING, INITIALISATION -> gameController.startProgrammingPhase();
-
         }
 
         roboRally.createBoardView(gameController);
