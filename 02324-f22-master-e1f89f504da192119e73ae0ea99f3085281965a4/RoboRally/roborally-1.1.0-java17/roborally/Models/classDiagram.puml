@@ -13,8 +13,8 @@ Class Checkpoint{
 Abstract Class "FieldAction"{
 +boolean doAction()
 }
-Class FinishLine{
-
+class FinishLine{
++doAction()
 }
 class GameController{
 +Board board
@@ -109,7 +109,13 @@ class CommandCard {
 +Command command
 
 }
-Class CommandCardField
+class CommandCardField {
++Player player
+-CommandCard card
+-visible
++CommandCardField()
+
+}
 class Player{
 {static} +int NO_REGISTERS
 {static} +int NO_CARDS
@@ -123,6 +129,8 @@ class Player{
 }
 class space{
 +Board board
++Space()
+~void playerChanged()
 }
 interface viewObserver{
 #void update
@@ -168,31 +176,41 @@ class PlayerView {
 
 
 }
-Class PlayersView {
+class PlayersView {
 -Board board
 -PlayerView[] playerViews
 +PlayersView()
 }
-Class RoboRallyMenuBar
-Class SpaceView
+class RoboRallyMenuBar {
++RoboRallyMenuBar()
+-AppController appController
+-Menu controlMenu
+-MenuItem saveGame
+-MenuItem newGame
+-MenuItem loadGame
+-MenuItem stopGame
+-MenuItem exitApp
++void update()
+}
+class SpaceView {
+
+}
 
 BoardView +-- "SpaceEventHandler"
 Checkpoint --|>  "FieldAction"
 FinishLine  --|> "FieldAction"
 GearSpace --|> "FieldAction"
 ConveyorBelt--|>"FieldAction"
-BoardView --|> "Vbox"
 BoardView ..|> "viewObserver"
 PlayerView ..|> "viewObserver"
-PlayerView --|> Tab
 PlayersView ..|> "viewObserver"
-PlayersView --|> TabPane
 space "..*"*--"1"Board
 space "1"*--"..*""FieldAction"
-
 GameController "1"*--"1"Board
 AppController "1"--*"1" GameController
 Command"1"*--"1"CommandCard
 CommandCard <|-- subject
 subject *-- viewObserver
+
+FinishLine --|> "FieldAction"
 @enduml
