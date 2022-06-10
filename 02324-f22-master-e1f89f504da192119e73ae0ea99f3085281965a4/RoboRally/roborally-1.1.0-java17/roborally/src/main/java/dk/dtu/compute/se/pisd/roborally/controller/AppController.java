@@ -78,6 +78,8 @@ public class AppController extends PopUpBoxView implements Observer {
 
             String serverResponse = new ServerClientController().connectToGame(gamename, username);
 
+            System.out.println("SERVERRESPONSE : " + serverResponse);
+
             String[] serverResponseArr = serverResponse.split("-");
 
             String boardJson = serverResponseArr[3];
@@ -86,6 +88,7 @@ public class AppController extends PopUpBoxView implements Observer {
 
             int totalPlayers = Integer.parseInt(serverResponseArr[2]);
             for (int i = 0; i < totalPlayers; i++) {
+                System.out.println("Player color : " + i);
                 Player player = new Player(gameController.board, PLAYER_COLORS.get(i), "Player " + (i + 1));
                 gameController.board.addPlayer(player);
                 player.setSpace(gameController.board.getSpace(i % gameController.board.width, i));
