@@ -368,7 +368,7 @@ public class GameController {
                     this.fastForward(player);
                     break;
                 case OPTION_LEFT_RIGHT:
-                    executeCommandOptionAndContinue(new PopUpBoxView().leftOrRight(Arrays.asList("Left", "Right")));
+                    executeCommandOptionAndContinue(new PopUpBoxView().sliderChoice("Choose an option", "Which direction?", Arrays.asList("Left", "Right")));
                     break;
                 case U_TURN:
                     this.uturn(player);

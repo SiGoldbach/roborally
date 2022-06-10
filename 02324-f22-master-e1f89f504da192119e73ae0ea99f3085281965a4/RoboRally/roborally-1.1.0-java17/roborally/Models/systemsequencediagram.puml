@@ -1,0 +1,16 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+Actor Player
+Participant System
+
+Player -> System: Start program
+System --> Player: Ask for amount of players
+Player -> System: Enter amount of players for game
+System --> Player: Load and start game
+Player -> System: Play game
+
+
+@enduml

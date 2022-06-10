@@ -1,0 +1,22 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+Actor Player
+Participant System
+
+Title "Take turn"
+    loop choose card <= 5
+       Player -> System: Choose available programming cards
+       System --> Player: Receive choice
+    end
+
+Player -> System: Finish Programming Phase
+System --> Player: Wait for remaining players to finish
+
+Player -> System: Execute programming cards
+System --> Player: Show execution on board
+
+
+@enduml

@@ -42,9 +42,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.IIOException;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -67,25 +65,37 @@ public class AppController extends PopUpBoxView implements Observer {
 
     public void connectToGame() throws IOException, InterruptedException {
             String username = new PopUpBoxView().gameInstance("Enter username", "Confirm ");
-            String gamename = new PopUpBoxView().gameInstance("Enter gamename", "Confirm ");
 
-            String response = new ServerClientController().connectToGame(gamename, username);
+            String response = new ServerClientController().getgames();
 
             String[] responseArr = response.split("-");
+            List<String> GameChoices = new ArrayList<String>();
+            for(int i = 0; i < responseArr.length; i++){
+                GameChoices.add(responseArr[i]);
+            }
 
-            String boardJson = responseArr[3];
+            String gamename = new PopUpBoxView().sliderChoice("Pick a game", "Join", GameChoices);
+
+            String serverResponse = new ServerClientController().connectToGame(gamename, username);
+
+            System.out.println("SERVERRESPONSE : " + serverResponse);
+
+            String[] serverResponseArr = serverResponse.split("-");
+
+            String boardJson = serverResponseArr[3];
             System.out.println("JSON " + boardJson);
             gameController = new GameController(LoadBoard.loadBoard(boardJson));
 
-            int totalPlayers = Integer.parseInt(responseArr[2]);
+            int totalPlayers = Integer.parseInt(serverResponseArr[2]);
             for (int i = 0; i < totalPlayers; i++) {
+                System.out.println("Player color : " + i);
                 Player player = new Player(gameController.board, PLAYER_COLORS.get(i), "Player " + (i + 1));
                 gameController.board.addPlayer(player);
                 player.setSpace(gameController.board.getSpace(i % gameController.board.width, i));
             }
 
-            gameController.board.setMyGameRoomNumber(Integer.parseInt(responseArr[0]));
-            gameController.board.setMyPlayerNumber(Integer.parseInt(responseArr[1]) - 1);
+            gameController.board.setMyGameRoomNumber(Integer.parseInt(serverResponseArr[0]));
+            gameController.board.setMyPlayerNumber(Integer.parseInt(serverResponseArr[1]) - 1);
 
             gameController.startProgrammingPhase();
 
@@ -122,7 +132,7 @@ public class AppController extends PopUpBoxView implements Observer {
     public void hostGame() throws IOException, InterruptedException {
 
         //gameController = new GameController(LoadBoard.loadBoard(new PopUpBoxView().gameInstance("Load game", "Game loaded")));
-        String chosenBoard = new PopUpBoxView().loadGame(new ServerClientController().possibleBoards());
+        String chosenBoard = new PopUpBoxView().sliderChoice("Choose a board or loaded game", "Choose",new ServerClientController().possibleBoards());
         String boardJson = new ServerClientController().getBoard(chosenBoard);
         gameController = new GameController(LoadBoard.loadBoard(boardJson));
 
