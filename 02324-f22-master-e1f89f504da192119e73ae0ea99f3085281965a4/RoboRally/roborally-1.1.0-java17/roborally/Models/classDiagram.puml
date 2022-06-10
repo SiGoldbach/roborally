@@ -245,8 +245,8 @@ class space{
 }
 
 interface viewObserver{
-#void update
-void update
+#void update()
+void update()
 }
 
 class BoardView{
@@ -319,15 +319,35 @@ class RoboRallyMenuBar {
 -MenuItem stopGame
 -MenuItem exitApp
 +void update()
++void checkActions()
 }
 
 class SpaceView {
+-{static} String[] conveyeurIMGs
+-{static} String[] checkpointIMGs
+-{static} String finishlineIMG
++{static} int SPACE_HEIGHT
++{static} int SPACE_WIDTH
++Space space
++void checkWalls()
 
 }
 class PopUpBoxView {
 +String gameInstance()
 +String loadGame()
 +String leftOrRight()
+}
+
+class RoboRally {
+-{static} int MIN_APP_WIDTH
+-Stage stage
+-BorderPane boardRoot
++void createBoardView()
++{static} void main()
+}
+
+class StartRoboRally{
++{static} void main()
 }
 
 BoardView +-- "SpaceEventHandler"
