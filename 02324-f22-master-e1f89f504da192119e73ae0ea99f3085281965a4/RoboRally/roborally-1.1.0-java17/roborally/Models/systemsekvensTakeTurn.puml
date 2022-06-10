@@ -9,7 +9,6 @@ Participant System
 Title "Take turn"
     loop choose card <= 5
        Player -> System: Choose available programming cards
-       System --> Player: Receive choice
     end
 
 Player -> System: Finish Programming Phase

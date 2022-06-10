@@ -7,10 +7,14 @@ Actor Player
 Participant System
 
 Player -> System: Start program
+
+Player -> System: Create or Load board
 System --> Player: Ask for amount of players
 Player -> System: Enter amount of players for game
 System --> Player: Load and start game
 Player -> System: Play game
+
+Player -> System: Exit, Save or Finish
 
 
 @enduml
