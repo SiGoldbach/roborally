@@ -24,6 +24,11 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.PlayerPositionGenerator;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.view.PopUpBoxView;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -43,8 +48,50 @@ public class GameController {
 
     final public Board board;
 
+    public StringProperty networkMsg = new SimpleStringProperty("");
+
     public GameController(@NotNull Board board) {
         this.board = board;
+
+        networkMsg.addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
+                String[] dataArr = t1.split("-");
+
+                switch (dataArr[0]){
+                    case "WaitingForPlayersToConnect":
+                        try {
+                            startWaitingPhase();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case "WaitingForYouToPlayTurn":
+                        board.setPhase(Phase.ACTIVATION);
+                        break;
+                    case "WaitingForYouToLock":
+                        startProgrammingPhase();
+                        break;
+                    case "WaitingForOthersToLock":
+                        waitProgrammingPhase();
+                        break;
+                    case "WaitingForOthersToPlayTurn":
+                        waitActivation();
+                }
+
+                if(dataArr.length >= 2){
+                    try {
+                        new PlayerPositionGenerator().updatePlayersPosition(dataArr[1], board);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 
     /**
@@ -54,6 +101,7 @@ public class GameController {
      * @param space the space to which the current player should move
      */
     public void moveCurrentPlayerToSpace(@NotNull Space space) {
+
         if (space.getPlayer() == null) {
             board.getCurrentPlayer().setSpace(space);
             board.setCounter(board.getCounter() + 1);
@@ -107,8 +155,7 @@ public class GameController {
     public void startWaitingPhase() throws IOException, InterruptedException, ExecutionException {
         board.setPhase(Phase.WAITINGPLAYERS);
 
-        while(refresh()[0].equals("WaitingForPlayersToConnect"));
-        startProgrammingPhase();
+        refresh("WaitingForPlayersToConnect");
     }
 
     // XXX: V2
@@ -136,12 +183,18 @@ public class GameController {
         }
         new ServerClientController().lockin(board.getMyGameRoomNumber(), board.getMyPlayerNumber(), board.getPlayer(board.getMyPlayerNumber()).getTotalRegisters());
 
-        waitProgrammingPhase();
-        board.setPhase(Phase.ACTIVATION);
         board.setStep(0);
+
+        refresh("WaitingForYouToLock");
     }
 
-    public String[] refresh() {
+    public void refresh(String message) {
+
+        NetworkService myRefresh = new NetworkService(this, board.getMyGameRoomNumber(), board.getMyPlayerNumber(), message);
+        Thread thread = new Thread(myRefresh);
+        thread.start();
+
+        /*
         try {
             Thread.sleep(333);
         } catch (InterruptedException e) {
@@ -159,49 +212,20 @@ public class GameController {
 
         String[] responseArr = response.split("-");
         return responseArr;
+
+         */
     }
 
     public void waitActivation() {
         board.setPhase(Phase.WAITACTIVATION);
 
-        while(refresh()[0].equals("WaitingForOthersToPlayTurn")){
-            try {
-                if(refresh().length >= 2){
-                    new PlayerPositionGenerator().updatePlayersPosition(refresh()[1], board);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        if(refresh()[0].equals("WaitingForYouToPlayTurn")){
-            try {
-                if(refresh().length >= 2){
-                    new PlayerPositionGenerator().updatePlayersPosition(refresh()[1], board);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            board.setPhase(Phase.ACTIVATION);
-        }
-        else if(refresh()[0].equals("WaitingForYouToLock")){
-            try {
-                if(refresh().length >= 2){
-                    new PlayerPositionGenerator().updatePlayersPosition(refresh()[1], board);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            startProgrammingPhase();
-        }
+        refresh("WaitingForOthersToPlayTurn");
     }
 
     public void waitProgrammingPhase() {
         board.setPhase(Phase.WAITPROGRAMMING);
 
-        while(refresh()[0].equals("WaitingForOthersToLock"));
-        waitActivation();
+        refresh("WaitingForOthersToLock");
     }
 
     /**
@@ -279,13 +303,7 @@ public class GameController {
             e.printStackTrace();
         }
 
-        try {
-            new PlayerPositionGenerator().updatePlayersPosition(refresh()[1], board);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        waitActivation();
+        refresh("");
     }
 
     // XXX: V2
