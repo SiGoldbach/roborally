@@ -61,7 +61,6 @@ public class PlayerView extends Tab implements ViewObserver {
     private Button stepButton;
     private Button winningButton;
 
-
     private VBox playerInteractionPanel;
 
     private GameController gameController;
@@ -163,7 +162,7 @@ public class PlayerView extends Tab implements ViewObserver {
                         if (i < player.board.getStep()) {
                             cardFieldView.setBackground(CardFieldView.BG_DONE);
                         } else if (i == player.board.getStep()) {
-                            if (player.board.getCurrentPlayer() == player) {
+                            if (true) {
                                 cardFieldView.setBackground(CardFieldView.BG_ACTIVE);
                             } else if (player.board.getPlayerNumber(player.board.getCurrentPlayer()) > player.board.getPlayerNumber(player)) {
                                 cardFieldView.setBackground(CardFieldView.BG_DONE);
