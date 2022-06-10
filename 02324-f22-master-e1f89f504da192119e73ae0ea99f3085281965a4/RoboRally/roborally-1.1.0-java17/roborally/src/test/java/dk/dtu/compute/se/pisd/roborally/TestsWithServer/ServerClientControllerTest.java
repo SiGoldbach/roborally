@@ -34,4 +34,10 @@ class ServerClientControllerTest {
     void GettingBoard() throws IOException, InterruptedException {
         new ServerClientController().saveBoard("Board","Boardname");
     }
+    @Test
+    void startGameOnServer() throws IOException, InterruptedException {
+        System.out.println(new ServerClientController().startGame());
+
+
+    }
 }

@@ -37,18 +37,17 @@ public class PlayersView extends TabPane implements ViewObserver {
 
     private Board board;
 
-    private PlayerView[] playerViews;
+    private PlayerView playerViews;
 
     public PlayersView(GameController gameController) {
         board = gameController.board;
 
         this.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
 
-        playerViews = new PlayerView[board.getPlayersNumber()];
-        for (int i = 0; i < board.getPlayersNumber();  i++) {
-            playerViews[i] = new PlayerView(gameController, board.getPlayer(i));
-            this.getTabs().add(playerViews[i]);
-        }
+        System.out.println("MyPlayer : " + board.getMyPlayerNumber());
+        playerViews = new PlayerView(gameController, board.getPlayer(board.getMyPlayerNumber()));
+        this.getTabs().add(playerViews);
+
         board.attach(this);
         update(board);
     }
@@ -56,8 +55,7 @@ public class PlayersView extends TabPane implements ViewObserver {
     @Override
     public void updateView(Subject subject) {
         if (subject == board) {
-            Player current = board.getCurrentPlayer();
-            this.getSelectionModel().select(board.getPlayerNumber(current));
+            this.getSelectionModel().select(board.getMyPlayerNumber());
         }
     }
 

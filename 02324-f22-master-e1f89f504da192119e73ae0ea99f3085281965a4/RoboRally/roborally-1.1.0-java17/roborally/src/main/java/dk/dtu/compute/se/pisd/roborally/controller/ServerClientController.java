@@ -46,6 +46,85 @@ public class ServerClientController {
 
 
     }
+    public String startGame() throws IOException, InterruptedException {
+        String board="true-name2-player1-3";
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/gamehandler/connect"))
+                .POST(HttpRequest.BodyPublishers.ofString(board)).build();
 
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        return response.body();
 
+    }
+
+    public String hostGame(String gameName, String username, String json, int playerCount) throws IOException, InterruptedException {
+        // Data is = hosting(always true here)-gamename-username-playercount-boardjson
+        String data = "true-" + gameName + "-" + username + "-" + playerCount + "-" + json;
+
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/gamehandler/connect"))
+                .POST(HttpRequest.BodyPublishers.ofString(data)).build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        return response.body();
+    }
+
+    public String connectToGame(String gameName, String username) throws IOException, InterruptedException {
+        // Data is = hosting(always true here)-gamename-username-playercount-boardjson
+        String data = "false-" + gameName + "-" + username;
+
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/gamehandler/connect"))
+                .POST(HttpRequest.BodyPublishers.ofString(data)).build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
+        return response.body();
+    }
+
+    public String refresh(int gamenumber, int playernumber) throws IOException, InterruptedException {
+        // Data is = gamenumber-playernumber-whatdo-bigdata
+        String data = gamenumber + "-" + playernumber + "-" + "refresh" + "-" + "refresh";
+        System.out.println("REFRESH-" + data);
+
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/gamehandler/play"))
+                .POST(HttpRequest.BodyPublishers.ofString(data)).build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
+        return response.body();
+    }
+
+    public String lockin(int gamenumber, int playernumber, int registersToLock) throws IOException, InterruptedException {
+        // Data is = gamenumber-playernumber-whatdo-bigdata
+        String data = gamenumber + "-" + playernumber + "-" + "lock" + "-" + registersToLock;
+        System.out.println("LOCKIN-" + data);
+
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/gamehandler/play"))
+                .POST(HttpRequest.BodyPublishers.ofString(data)).build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
+        return response.body();
+    }
+
+    public String playturn(int gamenumber, int playernumber, String playPos) throws IOException, InterruptedException {
+        // Data is = gamenumber-playernumber-whatdo-bigdata
+        String data = gamenumber + "-" + playernumber + "-" + "playturn" + "-" + playPos;
+        System.out.println("PLAYTURN-" + data);
+
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/gamehandler/play"))
+                .POST(HttpRequest.BodyPublishers.ofString(data)).build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
+        return response.body();
+    }
+
+    public String getgames() throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/gamehandler/games"))
+                .GET().build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
+
+        return response.body();
+    }
 }

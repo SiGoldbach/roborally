@@ -13,25 +13,18 @@ public class PopUpBoxView {
         return getSaveMessage;
     }
 
-
-    public String loadGame(List<String> loadedGames){
-        String[] games = new String[loadedGames.size()];
-        loadedGames.toArray(games);
+    public String sliderChoice(String message1, String message2, List<String> listOptions){
+        String[] options = new String[listOptions.size()];
+        listOptions.toArray(options);
         String getGame = (String) JOptionPane.showInputDialog(
                 null,
-                "Choose a loaded game",
-                "What game",
+                message1,
+                message2,
                 JOptionPane.QUESTION_MESSAGE,
                 null,
-                games,
-                games[games.length-1]);
+                options,
+                options[options.length-1]);
         return getGame;
     }
-
-
-
-
-
-
 
 }

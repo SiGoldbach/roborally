@@ -21,8 +21,23 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.PlayerPositionGenerator;
 import dk.dtu.compute.se.pisd.roborally.model.*;
+import dk.dtu.compute.se.pisd.roborally.view.PopUpBoxView;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * ...
@@ -33,8 +48,50 @@ public class GameController {
 
     final public Board board;
 
+    public StringProperty networkMsg = new SimpleStringProperty("");
+
     public GameController(@NotNull Board board) {
         this.board = board;
+
+        networkMsg.addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
+                String[] dataArr = t1.split("-");
+
+                switch (dataArr[0]){
+                    case "WaitingForPlayersToConnect":
+                        try {
+                            startWaitingPhase();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case "WaitingForYouToPlayTurn":
+                        board.setPhase(Phase.ACTIVATION);
+                        break;
+                    case "WaitingForYouToLock":
+                        startProgrammingPhase();
+                        break;
+                    case "WaitingForOthersToLock":
+                        waitProgrammingPhase();
+                        break;
+                    case "WaitingForOthersToPlayTurn":
+                        waitActivation();
+                }
+
+                if(dataArr.length >= 2){
+                    try {
+                        new PlayerPositionGenerator().updatePlayersPosition(dataArr[1], board);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 
     /**
@@ -44,6 +101,7 @@ public class GameController {
      * @param space the space to which the current player should move
      */
     public void moveCurrentPlayerToSpace(@NotNull Space space) {
+
         if (space.getPlayer() == null) {
             board.getCurrentPlayer().setSpace(space);
             board.setCounter(board.getCounter() + 1);
@@ -94,6 +152,12 @@ public class GameController {
         }
     }
 
+    public void startWaitingPhase() throws IOException, InterruptedException, ExecutionException {
+        board.setPhase(Phase.WAITINGPLAYERS);
+
+        refresh("WaitingForPlayersToConnect");
+    }
+
     // XXX: V2
     private CommandCard generateRandomCommandCard() {
         Command[] commands = Command.values();
@@ -110,17 +174,58 @@ public class GameController {
      * in the player interaction phase.
      */
     // XXX: V2
-    public void finishProgrammingPhase() {
-        makeProgramFieldsInvisible();
-        makeProgramFieldsVisible(0);
+    public void finishProgrammingPhase() throws IOException, InterruptedException {
         findAntenna();
         if (board.getAntennaSpace() != null) {
             board.setCurrentPlayer(findFirstPLayerToMoveRobot());
         } else {
             board.setCurrentPlayer(board.getPlayer(0));
         }
-        board.setPhase(Phase.ACTIVATION);
+        new ServerClientController().lockin(board.getMyGameRoomNumber(), board.getMyPlayerNumber(), board.getPlayer(board.getMyPlayerNumber()).getTotalRegisters());
+
         board.setStep(0);
+
+        refresh("WaitingForYouToLock");
+    }
+
+    public void refresh(String message) {
+
+        NetworkService myRefresh = new NetworkService(this, board.getMyGameRoomNumber(), board.getMyPlayerNumber(), message);
+        Thread thread = new Thread(myRefresh);
+        thread.start();
+
+        /*
+        try {
+            Thread.sleep(333);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        String response = null;
+        try {
+            response = new ServerClientController().refresh(board.getMyGameRoomNumber(), board.getMyPlayerNumber());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        String[] responseArr = response.split("-");
+        return responseArr;
+
+         */
+    }
+
+    public void waitActivation() {
+        board.setPhase(Phase.WAITACTIVATION);
+
+        refresh("WaitingForOthersToPlayTurn");
+    }
+
+    public void waitProgrammingPhase() {
+        board.setPhase(Phase.WAITPROGRAMMING);
+
+        refresh("WaitingForOthersToLock");
     }
 
     /**
@@ -142,10 +247,7 @@ public class GameController {
             }
 
         }
-
-
         return false;
-
     }
 
     /**
@@ -192,9 +294,16 @@ public class GameController {
     }
 
     // XXX: V2
-    public void executePrograms() {
-        board.setStepMode(false);
-        continuePrograms();
+    public void turnFinished() {
+        try {
+            new ServerClientController().playturn(board.getMyGameRoomNumber(), board.getMyPlayerNumber(), new PlayerPositionGenerator().toString(board));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        refresh("");
     }
 
     // XXX: V2
@@ -205,42 +314,28 @@ public class GameController {
 
     // XXX: V2
     private void continuePrograms() {
-        do {
-            executeNextStep();
-        } while (board.getPhase() == Phase.ACTIVATION && !board.isStepMode());
+        executeNextStep();
+        System.out.println(board.getStep());
+        board.setStep(board.getStep() + 1);
+
+        if(board.getPhase() != Phase.PLAYER_INTERACTION){
+            board.setPhase(Phase.WAITENDTURN);
+        }
     }
 
     // XXX: V2
     private void executeNextStep() {
-        Player currentPlayer = board.getCurrentPlayer();
+        Player currentPlayer = board.getPlayer(board.getMyPlayerNumber());
         if (board.getPhase() == Phase.ACTIVATION && currentPlayer != null) {
-            int step = board.getStep();
-            if (step >= 0 && step < Player.NO_REGISTERS) {
-                CommandCard card = currentPlayer.getProgramField(step).getCard();
+            if (board.getStep() >= 0 && board.getStep() < Player.NO_REGISTERS) {
+                CommandCard card = currentPlayer.getProgramField(board.getStep()).getCard();
                 if (card != null) {
                     Command command = card.command;
                     executeCommand(currentPlayer, command);
-                    if(card.command==Command.OPTION_LEFT_RIGHT){
-                        board.getCurrentPlayer().getProgramField(step).setCard(null);
-                        return;
-                    }
                 }
-                int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
-                if (nextPlayerNumber < board.getPlayersNumber()) {
-                    board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
-                } else {
+                if(board.getMyPlayerNumber() == (board.getPlayersNumber() - 1)){
                     activateEOTActions();
                     activateEOTCPActions();
-                    step++;
-                    if (step < Player.NO_REGISTERS) {
-                        makeProgramFieldsVisible(step);
-                        board.setStep(step);
-                        board.setCurrentPlayer(board.getPlayer(0));
-
-                    } else {
-                        startProgrammingPhase();
-                    }
-
                 }
             } else {
                 // this should not happen
@@ -273,7 +368,7 @@ public class GameController {
                     this.fastForward(player);
                     break;
                 case OPTION_LEFT_RIGHT:
-                    this.leftOrRight(player);
+                    executeCommandOptionAndContinue(new PopUpBoxView().sliderChoice("Choose an option", "Which direction?", Arrays.asList("Left", "Right")));
                     break;
                 case U_TURN:
                     this.uturn(player);
@@ -356,12 +451,8 @@ public class GameController {
     public void leftOrRight(@NotNull Player player) {
         String[] buttonOptions = {"Turn left", "Turn right", "Left", "Right"};
         board.setButtonOptions(buttonOptions);
-        moveForward(board.getCurrentPlayer());
-        moveBack(board.getCurrentPlayer());
 
         board.setPhase(Phase.PLAYER_INTERACTION);
-
-
     }
 
     /**
@@ -405,22 +496,18 @@ public class GameController {
      */
     public void executeCommandOptionAndContinue(String choice) {
         board.setPhase(Phase.ACTIVATION);
-        if (choice.equals("Left")){
-            turnLeft(board.getCurrentPlayer());
-        }
-        else if (choice.equals("Right")){
-            turnRight(board.getCurrentPlayer());
-        }
-        else if (choice.equals("OK")) {
+        if (choice.equals("Left")) {
+            turnLeft(board.getPlayer(board.getMyPlayerNumber()));
+            board.setPhase(Phase.WAITENDTURN);
+        } else if (choice.equals("Right")) {
+            turnRight(board.getPlayer(board.getMyPlayerNumber()));
+            board.setPhase(Phase.WAITENDTURN);
+        } else if (choice.equals("OK")) {
         } else if (choice.equals("Cool")) {
         } else if (choice.equals("WOption continue")) {
         } else if (choice.equals("WOption endgame")) {
 
         }
-
-
-        this.continuePrograms();
-
     }
 
 

@@ -2,30 +2,215 @@
 'https://plantuml.com/sequence-diagram
 
 
-Class AppController
-Class Checkpoint
-Abstract Class "FieldAction"
-Class FinishLine
-Class GameController
+class AppController{
+-List<Integer> PLAYER_NUMBER_OPTIONS
+-List<String> PLAYER_COLORS
+
+}
+Class Checkpoint{
+-int checkpointsRequired
+}
+Abstract Class "FieldAction"{
++boolean doAction()
+}
+class FinishLine{
++doAction()
+}
+class GameController{
++Board board
++ void startProgrammingPhase()
+-commandCard generateRandomCommandCard()
++void finishProgrammingPhase()
+-void makeProgramFieldsVisible()
+-void makeProgramFieldsInvisible()
++void executePrograms()
++void executeStep()
++void continuePrograms()
+-void executeNextStep()
+-void executeCommand()
++void moveForward()
++void moveForward()
++void fastForward()
++void turnRight()
++void turnLeft()
++void leftOrRight()
++void uTurn()
++void moveThree()
++void moveBack()
++void executeCommandAndContinue()
++boolean moveCards()
+~void moveToSpace
+-void activateEOPActions
+-void activateCPEOPActions
+
+}
+class impossibleMoveException{
+-Player player
+-Space space
+-Heading heading
+
+}
+class GearSpace{
+-boolean direction
+}
+class ConveyorBelt{
+-Heading heading
+}
 
 
-Class Board
-Class Command
-Class CommandCard
-Class CommandCardField
-Class Player
+class Board{
+-int checkpointAmount;
+-int width
+-int height
+-String boardName
+-Integer gameId
+-int step
++void setGameId()
++void addCP()
++Space getSpace()
++int getPlayersNumbers()
++Space getNeighbour
++String getStatusMessage()
++int counter
+}
+enum phase{
+PROGRAMMING
+ACTIVATION
+INITIALIZATION
+PLAYER-INTERACTION
+}
+enum Heading{
+NORTH
+WEST
+SOUTH
+EAST
+}
+enum Command{
+FORWARD
+RIGHT
+LEFT
+FAST_FORWARD
+U_TURN
+MOVE_THREE
+MOVE_BACK
+OPTION_LEFT_RIGHT
++String displayName
+-List<Command> options
++boolean isInteractive()
++List<Command> getOptions()
+
+}
+abstract class subject{
++void attach
++void detach
+#void notifyChange
+}
+class CommandCard {
++Command command
+
+}
+class CommandCardField {
++Player player
+-CommandCard card
+-visible
++CommandCardField()
+
+}
+class Player{
+{static} +int NO_REGISTERS
+{static} +int NO_CARDS
++Board board
+-String name
+-String color
+-Heading heading
+-CommandCardField[] program
+-CommandCardField[] cards
+
+}
+class space{
++Board board
++Space()
+~void playerChanged()
+}
+interface viewObserver{
+#void update
+void update
+}
+
+class BoardView{
+-Board board
+-GridPane mainBoardPane
+-SpaceView[][] spaces
+-PlayersView playersView
+-Label statusLabel
+-SpaceEventHandler spaceEventHandler
++BoardView()
++void updateView()
+
+}
+class SpaceEventHandler{
++GameController gameController
++SpaceEventHandler()
++void handle()
+
+}
+class PlayerView {
+-Player player
+-VBox top
+-Label programLabel
+-GridPane programPane
+-Label cardsLabel
+-GridPane cardsPane
+-CardFieldView[] programCardViews
+-CardFieldView[] cardViews
+-VBox buttonPanel
+-VBox buttonPanel2
+-Button finishButton
+-Button executeButton
+-Button stepButton
+-Button winningButton
+-VBox playerInteractionPanel
+-GameController gameController
++PlayerView()
++void updateView()
 
 
-Class BoardView
-Class PlayersView
-Class PlayerView
-Class RoboRallyMenuBar
-Class SpaceView
+}
+class PlayersView {
+-Board board
+-PlayerView[] playerViews
++PlayersView()
+}
+class RoboRallyMenuBar {
++RoboRallyMenuBar()
+-AppController appController
+-Menu controlMenu
+-MenuItem saveGame
+-MenuItem newGame
+-MenuItem loadGame
+-MenuItem stopGame
+-MenuItem exitApp
++void update()
+}
+class SpaceView {
 
-Checkpoint "1..*"--|> "1   " "FieldAction"
-FinishLine "1   " --|> "1   ""FieldAction"
-AppController "1   "--|>"1   " GameController
-SpaceView "1   "--|>"1   " "FieldAction"
+}
 
+BoardView +-- "SpaceEventHandler"
+Checkpoint --|>  "FieldAction"
+FinishLine  --|> "FieldAction"
+GearSpace --|> "FieldAction"
+ConveyorBelt--|>"FieldAction"
+BoardView ..|> "viewObserver"
+PlayerView ..|> "viewObserver"
+PlayersView ..|> "viewObserver"
+space "..*"*--"1"Board
+space "1"*--"..*""FieldAction"
+GameController "1"*--"1"Board
+AppController "1"--*"1" GameController
+Command"1"*--"1"CommandCard
+CommandCard <|-- subject
+subject *-- viewObserver
 
+FinishLine --|> "FieldAction"
 @enduml

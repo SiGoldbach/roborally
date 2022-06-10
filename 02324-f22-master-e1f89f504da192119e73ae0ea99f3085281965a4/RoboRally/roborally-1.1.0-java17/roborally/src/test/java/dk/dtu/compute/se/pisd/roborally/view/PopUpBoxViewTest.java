@@ -1,6 +1,9 @@
 package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.roborally.controller.ServerClientController;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.PlayerPositionGenerator;
+import dk.dtu.compute.se.pisd.roborally.model.Board;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -31,6 +34,8 @@ public class PopUpBoxViewTest {
         System.out.println(board);
 
     }
+
+
 
 
 }
