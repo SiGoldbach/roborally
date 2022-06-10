@@ -5,17 +5,103 @@
 class AppController{
 -List<Integer> PLAYER_NUMBER_OPTIONS
 -List<String> PLAYER_COLORS
+-RoboRally roboRally
+-GameController gameController
++void connectToGame()
++void saveGame()
++void hostGame()
++boolean stopGame()
++void exit()
++boolean isGameRunning()
 
 }
-Class Checkpoint{
+
+class Checkpoint{
 -int checkpointsRequired
+
 }
-Abstract Class "FieldAction"{
+
+class NetworkService {
+-int gameRoomNumber
+-int playerNumber
+-String recieveMessage
+-GameController gameController
++NetworkService()
+
+}
+
+class ServerClientController {
++List possibleBoards()
++void saveboard()
++String startGame()
++String hostGame()
++String connectToGame()
++String refresh()
++String lockin()
++String playturn()
+
+}
+class BoardTemplate {
++int width
++int height
++Phase phase
++List<SpaceTemplate> spaces
++List<PlayerTemplate> players
+}
+
+class PlayerTemplate {
++int x
++int y
++int CheckpointAmount
++Heading heading
++String name
++String color
++boolean isCurrent
+}
+
+class SpaceTemplate {
++List<Heading> walls
++List<FieldAction> actions
++int x;
++int y;
+
+}
+class Adapter {
++JsonElement serialize()
++E deserialize()
+-{static} String CLASSNAME
+-{static} String INSTANCE
+}
+
+class IOUtil {
++ {static} String readString()
++ {static} String readResource()
+}
+
+class LoadBoard{
++ {static} String BOARDSFOLDER
++ {static} String DEFAULTBOARD
++ {static} String JSON_EXT
++ {static} Board loadBoard()
++ {static} String saveBoard()
+}
+
+abstract class "FieldAction"{
 +boolean doAction()
 }
+class PlayerPositionGenerator {
++String toString();
++void updatePlayersPosition()
+
+}
+class BoardAnPositionOutOfSyncException {
++BoardAnPositionOutOfSyncException()
+}
+
 class FinishLine{
 +doAction()
 }
+
 class GameController{
 +Board board
 + void startProgrammingPhase()
@@ -44,19 +130,22 @@ class GameController{
 -void activateCPEOPActions
 
 }
+
 class impossibleMoveException{
 -Player player
 -Space space
 -Heading heading
 
 }
+
 class GearSpace{
 -boolean direction
+
 }
+
 class ConveyorBelt{
 -Heading heading
 }
-
 
 class Board{
 -int checkpointAmount;
@@ -64,27 +153,39 @@ class Board{
 -int height
 -String boardName
 -Integer gameId
+-Space[][] spaces
+-List<Player> players
+-Player current
+-Player winner
+-Space antennaSpace
+-Phase phase
 -int step
-+void setGameId()
+-boolean stepMode
+-String[] buttonOptions
+-int myPlayerNumber
+-int myGameRoomNumber
++Board()
 +void addCP()
-+Space getSpace()
-+int getPlayersNumbers()
-+Space getNeighbour
-+String getStatusMessage()
 +int counter
++int calculateDistance()
+
+
 }
+
 enum phase{
 PROGRAMMING
 ACTIVATION
 INITIALIZATION
 PLAYER-INTERACTION
 }
+
 enum Heading{
 NORTH
 WEST
 SOUTH
 EAST
 }
+
 enum Command{
 FORWARD
 RIGHT
@@ -97,25 +198,29 @@ OPTION_LEFT_RIGHT
 +String displayName
 -List<Command> options
 +boolean isInteractive()
-+List<Command> getOptions()
+
 
 }
+
 abstract class subject{
 +void attach
 +void detach
 #void notifyChange
 }
+
 class CommandCard {
 +Command command
 
 }
+
 class CommandCardField {
 +Player player
 -CommandCard card
--visible
-+CommandCardField()
+-boolean visible
++boolean isVisible()
 
 }
+
 class Player{
 {static} +int NO_REGISTERS
 {static} +int NO_CARDS
@@ -123,15 +228,22 @@ class Player{
 -String name
 -String color
 -Heading heading
+-int checkpointNumber
+-Space space
+-Heading heading
 -CommandCardField[] program
 -CommandCardField[] cards
-
 }
+
 class space{
 +Board board
-+Space()
+-List<Heading> walls2
+-List<FieldAction> actions
++int x
++int y
 ~void playerChanged()
 }
+
 interface viewObserver{
 #void update
 void update
@@ -144,16 +256,14 @@ class BoardView{
 -PlayersView playersView
 -Label statusLabel
 -SpaceEventHandler spaceEventHandler
-+BoardView()
-+void updateView()
 
 }
 class SpaceEventHandler{
 +GameController gameController
-+SpaceEventHandler()
 +void handle()
 
 }
+
 class PlayerView {
 -Player player
 -VBox top
@@ -174,13 +284,31 @@ class PlayerView {
 +PlayerView()
 +void updateView()
 
-
 }
+
+class CardFieldView {
++ {static} DataFormat ROBO_RALLY_CARD
++ {static} int CARDFIELD_WIDTH
++ {static} int CARDFIELD_HEIGHT
++ {static} Border BORDER
++ {static} Background BG_DEFAULT
++ {static} Background BG_DRAG
++ {static} Background BG_DROP
++ {static} Background BG_ACTIVE
++ {static} Background BG_DONE
+-CommandCardField field
+-Label label
+-GameController gameController
+-String cardFieldRepresentation()
+-CommandCardField cardFieldFromRepresentation()
+}
+
 class PlayersView {
 -Board board
--PlayerView[] playerViews
+-PlayerView playerViews
 +PlayersView()
 }
+
 class RoboRallyMenuBar {
 +RoboRallyMenuBar()
 -AppController appController
@@ -192,8 +320,14 @@ class RoboRallyMenuBar {
 -MenuItem exitApp
 +void update()
 }
+
 class SpaceView {
 
+}
+class PopUpBoxView {
++String gameInstance()
++String loadGame()
++String leftOrRight()
 }
 
 BoardView +-- "SpaceEventHandler"
@@ -211,6 +345,7 @@ AppController "1"--*"1" GameController
 Command"1"*--"1"CommandCard
 CommandCard <|-- subject
 subject *-- viewObserver
+PlayerPositionGenerator +-- BoardAnPositionOutOfSyncException
 
-FinishLine --|> "FieldAction"
+
 @enduml
