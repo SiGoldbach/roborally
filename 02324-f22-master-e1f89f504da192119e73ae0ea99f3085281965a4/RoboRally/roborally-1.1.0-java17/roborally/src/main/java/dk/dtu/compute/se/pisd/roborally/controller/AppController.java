@@ -42,9 +42,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.IIOException;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -67,7 +65,16 @@ public class AppController extends PopUpBoxView implements Observer {
 
     public void connectToGame() throws IOException, InterruptedException {
             String username = new PopUpBoxView().gameInstance("Enter username", "Confirm ");
-            String gamename = new PopUpBoxView().gameInstance("Enter gamename", "Confirm ");
+
+            String response = new ServerClientController().getgames();
+
+            String[] responseArr = response.split("-");
+            List<String> GameChoices = new ArrayList<String>();
+            for(int i = 0; i < responseArr.length; i++){
+                GameChoices.add(responseArr[i]);
+            }
+
+            String gamename = new PopUpBoxView().
 
             String response = new ServerClientController().connectToGame(gamename, username);
 
@@ -122,7 +129,7 @@ public class AppController extends PopUpBoxView implements Observer {
     public void hostGame() throws IOException, InterruptedException {
 
         //gameController = new GameController(LoadBoard.loadBoard(new PopUpBoxView().gameInstance("Load game", "Game loaded")));
-        String chosenBoard = new PopUpBoxView().loadGame(new ServerClientController().possibleBoards());
+        String chosenBoard = new PopUpBoxView().sliderChoice("Choose a board or loaded game", "Choose",new ServerClientController().possibleBoards());
         String boardJson = new ServerClientController().getBoard(chosenBoard);
         gameController = new GameController(LoadBoard.loadBoard(boardJson));
 

@@ -117,4 +117,14 @@ public class ServerClientController {
         System.out.println(response.body());
         return response.body();
     }
+
+    public String getgames() throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/gamehandler/games"))
+                .GET().build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
+
+        return response.body();
+    }
 }
