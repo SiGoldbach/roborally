@@ -8,13 +8,21 @@ Participant System
 
 Player -> System: Start program
 
-Player -> System: Create or Load board
+ALT Create a game
+Player -> System: Create board
 System --> Player: Ask for amount of players
+
 Player -> System: Enter amount of players for game
-System --> Player: Load and start game
-Player -> System: Play game
+else load a game
+
+Player -> System: Loading game
+
+
+end
+
+System --> Player: Game is initialized
+Player -> System: Play/Continue the game
 
 Player -> System: Exit, Save or Finish
-
 
 @enduml
