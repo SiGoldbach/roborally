@@ -5,30 +5,53 @@ scale 350 width
 [*] --> InitializeState : StartGame
 
 state InitializeState {
-  [*] --> Idle
-  Idle --> ProgrammingState : Begin ProgrammingState
+  [*] --> WaitForPlayersState
+state WaitForPlayersState{
+[*]--> Idle
 }
+}
+Idle --d> ProgrammingState
+
 
 state ProgrammingState {
   [*] --> NewProgramSelection
   NewProgramSelection --L> Processing : Choose card
-  Processing --L> NewProgramSelection: Not enough cards
+  Processing --L> NewProgramSelection: Player wants more cards
 
 
 }
-Processing --> ActivationState: Enough cards
+Processing --> WaitProgrammingState: Finish Programming
+
+state WaitProgrammingState{
+[*] --> Idle2
+}
+Idle2 --> WaitActivationState
+
+state WaitActivationState{
+[*] --> Idle3
+Idle3 --d> ActivationState:Your turn
+}
 
 state ActivationState{
- [*] --> RunProgram
+[*] --> Activate
+
 }
-RunProgram --d> PlayerInterractionState
+Activate --r> Idle3:Not your turn
+
+Activate --> WaitEndTurnState:Cards have been activated
+
+state WaitEndTurnState{
+[*] --> EndTurn
+}
+
+EndTurn --> PlayerInterractionState
 
 state PlayerInterractionState{
 [*] --> Interraction
-
 }
+Interraction --u> NewProgramSelection:No Winner Found
+Interraction --> [*]: Winner Found
 
-Interraction --u> Idle: No winner
-Interraction --d> [*]: Winner found
+
 
 @enduml
