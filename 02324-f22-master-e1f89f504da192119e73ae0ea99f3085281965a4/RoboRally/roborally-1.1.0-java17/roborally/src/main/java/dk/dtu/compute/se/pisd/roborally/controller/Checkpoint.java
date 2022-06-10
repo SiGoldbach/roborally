@@ -31,9 +31,7 @@ public class Checkpoint extends FieldAction{
             return false;
         if(space.getPlayer().getCheckpointNumber()==checkPointsRequired){
             space.getPlayer().setCheckpointNumber(space.getPlayer().getCheckpointNumber()+1);
-            String[] buttonOptions={space.getPlayer().getColor()+"Has reached checkpoint: "+space.getPlayer().getCheckpointNumber(),"Cool","Ok","Cool"};
-            gameController.board.setButtonOptions(buttonOptions);
-            gameController.board.setPhase(Phase.PLAYER_INTERACTION);
+
         }
 
         return true;
