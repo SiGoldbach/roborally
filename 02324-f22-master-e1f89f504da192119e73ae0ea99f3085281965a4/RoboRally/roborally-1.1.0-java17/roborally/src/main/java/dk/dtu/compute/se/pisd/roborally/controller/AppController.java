@@ -66,30 +66,32 @@ public class AppController extends PopUpBoxView implements Observer {
     }
 
     public void connectToGame() throws IOException, InterruptedException {
-            String username = new PopUpBoxView().gameInstance("Enter username", "Confirm ");
-            String gamename = new PopUpBoxView().gameInstance("Enter gamename", "Confirm ");
+        String username = new PopUpBoxView().gameInstance("Enter username", "Confirm ");
+        String gamename = new PopUpBoxView().gameInstance("Enter gamename", "Confirm ");
 
-            String response = new ServerClientController().connectToGame(gamename, username);
+        String response = new ServerClientController().connectToGame(gamename, username);
 
-            String[] responseArr = response.split("-");
+        String[] responseArr = response.split("-");
 
-            String boardJson = responseArr[3];
-            System.out.println("JSON " + boardJson);
-            gameController = new GameController(LoadBoard.loadBoard(boardJson));
+        String boardJson = responseArr[3];
+        System.out.println("JSON " + boardJson);
+        gameController = new GameController(LoadBoard.loadBoard(boardJson));
 
-            int totalPlayers = Integer.parseInt(responseArr[2]);
+        int totalPlayers = Integer.parseInt(responseArr[2]);
+        if (gameController.board.getPlayers().size() == 0) {
             for (int i = 0; i < totalPlayers; i++) {
                 Player player = new Player(gameController.board, PLAYER_COLORS.get(i), "Player " + (i + 1));
                 gameController.board.addPlayer(player);
                 player.setSpace(gameController.board.getSpace(i % gameController.board.width, i));
             }
+        }
 
-            gameController.board.setMyGameRoomNumber(Integer.parseInt(responseArr[0]));
-            gameController.board.setMyPlayerNumber(Integer.parseInt(responseArr[1]) - 1);
+        gameController.board.setMyGameRoomNumber(Integer.parseInt(responseArr[0]));
+        gameController.board.setMyPlayerNumber(Integer.parseInt(responseArr[1]) - 1);
 
-            gameController.startProgrammingPhase();
+        gameController.startProgrammingPhase();
 
-            roboRally.createBoardView(gameController);
+        roboRally.createBoardView(gameController);
 
         try {
             gameController.startWaitingPhase();
@@ -105,9 +107,9 @@ public class AppController extends PopUpBoxView implements Observer {
 
 
             new ServerClientController().saveBoard(toServer, name);
-        }catch (InterruptedException e){
+        } catch (InterruptedException e) {
             System.out.println("Problems with server connection");// XXX needs to be implemented eventually
-        }catch (IOException e){
+        } catch (IOException e) {
             System.out.println("Problems with IOE");
 
         }
@@ -147,7 +149,7 @@ public class AppController extends PopUpBoxView implements Observer {
             String[] responseArr = response.split("-");
 
             gameController.board.setMyGameRoomNumber(Integer.parseInt(responseArr[0]));
-            gameController.board.setMyPlayerNumber(Integer.parseInt(responseArr[1])  - 1);
+            gameController.board.setMyPlayerNumber(Integer.parseInt(responseArr[1]) - 1);
 
             // XXX: V2
             // board.setCurrentPlayer(board.getPlayer(0));
