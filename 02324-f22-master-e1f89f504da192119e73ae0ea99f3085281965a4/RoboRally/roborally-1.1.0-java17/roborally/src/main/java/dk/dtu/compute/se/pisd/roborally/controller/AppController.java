@@ -78,13 +78,12 @@ public class AppController extends PopUpBoxView implements Observer {
         gameController = new GameController(LoadBoard.loadBoard(boardJson));
 
         int totalPlayers = Integer.parseInt(responseArr[2]);
-        if (gameController.board.getPlayers().size() == 0) {
             for (int i = 0; i < totalPlayers; i++) {
                 Player player = new Player(gameController.board, PLAYER_COLORS.get(i), "Player " + (i + 1));
                 gameController.board.addPlayer(player);
                 player.setSpace(gameController.board.getSpace(i % gameController.board.width, i));
             }
-        }
+
 
         gameController.board.setMyGameRoomNumber(Integer.parseInt(responseArr[0]));
         gameController.board.setMyPlayerNumber(Integer.parseInt(responseArr[1]) - 1);
