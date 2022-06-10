@@ -10,7 +10,7 @@ state WaitForPlayersState{
 [*]--> Idle
 }
 }
-Idle --d> ProgrammingState
+Idle --r> ProgrammingState
 
 
 state ProgrammingState {
@@ -38,7 +38,7 @@ state ActivationState{
 }
 Activate --r> Idle3:Not your turn
 
-Activate --> WaitEndTurnState:Cards have been activated
+Idle3 --> WaitEndTurnState:Cards have been activated
 
 state WaitEndTurnState{
 [*] --> EndTurn
