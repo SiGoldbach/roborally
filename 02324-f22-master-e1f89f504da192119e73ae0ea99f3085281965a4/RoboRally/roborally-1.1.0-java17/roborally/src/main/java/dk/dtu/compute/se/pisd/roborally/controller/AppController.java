@@ -74,25 +74,25 @@ public class AppController extends PopUpBoxView implements Observer {
                 GameChoices.add(responseArr[i]);
             }
 
-            String gamename = new PopUpBoxView().
+            String gamename = new PopUpBoxView().sliderChoice("Pick a game", "Join", GameChoices);
 
-            String response = new ServerClientController().connectToGame(gamename, username);
+            String serverResponse = new ServerClientController().connectToGame(gamename, username);
 
-            String[] responseArr = response.split("-");
+            String[] serverResponseArr = serverResponse.split("-");
 
-            String boardJson = responseArr[3];
+            String boardJson = serverResponseArr[3];
             System.out.println("JSON " + boardJson);
             gameController = new GameController(LoadBoard.loadBoard(boardJson));
 
-            int totalPlayers = Integer.parseInt(responseArr[2]);
+            int totalPlayers = Integer.parseInt(serverResponseArr[2]);
             for (int i = 0; i < totalPlayers; i++) {
                 Player player = new Player(gameController.board, PLAYER_COLORS.get(i), "Player " + (i + 1));
                 gameController.board.addPlayer(player);
                 player.setSpace(gameController.board.getSpace(i % gameController.board.width, i));
             }
 
-            gameController.board.setMyGameRoomNumber(Integer.parseInt(responseArr[0]));
-            gameController.board.setMyPlayerNumber(Integer.parseInt(responseArr[1]) - 1);
+            gameController.board.setMyGameRoomNumber(Integer.parseInt(serverResponseArr[0]));
+            gameController.board.setMyPlayerNumber(Integer.parseInt(serverResponseArr[1]) - 1);
 
             gameController.startProgrammingPhase();
 
