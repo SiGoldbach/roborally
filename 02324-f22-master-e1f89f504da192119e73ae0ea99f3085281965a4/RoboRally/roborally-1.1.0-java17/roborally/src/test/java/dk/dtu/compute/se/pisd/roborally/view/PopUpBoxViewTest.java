@@ -34,14 +34,8 @@ public class PopUpBoxViewTest {
         System.out.println(board);
 
     }
-    @Test
-    void testingSomeServerLogic() throws IOException, InterruptedException {
-        String val = new PopUpBoxView().loadGame(new ServerClientController().possibleBoards());
-        String board = new ServerClientController().getBoard(val);
-        Board toTest= LoadBoard.loadBoard(board);
-        System.out.println(new PlayerPositionGenerator().toString(toTest));
 
-    }
+
 
 
 }

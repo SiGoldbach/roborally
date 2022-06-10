@@ -14,7 +14,7 @@ public class PlayerPositionGenerator {
         StringBuilder PlayerPositions= new StringBuilder();
         for (int i = 0; i < board.getPlayers().size(); i++) {
             Player p=board.getPlayers().get(i);
-            String temp=(p.getColor() + "," + p.getHeading() +","+ p.getSpace().x + "," + p.getSpace().y+",/");
+            String temp=(p.getCheckpointNumber() + "," + p.getHeading() +","+ p.getSpace().x + "," + p.getSpace().y+",/");
             PlayerPositions.append(temp);
         }
         return PlayerPositions.toString();
@@ -29,6 +29,7 @@ public class PlayerPositionGenerator {
         for (int i = 0; i < eachIndividualPlayer.length; i++) {
             String[] playerAR = eachIndividualPlayer[i].split(",");
             Player p = board.getPlayers().get(i);
+            p.setCheckpointNumber(Integer.parseInt(playerAR[0]));
             p.setSpace(board.getSpace((Integer.parseInt(playerAR[2])), Integer.parseInt(playerAR[3])));
             switch (playerAR[1]) {
                 case "NORTH":
